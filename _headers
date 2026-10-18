@@ -1,0 +1,7 @@
+# Für Cloudflare Pages (wird von node werkzeuge/bauen.mjs --dist nach dist/ kopiert).
+# Testversion: Suchmaschinen sollen die Seite noch nicht aufnehmen. Vor dem offiziellen Start die Zeile mit X-Robots-Tag löschen.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  X-Robots-Tag: noindex

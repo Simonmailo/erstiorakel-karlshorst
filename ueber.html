@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Über und Prüfstand | Ersti-Orakel</title>
+  <meta name="description" content="Wer hinter dem Ersti-Orakel steht, wie geprüft wird, was noch offen ist und wie der Chat mit Daten umgeht.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-seite="ueber">
+  <a class="skip" href="#inhalt">Zum Inhalt springen</a>
+  <header class="kopf">
+    <div class="container kopf__innen">
+      <a class="logo" href="index.html">
+        <svg class="logo__zeichen" viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 11.5c0 4.1-3.6 7.5-8 7.5-1.3 0-2.6-.3-3.7-.8L4 19.5l1.3-3.7C4.5 14.6 4 13.1 4 11.5 4 7.4 7.6 4 12 4s8 3.4 8 7.5z"/><circle cx="8.6" cy="11.5" r="1.05" fill="currentColor" stroke="none"/><circle cx="12" cy="11.5" r="1.05" fill="currentColor" stroke="none"/><circle cx="15.4" cy="11.5" r="1.05" fill="currentColor" stroke="none"/></svg>
+        <span class="logo__text"><span class="logo__name">Ersti-Orakel</span><span class="marke">Studentischer Prototyp</span></span>
+      </a>
+      <div class="kopf__aktionen">
+        <button class="kopf-knopf kopf-knopf--chat" type="button" data-bot-oeffnen><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 11.5c0 4.1-3.6 7.5-8 7.5-1.3 0-2.6-.3-3.7-.8L4 19.5l1.3-3.7C4.5 14.6 4 13.1 4 11.5 4 7.4 7.6 4 12 4s8 3.4 8 7.5z"/><circle cx="8.6" cy="11.5" r="1.05" fill="currentColor" stroke="none"/><circle cx="12" cy="11.5" r="1.05" fill="currentColor" stroke="none"/><circle cx="15.4" cy="11.5" r="1.05" fill="currentColor" stroke="none"/></svg><span>Chat</span></button>
+        <button class="kopf-knopf nav-knopf" type="button" aria-expanded="false" aria-controls="hauptnav" data-nav-toggle><svg class="nav-knopf__auf" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="nav-knopf__zu" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg><span class="nav-knopf__text">Menü</span></button>
+      </div>
+      <nav id="hauptnav" class="nav" aria-label="Hauptnavigation">
+          <a href="index.html#chat" data-nav="start">Chat</a>
+          <a href="erste-schritte.html" data-nav="schritte">Erste Schritte</a>
+          <a href="campus.html" data-nav="campus">Campus</a>
+          <a href="veranstaltungen.html" data-nav="veranstaltungen">Veranstaltungen</a>
+          <a href="anreise.html" data-nav="anreise">Anreise</a>
+          <a href="hilfe.html" data-nav="hilfe">Hilfe</a>
+      </nav>
+    </div>
+  </header>
+
+  <aside class="testband" aria-label="Hinweis zur Testversion"><div class="container"><b>Studentische Testversion.</b> Nicht von der HTW. Angaben noch nicht vollständig gegengeprüft, maßgeblich sind die verlinkten offiziellen Seiten. <a href="mitmachen.html#feedback">Fehler melden</a></div></aside>
+
+  <main id="inhalt">
+
+    <header class="seitenkopf">
+      <div class="container">
+        <h1>Über und Prüfstand</h1>
+        <p class="seitenkopf__lead">Das Ersti-Orakel ist ein Prototyp von Studierenden für Erstsemester am Campus Treskowallee. Keine offizielle Seite der HTW Berlin und keine Werbung.</p>
+      </div>
+    </header>
+    <div class="container abschnitt stapel">
+      <section class="karte" aria-labelledby="h-quellen">
+        <h2 id="h-quellen">Woher die Infos kommen</h2>
+        <div class="fliesstext" style="margin-top:10px">
+          <p>Für den Studienstart brauchst du Infos von erstaunlich vielen Seiten: htw-berlin.de, das LSF, Moodle, das Webmail, das Account-Portal, die Anleitungen des Rechenzentrums, die Bibliothek, die Seiten von Fachbereich 3 und BWL, die Veranstaltungsseite der HTW, den AStA und das studierendenWERK. Zwölf Stück. Wir haben das zusammengetragen, jede Angabe hat einen Link zur Quelle.</p>
+        </div>
+      </section>
+
+      <section class="karte" id="pruefstand" aria-labelledby="h-pruefstand">
+        <h2 id="h-pruefstand">Prüfstand</h2>
+        <p style="margin-top:10px">Jede Antwort auf dieser Seite trägt einen von drei Prüfständen:</p>
+        <dl class="statusliste">
+          <dt><span class="status status--entwurf">Entwurf</span></dt>
+          <dd>Noch nicht mit einer Quelle abgeglichen. Im Chat erscheint so etwas nicht als Antwort.</dd>
+          <dt><span class="status status--quelle-geprueft">Quelle geprüft</span></dt>
+          <dd>Die Angabe stand so auf der verlinkten offiziellen Seite. Oder sie beruht auf einer eigenen Erfahrung, dann stehen Studiengang, Semester und Datum dabei.</dd>
+          <dt><span class="status status--gegengeprueft">Gegengeprüft</span></dt>
+          <dd>Eine zweite Person hat die Angabe zusätzlich selbst geprüft, mit Datum.</dd>
+        </dl>
+        <div class="fliesstext">
+          <p>Abgeglichen haben wir am 10.10.2026, geänderte Angaben noch einmal am 14.10.2026. Geprüft heißt nicht, dass die HTW diese Seite geprüft oder freigegeben hat. Verbindlich ist immer, was die HTW selbst schreibt.</p>
+        </div>
+        <div class="pruefstatus" data-pruefstatus></div>
+        <h3 class="zwischentitel">Noch offen</h3>
+        <ul class="punkte-liste" data-offene-punkte style="margin-top:12px"></ul>
+      </section>
+
+      <section class="karte" id="datenschutz" aria-labelledby="h-datenschutz">
+        <h2 id="h-datenschutz">Datenschutz in dieser Testversion</h2>
+        <div class="fliesstext" style="margin-top:10px">
+          <h3 class="zwischentitel">Chat</h3>
+          <p data-datenschutz-chat>Der Chat läuft komplett in deinem Browser: Deine Fragen werden nicht verschickt und nicht gespeichert.</p>
+          <p data-chat-modus>Der Chat ist ein Frage-Antwort-Bot ohne KI.</p>
+          <h3 class="zwischentitel">Checkliste</h3>
+          <p>Wenn du in der Checkliste etwas abhakst, speichert das nur dein eigener Browser im lokalen Speicher (localStorage). Wir sehen das nicht. Löschen kannst du es, indem du die Häkchen entfernst oder die Websitedaten in deinem Browser löschst.</p>
+          <h3 class="zwischentitel">Hosting</h3>
+          <p data-datenschutz-hosting>Beim Aufruf der Seite verarbeitet der Anbieter, bei dem die Seite liegt, technisch nötige Daten wie deine IP-Adresse, um die Seite auszuliefern.</p>
+          <p>Die Seite setzt selbst keine Cookies und zählt keine Besuche. Die Schriften liegen im Projekt, es wird nichts von Google Fonts oder ähnlichen Diensten nachgeladen. Links zu htw-berlin.de, BVG, VBB, zum AStA oder zum studierendenWERK öffnen deren Seiten, dort gelten deren Regeln.</p>
+          <h3 class="zwischentitel">Feedbackformular</h3>
+          <p><span data-datenschutz-feedback>Noch ist kein Formular eingerichtet. Die Seite verschickt nichts und speichert nichts.</span> Das Formular fragt keinen Namen und keine Mailadresse ab. Vollständig anonym ist es technisch trotzdem nicht, der Formularanbieter verarbeitet beim Absenden zum Beispiel deine IP-Adresse.</p>
+          <p>Diese Hinweise ersetzen noch keine vollständige Datenschutzerklärung. Eine KI ist nicht angeschlossen.</p>
+        </div>
+      </section>
+
+      <section class="karte" id="kalli" aria-labelledby="h-kalli">
+        <h2 id="h-kalli">Kalli, dein Campushelfer</h2>
+        <div class="fliesstext" style="margin-top:10px">
+          <p>Kalli ist die Figur dieses studentischen Projekts. Kalli trägt kein Logo der HTW und ist kein Zeichen der Hochschule. Antworten gibt Kalli nur aus den vorgegebenen Texten dieser Seite, eine KI steckt nicht dahinter.</p>
+        </div>
+      </section>
+
+      <section class="karte" id="kontakt" aria-labelledby="h-kontakt">
+        <h2 id="h-kontakt">Verantwortlich und Kontakt</h2>
+        <div class="fliesstext" style="margin-top:10px">
+          <div data-kontakt hidden></div>
+          <p>Fehler, Fragen, Tipps: am schnellsten über <a href="mitmachen.html#feedback">Mitmachen</a>. <span data-kontakt-fehlt>Eine eigene Projektadresse fehlt noch, Kontakt deshalb nur über das Feedbackformular.</span></p>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <footer class="fuss">
+    <div class="container fuss__innen">
+      <p class="fuss__name"><b>Ersti-Orakel</b> · Studentischer Prototyp · Für Studierende der HTW Berlin am Campus Treskowallee</p>
+      <nav aria-label="Weitere Seiten">
+        <ul class="fuss__links">
+          <li><a href="semester.html">Fristen und Termine</a></li>
+          <li><a href="fragen.html">Häufige Fragen</a></li>
+          <li><a href="mitmachen.html">Mitmachen</a></li>
+          <li><a href="ueber.html#pruefstand">Prüfstand</a></li>
+          <li><a href="ueber.html#kontakt">Kontakt</a></li>
+          <li><a href="ueber.html#datenschutz">Datenschutz</a></li>
+        </ul>
+      </nav>
+      <p class="fuss__hinweis">Keine offizielle Seite der HTW Berlin, verbindlich ist immer, was die HTW selbst schreibt. Zuletzt geprüft: <span data-letzte-pruefung>14.10.2026</span>, Stand jeder Angabe im <a href="ueber.html#pruefstand">Prüfstand</a>.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/daten.js"></script>
+  <script src="assets/js/fragen.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/suche.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/chat.js"></script>
+</body>
+</html>

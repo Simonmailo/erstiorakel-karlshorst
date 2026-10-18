@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hilfe und Ansprechpartner | Ersti-Orakel</title>
+  <meta name="description" content="Anlaufstellen am Campus Treskowallee, sortiert nach Problem.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-seite="hilfe">
+  <a class="skip" href="#inhalt">Zum Inhalt springen</a>
+  <header class="kopf">
+    <div class="container kopf__innen">
+      <a class="logo" href="index.html">
+        <svg class="logo__zeichen" viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 11.5c0 4.1-3.6 7.5-8 7.5-1.3 0-2.6-.3-3.7-.8L4 19.5l1.3-3.7C4.5 14.6 4 13.1 4 11.5 4 7.4 7.6 4 12 4s8 3.4 8 7.5z"/><circle cx="8.6" cy="11.5" r="1.05" fill="currentColor" stroke="none"/><circle cx="12" cy="11.5" r="1.05" fill="currentColor" stroke="none"/><circle cx="15.4" cy="11.5" r="1.05" fill="currentColor" stroke="none"/></svg>
+        <span class="logo__text"><span class="logo__name">Ersti-Orakel</span><span class="marke">Studentischer Prototyp</span></span>
+      </a>
+      <div class="kopf__aktionen">
+        <button class="kopf-knopf kopf-knopf--chat" type="button" data-bot-oeffnen><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 11.5c0 4.1-3.6 7.5-8 7.5-1.3 0-2.6-.3-3.7-.8L4 19.5l1.3-3.7C4.5 14.6 4 13.1 4 11.5 4 7.4 7.6 4 12 4s8 3.4 8 7.5z"/><circle cx="8.6" cy="11.5" r="1.05" fill="currentColor" stroke="none"/><circle cx="12" cy="11.5" r="1.05" fill="currentColor" stroke="none"/><circle cx="15.4" cy="11.5" r="1.05" fill="currentColor" stroke="none"/></svg><span>Chat</span></button>
+        <button class="kopf-knopf nav-knopf" type="button" aria-expanded="false" aria-controls="hauptnav" data-nav-toggle><svg class="nav-knopf__auf" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="nav-knopf__zu" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg><span class="nav-knopf__text">Menü</span></button>
+      </div>
+      <nav id="hauptnav" class="nav" aria-label="Hauptnavigation">
+          <a href="index.html#chat" data-nav="start">Chat</a>
+          <a href="erste-schritte.html" data-nav="schritte">Erste Schritte</a>
+          <a href="campus.html" data-nav="campus">Campus</a>
+          <a href="veranstaltungen.html" data-nav="veranstaltungen">Veranstaltungen</a>
+          <a href="anreise.html" data-nav="anreise">Anreise</a>
+          <a href="hilfe.html" data-nav="hilfe">Hilfe</a>
+      </nav>
+    </div>
+  </header>
+
+  <aside class="testband" aria-label="Hinweis zur Testversion"><div class="container"><b>Studentische Testversion.</b> Nicht von der HTW. Angaben noch nicht vollständig gegengeprüft, maßgeblich sind die verlinkten offiziellen Seiten. <a href="mitmachen.html#feedback">Fehler melden</a></div></aside>
+
+  <main id="inhalt">
+
+    <header class="seitenkopf">
+      <div class="container">
+        <h1>Die richtige Hilfe für deine Frage</h1>
+        <p class="seitenkopf__lead">Sortiert nach Problem, nicht nach Amt. Passt nichts, fang bei der Allgemeinen Studienberatung in Haus A an.</p>
+        <div class="suchfeld" data-hilfe-suche hidden>
+          <label for="hilfe-suche" class="sr-only">Anlaufstellen durchsuchen</label>
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
+          <input class="feld" id="hilfe-suche" type="search" autocomplete="off" placeholder="Wonach suchst du?">
+        </div>
+        <p class="hilfe-treffer" aria-live="polite" data-hilfe-treffer></p>
+      </div>
+    </header>
+    <div class="container">
+      <section class="bereiche" aria-labelledby="themen-titel">
+        <h2 id="themen-titel" class="sr-only">Themen</h2>
+        <div class="raster-3" data-hilfe-bereiche>
+          <p class="leer">Die Anlaufstellen werden geladen. Falls nichts erscheint, ist JavaScript ausgeschaltet. Dann hilft die Allgemeine Studienberatung, studienberatung@htw-berlin.de.</p>
+        </div>
+        <p class="notfall"><b>Wenn es dir akut schlecht geht:</b> Die TelefonSeelsorge ist rund um die Uhr kostenlos erreichbar, <a href="tel:08001110111">0800 111 0 111</a>.</p>
+      </section>
+
+      <section class="abschnitt karte" aria-labelledby="so-titel">
+        <div class="kartenkopf"><span class="symbolkreis" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 6.5c-1.8-1.3-4.3-2-7.5-2v13c3.2 0 5.7.7 7.5 2 1.8-1.3 4.3-2 7.5-2v-13c-3.2 0-5.7.7-7.5 2z"/><path d="M12 6.5v13"/></svg></span><div><h2 id="so-titel">So findest du den Kontakt</h2><p>Jede Anlaufstelle ist etwas anders organisiert. Das hilft bei der Suche.</p></div></div>
+        <div class="erklaerung">
+          <div><span class="symbolkreis symbolkreis--klein" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 4.5h5.5V10M19.5 4.5l-8 8"/><path d="M18 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/></svg></span><div><h3>Offizielle Kontaktseite</h3><p>Bei jeder Stelle steht ein Link zur offiziellen Seite. Dort stehen die aktuellen Zeiten.</p></div></div>
+          <div><span class="symbolkreis symbolkreis--klein" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="9" cy="8.5" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M15.5 6a3 3 0 0 1 0 5.6M17.5 19a5.5 5.5 0 0 0-2.4-4.6"/></svg></span><div><h3>Zuständigkeit</h3><p>Weißt du nicht, wer zuständig ist, fängst du bei der Allgemeinen Studienberatung an. Die schickt dich weiter.</p></div></div>
+          <div><span class="symbolkreis symbolkreis--klein" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 3.5H7.5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V8z"/><path d="M14 3.5V8h4.5M9 12.5h6M9 16h6"/></svg></span><div><h3>Stand der Prüfung</h3><p>Jede Angabe ist mit einer offiziellen Quelle abgeglichen. Ob eine zweite Person sie schon gegengeprüft hat, steht im <a href="ueber.html#pruefstand">Prüfstand</a>.</p></div></div>
+        </div>
+      </section>
+
+      <section class="abschnitt karte karte--mint botkarte" aria-labelledby="bot-titel">
+        <img class="botkarte__figur" src="assets/img/kalli.png" alt="" width="360" height="450">
+        <div class="botkarte__text">
+          <h2 id="bot-titel">Du kannst auch Kalli fragen</h2>
+          <p>Stell deine Frage direkt im Chat. Kalli, dein Campushelfer, antwortet mit den vorgegebenen Antworten dieser Seite und nennt dir die Quelle. <span data-chat-art>Es ist ein Frage-Antwort-Bot ohne KI.</span></p>
+        </div>
+        <button class="knopf" type="button" data-bot-oeffnen>Chat öffnen <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </section>
+
+      <section class="abschnitt" aria-labelledby="alle-titel">
+        <h2 id="alle-titel">Alle Anlaufstellen</h2>
+        <div data-stellen></div>
+      </section>
+    </div>
+
+  </main>
+
+  <footer class="fuss">
+    <div class="container fuss__innen">
+      <p class="fuss__name"><b>Ersti-Orakel</b> · Studentischer Prototyp · Für Studierende der HTW Berlin am Campus Treskowallee</p>
+      <nav aria-label="Weitere Seiten">
+        <ul class="fuss__links">
+          <li><a href="semester.html">Fristen und Termine</a></li>
+          <li><a href="fragen.html">Häufige Fragen</a></li>
+          <li><a href="mitmachen.html">Mitmachen</a></li>
+          <li><a href="ueber.html#pruefstand">Prüfstand</a></li>
+          <li><a href="ueber.html#kontakt">Kontakt</a></li>
+          <li><a href="ueber.html#datenschutz">Datenschutz</a></li>
+        </ul>
+      </nav>
+      <p class="fuss__hinweis">Keine offizielle Seite der HTW Berlin, verbindlich ist immer, was die HTW selbst schreibt. Zuletzt geprüft: <span data-letzte-pruefung>14.10.2026</span>, Stand jeder Angabe im <a href="ueber.html#pruefstand">Prüfstand</a>.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/daten.js"></script>
+  <script src="assets/js/fragen.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/suche.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/chat.js"></script>
+</body>
+</html>

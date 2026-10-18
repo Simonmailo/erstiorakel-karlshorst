@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ersti-Orakel: dein Wegweiser zum Studienstart am Campus Treskowallee</title>
+  <meta name="description" content="Studentischer Prototyp für Erstsemester am Campus Treskowallee der HTW Berlin: Chat mit geprüften Antworten, erste Schritte, Fristen, Räume, Veranstaltungen und Anreise.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-seite="start">
+  <a class="skip" href="#inhalt">Zum Inhalt springen</a>
+  <header class="kopf">
+    <div class="container kopf__innen">
+      <a class="logo" href="index.html">
+        <svg class="logo__zeichen" viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 11.5c0 4.1-3.6 7.5-8 7.5-1.3 0-2.6-.3-3.7-.8L4 19.5l1.3-3.7C4.5 14.6 4 13.1 4 11.5 4 7.4 7.6 4 12 4s8 3.4 8 7.5z"/><circle cx="8.6" cy="11.5" r="1.05" fill="currentColor" stroke="none"/><circle cx="12" cy="11.5" r="1.05" fill="currentColor" stroke="none"/><circle cx="15.4" cy="11.5" r="1.05" fill="currentColor" stroke="none"/></svg>
+        <span class="logo__text"><span class="logo__name">Ersti-Orakel</span><span class="marke">Studentischer Prototyp</span></span>
+      </a>
+      <div class="kopf__aktionen">
+        <button class="kopf-knopf kopf-knopf--chat" type="button" data-bot-oeffnen><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 11.5c0 4.1-3.6 7.5-8 7.5-1.3 0-2.6-.3-3.7-.8L4 19.5l1.3-3.7C4.5 14.6 4 13.1 4 11.5 4 7.4 7.6 4 12 4s8 3.4 8 7.5z"/><circle cx="8.6" cy="11.5" r="1.05" fill="currentColor" stroke="none"/><circle cx="12" cy="11.5" r="1.05" fill="currentColor" stroke="none"/><circle cx="15.4" cy="11.5" r="1.05" fill="currentColor" stroke="none"/></svg><span>Chat</span></button>
+        <button class="kopf-knopf nav-knopf" type="button" aria-expanded="false" aria-controls="hauptnav" data-nav-toggle><svg class="nav-knopf__auf" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="nav-knopf__zu" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg><span class="nav-knopf__text">Menü</span></button>
+      </div>
+      <nav id="hauptnav" class="nav" aria-label="Hauptnavigation">
+          <a href="index.html#chat" data-nav="start">Chat</a>
+          <a href="erste-schritte.html" data-nav="schritte">Erste Schritte</a>
+          <a href="campus.html" data-nav="campus">Campus</a>
+          <a href="veranstaltungen.html" data-nav="veranstaltungen">Veranstaltungen</a>
+          <a href="anreise.html" data-nav="anreise">Anreise</a>
+          <a href="hilfe.html" data-nav="hilfe">Hilfe</a>
+      </nav>
+    </div>
+  </header>
+
+  <aside class="testband" aria-label="Hinweis zur Testversion"><div class="container"><b>Studentische Testversion.</b> Nicht von der HTW. Angaben noch nicht vollständig gegengeprüft, maßgeblich sind die verlinkten offiziellen Seiten. <a href="mitmachen.html#feedback">Fehler melden</a></div></aside>
+
+  <main id="inhalt">
+
+    <section class="held" aria-labelledby="titel">
+      <div class="container held__raster">
+        <div class="held__text">
+          <h1 id="titel">Dein Wegweiser zum Studienstart</h1>
+          <p class="held__ort">Für Studierende der HTW Berlin am Campus Treskowallee</p>
+        </div>
+        <section class="chat" id="chat" data-chat aria-label="Chat mit dem Ersti-Orakel">
+          <p class="chat__ersatz">Der Chat braucht JavaScript. Ist es ausgeschaltet, findest du alle Infos auch ohne Chat unter <a href="erste-schritte.html">Erste Schritte</a>, <a href="fragen.html">Häufige Fragen</a> und <a href="hilfe.html">Hilfe</a>.</p>
+        </section>
+        <figure class="held__figur">
+          <img class="held__kalli" src="assets/img/kalli.png" alt="" width="360" height="450">
+          <figcaption>Kalli, dein Campushelfer</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <div class="container">
+      <section class="abschnitt" aria-labelledby="wege-titel">
+        <h2 id="wege-titel" class="sr-only">Schnell weiter</h2>
+        <div class="raster-3">
+          <article class="karte kachel">
+            <span class="symbolkreis" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21s-6.5-5.8-6.5-11a6.5 6.5 0 0 1 13 0c0 5.2-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg></span>
+            <div class="kachel__inhalt">
+              <h3>Campus finden</h3>
+              <p>Was in Haus A bis F ist und wie du jede Raumnummer liest.</p>
+              <div class="kachel__aktion"><a class="knopf" href="campus.html">Campus entdecken <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+            </div>
+          </article>
+          <article class="karte kachel">
+            <span class="symbolkreis" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h2M14 14h2M8 17.2h2"/></svg></span>
+            <div class="kachel__inhalt">
+              <h3>Veranstaltungen</h3>
+              <p data-naechste-veranstaltung>Führungen und Infoabende für Studierende, jeder Termin mit Quelle.</p>
+              <div class="kachel__aktion"><a class="knopf" href="veranstaltungen.html">Termine ansehen <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+            </div>
+          </article>
+          <article class="karte kachel">
+            <span class="symbolkreis" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="6" y="5" width="12" height="12" rx="3"/><path d="M6 11.5h12M10 2.5h4M12 2.5V5M9.5 14.3h.01M14.5 14.3h.01M8.5 21l1.8-4M15.5 21l-1.8-4"/></svg></span>
+            <div class="kachel__inhalt">
+              <h3>Anreise planen</h3>
+              <p>Treskowallee 8. Tram M17, 27 und 37 halten direkt am Campus.</p>
+              <div class="kachel__aktion"><a class="knopf" href="anreise.html">Anreise öffnen <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <div class="abschnitt raster-2">
+        <section class="karte schritte-kurz" aria-labelledby="schritte-titel">
+          <div class="kartenkopf">
+            <span class="symbolkreis" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 6.5 5.5 8 8 5.5M4 12.5 5.5 14 8 11.5M4 18.5 5.5 20 8 17.5"/><path d="M11 7h9M11 13h9M11 19h9"/></svg></span>
+            <div><h2 id="schritte-titel">Deine ersten Schritte</h2><p>Was du abhakst, speichert nur dein Browser.</p></div>
+          </div>
+          <div class="fortschritt"><span class="fortschritt__balken" role="progressbar" aria-label="Fortschritt der ersten Schritte" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0"><span data-fortschritt-balken></span></span><span class="fortschritt__text" data-fortschritt aria-live="polite">0 von 7 erledigt</span></div>
+          <ol class="checkliste" data-checkliste></ol>
+          <div class="kartenfuss"><a class="textlink" href="erste-schritte.html">Alle Anleitungen <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+        </section>
+        <section class="karte" aria-labelledby="termine-titel">
+          <div class="kartenkopf">
+            <span class="symbolkreis" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h2M14 14h2M8 17.2h2"/></svg></span>
+            <div><h2 id="termine-titel">Wichtige Termine</h2><p>Geprüfte Semestertermine und Veranstaltungen</p></div>
+          </div>
+          <h3 class="zwischentitel">Fristen</h3>
+          <div data-fristen="4" data-ebene="4"><p class="leer">Prüfungsanmeldung: 14. bis 21. Dezember 2026 und 4. bis 8. Januar 2027. Rückmeldung: 1. Januar bis 5. Februar 2027.</p></div>
+          <p class="quelle">Quelle: <a href="https://www.htw-berlin.de/studium/studienorganisation/akademischer-kalender">HTW: Akademischer Kalender</a> · Stand <span data-stand>10.10.2026</span></p>
+          <h3 class="zwischentitel">Veranstaltungen</h3>
+          <div data-veranstaltungen="vorschau" data-anzahl="3" data-ebene="4"></div>
+          <div class="kartenfuss">
+            <a class="textlink" href="semester.html">Alle Fristen <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="textlink" href="veranstaltungen.html">Alle Veranstaltungen <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </section>
+      </div>
+
+      <section class="abschnitt" aria-labelledby="hilfe-titel">
+        <div class="abschnitt__kopf">
+          <div>
+            <h2 id="hilfe-titel">Hilfe und Ansprechpartner</h2>
+            <p>Vier Anlaufstellen für den Anfang. Alle anderen stehen nach Problem sortiert unter Hilfe.</p>
+          </div>
+          <a class="textlink" href="hilfe.html">Alle Anlaufstellen <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="raster-2" data-hilfe-kurz="pruefungen,bwl,technik,psyche"></div>
+        <p class="notfall"><b>Wenn es dir akut schlecht geht:</b> Die TelefonSeelsorge ist rund um die Uhr kostenlos erreichbar, <a href="tel:08001110111">0800 111 0 111</a>.</p>
+      </section>
+    </div>
+
+  </main>
+
+  <footer class="fuss">
+    <div class="container fuss__innen">
+      <p class="fuss__name"><b>Ersti-Orakel</b> · Studentischer Prototyp · Für Studierende der HTW Berlin am Campus Treskowallee</p>
+      <nav aria-label="Weitere Seiten">
+        <ul class="fuss__links">
+          <li><a href="semester.html">Fristen und Termine</a></li>
+          <li><a href="fragen.html">Häufige Fragen</a></li>
+          <li><a href="mitmachen.html">Mitmachen</a></li>
+          <li><a href="ueber.html#pruefstand">Prüfstand</a></li>
+          <li><a href="ueber.html#kontakt">Kontakt</a></li>
+          <li><a href="ueber.html#datenschutz">Datenschutz</a></li>
+        </ul>
+      </nav>
+      <p class="fuss__hinweis">Keine offizielle Seite der HTW Berlin, verbindlich ist immer, was die HTW selbst schreibt. Zuletzt geprüft: <span data-letzte-pruefung>14.10.2026</span>, Stand jeder Angabe im <a href="ueber.html#pruefstand">Prüfstand</a>.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/daten.js"></script>
+  <script src="assets/js/fragen.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/suche.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/chat.js"></script>
+</body>
+</html>
