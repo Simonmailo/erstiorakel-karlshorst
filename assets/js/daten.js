@@ -50,9 +50,9 @@ window.ERSTI = {
        Das Formular sollte die Kategorien Fehler, Idee, fehlende Frage und Veranstaltung anbieten. */
     feedback: { formularUrl: "" },
     /* Für die Datenschutzhinweise: wer die Seite ausliefert, wer das Formular betreibt und ggf. wer die KI betreibt.
-       Beispiel: hoster: "Cloudflare Pages (Cloudflare, Inc., USA)", formularAnbieter: "Google Formulare".
+       Beispiel: hoster: "GitHub Pages (GitHub, Inc., USA)", formularAnbieter: "Google Formulare".
        Leer lassen, solange nichts entschieden ist. */
-    datenschutz: { hoster: "Cloudflare Pages (Cloudflare, Inc., USA)", formularAnbieter: "Google Formulare (Google)", kiAnbieter: "" }
+    datenschutz: { hoster: "GitHub Pages (GitHub, Inc., USA)", formularAnbieter: "Google Formulare (Google)", kiAnbieter: "" }
   },
 
   quellen: {
