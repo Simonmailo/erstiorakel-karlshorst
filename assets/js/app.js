@@ -854,8 +854,7 @@
     if (!link && !aus) return;
     var url = feedbackUrl();
     if (url) {
-      link.href = url;
-      link.hidden = false;
+      if (link) { link.href = url; link.hidden = false; }
       if (aus) aus.hidden = true;
       if (hinweis) hinweis.hidden = true;
     } else {
@@ -863,6 +862,24 @@
       if (aus) { aus.hidden = false; aus.disabled = true; aus.textContent = "Feedback und Ideen senden (noch nicht eingerichtet)"; }
       if (hinweis) hinweis.hidden = false;
     }
+  }
+
+  /* Alle Verweise auf das Feedback (Fehler melden, Frage schicken, Termin oder Weg vorschlagen)
+     führen direkt zum Formular und öffnen es in einem neuen Tab. Ohne Formular bleiben sie bei Mitmachen. */
+  var FB_ZIEL = /^mitmachen\.html(\?[^#]*)?#(feedback|frage)$/;
+  function verbindeFeedbackLinks() {
+    var url = feedbackUrl();
+    if (!url) return;
+    $$("a[href]").forEach(function (a) {
+      if (FB_ZIEL.test(a.getAttribute("href"))) { a.href = url; markiereExtern(a.parentNode); }
+    });
+    /* Links, die erst später entstehen (Chat-Antworten, Suchergebnisse) */
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest("a[href]");
+      if (!a || !FB_ZIEL.test(a.getAttribute("href"))) return;
+      e.preventDefault();
+      window.open(url, "_blank", "noopener");
+    });
   }
 
   /* ---------- Fotowege ---------- */
@@ -983,6 +1000,7 @@
     renderOffenePunkte();
     renderDatenschutz();
     verbindeFeedback();
+    verbindeFeedbackLinks();
     renderKontakt();
     markiereExtern(document);
     if (location.hash) oeffneZiel(location.hash.slice(1), true);

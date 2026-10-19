@@ -48,11 +48,11 @@ window.ERSTI = {
     /* Feedback auf der Seite Mitmachen: Adresse des externen Formulars (muss mit https:// beginnen).
        Leer = der Knopf "Feedback und Ideen senden" ist aus und die Seite sagt "noch nicht eingerichtet".
        Das Formular sollte die Kategorien Fehler, Idee, fehlende Frage und Veranstaltung anbieten. */
-    feedback: { formularUrl: "" },
+    feedback: { formularUrl: "https://docs.google.com/forms/d/10liSBg9-dJ8MdL-vcaEqF5moDTsRW-vYwrlkOEawSzo/viewform" },
     /* Für die Datenschutzhinweise: wer die Seite ausliefert, wer das Formular betreibt und ggf. wer die KI betreibt.
        Beispiel: hoster: "GitHub Pages (GitHub, Inc., USA)", formularAnbieter: "Google Formulare".
        Leer lassen, solange nichts entschieden ist. */
-    datenschutz: { hoster: "GitHub Pages (GitHub, Inc., USA)", formularAnbieter: "Google Formulare (Google)", kiAnbieter: "" }
+    datenschutz: { hoster: "GitHub Pages (GitHub, Inc., USA)", formularAnbieter: "Google Formulare", kiAnbieter: "" }
   },
 
   quellen: {
