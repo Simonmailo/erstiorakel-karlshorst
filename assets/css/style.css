@@ -786,3 +786,12 @@ main { padding-bottom: 56px; }
 /* Hinweisband: studentische Testversion */
 .testband { background: var(--hinweis-bg); border-bottom: 1px solid var(--hinweis-linie); color: var(--hinweis-text); font-size: 0.88rem; line-height: 1.45; padding: 7px 0; }
 .testband a { color: var(--hinweis-text); font-weight: 700; }
+
+/* Chat: Schaltflächen zu Seiten in Übersichtsantworten */
+.blase .chat-ziele { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
+.blase .chat-ziele .knopf { text-decoration: none; }
+/* Offene Punkte: erledigt */
+.marke--erledigt { background: var(--weiss); color: var(--gruen-700); border-color: var(--gruen-700); }
+/* Knappe Aufzählung in Hinweiskarten */
+.liste-knapp { margin: 8px 0 10px; padding-left: 1.2em; }
+.liste-knapp li { margin: 2px 0; }
