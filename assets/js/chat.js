@@ -279,6 +279,37 @@
       '<p>Wenn die Frage öfter kommt, gehört sie auf diese Seite: <a href="mitmachen.html#feedback">Schick sie uns</a>.</p>';
   }
 
+  /* ---------- Übersichtsantworten (fragen.js, uebersichten) ----------
+     Allgemeine Fragen wie "Wie bereite ich mich vor?" oder "Was kann ich dich fragen?" bekommen eine Übersicht mit
+     Schaltflächen zu den passenden Seiten. Bleibt nach dem Entfernen der allgemeinen Wörter ein klares Sachthema
+     übrig ("Was brauche ich am Anfang für WLAN?"), antwortet der Bot wie bisher mit der Einzelantwort. */
+  var ALLGEMEIN_WORT = /\b(brauch\w*|benoetig\w*|noetig|wichtig\w*|alles|erledig\w*|mach\w*|tun|wissen|beachten|vorbereit\w*|bereit\w*|vor|anfang|start\w*|beginn\w*|studium|studienstart|studienbeginn|semesterstart|semesterbeginn|erste\w*|schritt\w*|vorlesung\w*|vorlesungstag|tag|tage|woche|frage\w*|haeufig\w*|oft|gestellt\w*|themen?|kennst|kannst|weisst|erstis?|erstsemester\w*|stellen|neu|zuerst|sollte|sollten|faq|ueberblick|uebersicht|hochschule|htw|uni)\b/g;
+  function musterRegex(m) { return new RegExp("\\b" + m.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")); }
+  function uebersichtFuer(text, roh) {
+    var u = (D.uebersichten || []).filter(function (x) { return x.muster.some(function (m) { return musterRegex(m).test(roh); }); })[0];
+    if (!u) return null;
+    var rest = roh;
+    u.muster.forEach(function (m) { rest = rest.replace(musterRegex(m), " "); });
+    rest = rest.replace(ALLGEMEIN_WORT, " ").replace(/\s+/g, " ").trim();
+    if (rest && S.woerter(rest).length) {
+      var r = S.suche(rest, { max: 2 });
+      /* Klares Sachthema übrig: die Frage ohne die allgemeinen Wörter beantworten */
+      if (r[0] && r[0].punkte >= 2.5) return { konkret: rest };
+    }
+    return u;
+  }
+  function uebersichtHtml(u, roh) {
+    var themen = (u.themen || []).map(findeFrage).filter(function (f) { return f && !istEntwurf(f); });
+    var ziele = (u.ziele || []).slice();
+    if (u.zusatz && new RegExp("\\b(" + u.zusatz.wenn + ")").test(roh)) ziele.push(u.zusatz.ziel);
+    return "<p>" + A.esc(u.text) + "</p>" +
+      (themen.length ? knoepfe(themen.map(function (f) { return { frage: f }; })) : "") +
+      '<p class="chat-ziele">' + ziele.map(function (z, i) {
+        return '<a class="knopf' + (i ? " knopf--zweit" : "") + '" href="' + A.esc(z.href) + '">' + A.esc(z.text) + sym("pfeil", 18) + "</a>";
+      }).join("") + "</p>" +
+      '<p class="quelle">Überblick über die Antworten dieser Seite. Quellen und Prüfstand stehen bei jeder einzelnen Antwort.</p>';
+  }
+
   /* Gibt { html, sicher } zurück. sicher = aus einer geprüften Antwort, ohne Raten. */
   function beantworte(text) {
     var roh = S.norm(text);
@@ -297,6 +328,10 @@
       var raumQuelle = raum.wh ? "wilhelminenhof" : ["campus", "rz_druck_orte", "f3_fsr"];
       return { sicher: true, html: A.raumHtml(raum) + '<p class="quelle">Quelle: ' + A.quelleLinks(raumQuelle) + " · " + A.standText() + ' · <a href="campus.html#raumfinder">Raumfinder</a></p>' };
     }
+
+    var ueb = uebersichtFuer(text, roh);
+    if (ueb && ueb.konkret) return beantworte(ueb.konkret);
+    if (ueb) return { sicher: true, uebersicht: ueb.id, html: uebersichtHtml(ueb, roh) };
 
     var haus = text.toLowerCase().replace(/ä/g, "ae").match(/\b(?:haus|gebaeude)\s+([a-h])\b/);
     var ergebnisse = S.suche(text, { max: 4 });

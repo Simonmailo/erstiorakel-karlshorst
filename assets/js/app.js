@@ -520,21 +520,25 @@
       '<div class="klapp__inhalt"><p>' + ersetze(f.antwort) + "</p>" + meta + offenHtml(f.offen) + belegZeile(f) + "</div></details>";
   }
 
+  /* Sichtbare FAQ = Auswahl aus der Wissensbasis. Ausgeblendete Einträge (faqSichtbar: false) bleiben im Chat. */
+  function inFaq(f) { return f.faqSichtbar !== false; }
+  function faqLink(f) { return inFaq(f) ? "fragen.html#f-" + f.id : (f.mehr || "fragen.html"); }
+
   function renderFragen() {
     var el = $("[data-faq]");
     if (!el) return;
     var feld = $("[data-faq-suche]");
-    $$("[data-anzahl-fragen]").forEach(function (a) { a.textContent = D.fragen.length; });
+    $$("[data-anzahl-fragen]").forEach(function (a) { a.textContent = D.fragen.filter(inFaq).length; });
     function alle() {
       el.innerHTML = D.kategorien.map(function (k) {
-        var fs = D.fragen.filter(function (f) { return f.kat === k.id; });
+        var fs = D.fragen.filter(function (f) { return f.kat === k.id && inFaq(f); });
         if (!fs.length) return "";
         return '<section class="faq-gruppe" aria-labelledby="k-' + k.id + '"><h2 id="k-' + k.id + '">' + esc(k.titel) + '</h2><div class="faq-liste">' +
           fs.map(function (f) { return frageHtml(f, false); }).join("") + "</div></section>";
       }).join("");
     }
     function filtern(q) {
-      var treffer = window.ErstiSuche.suche(q).filter(function (r) { return r.punkte >= 1.5; });
+      var treffer = window.ErstiSuche.suche(q).filter(function (r) { return r.punkte >= 1.5 && inFaq(r.frage); });
       if (!treffer.length) {
         el.innerHTML = '<p class="leer">Dazu haben wir noch keine Antwort. <a href="mitmachen.html#frage">Schick uns die Frage</a>, oder frag bei der Allgemeinen Studienberatung in Haus A, Raum 151 und 152.</p>';
         return;
@@ -741,7 +745,7 @@
   /* ---------- Prüfstand, Datenschutz, Kontakt ---------- */
   function alleEintraege() {
     var liste = [];
-    D.fragen.forEach(function (f) { liste.push({ titel: f.frage, e: f, link: "fragen.html#f-" + f.id }); });
+    D.fragen.forEach(function (f) { liste.push({ titel: f.frage, e: f, link: faqLink(f) }); });
     D.gebaeude.forEach(function (g) { liste.push({ titel: "Haus " + g.id + ": " + g.beiname, e: g, link: "campus.html#haus-" + g.id }); });
     return liste;
   }
@@ -767,7 +771,7 @@
         '<li><b>' + n["entwurf"] + '</b><span class="status status--entwurf">Entwurf</span></li></ul>' +
         '<p class="klein leise">Gezählt sind ' + liste.length + " Einträge: " + D.fragen.length + " Fragen und " + D.gebaeude.length + " Häuser.</p>" +
         "<p>Die Gegenprüfung übernimmt Ols. In der ersten Runde: " + ki.map(function (f) {
-          return '<a href="fragen.html#f-' + f.id + '">' + esc(f.frage) + "</a>";
+          return '<a href="' + faqLink(f) + '">' + esc(f.frage) + "</a>";
         }).join(", ") + ". Gegengeprüft davon: " + (frei.length ? frei.length : "noch keiner") + ".</p>";
     });
   }
@@ -784,7 +788,10 @@
       var zeilen = [{ thema: "Gegenprüfung", text: gegen
         ? gegen + " von " + liste.length + " Einträgen sind von einer zweiten Person gegengeprüft, die übrigen noch nicht."
         : "Noch kein Eintrag ist von einer zweiten Person gegengeprüft. Ols übernimmt das, zuerst HTW-Account, Stundenplan, WLAN, Semesterticket und Raumnummern. Bisher sind die Angaben nur mit den Quellen abgeglichen." }];
-      (D.offenePunkte || []).forEach(function (p) { zeilen.push({ thema: p.thema, text: p.text }); });
+      var erledigt = [];
+      (D.offenePunkte || []).forEach(function (p) {
+        if (p.erledigt) erledigt.push({ thema: p.thema, text: p.text, erledigt: p.erledigt }); else zeilen.push({ thema: p.thema, text: p.text });
+      });
       zeilen.push({ thema: "KI-Chat", text: D.config.chatBackend
         ? "Der Prototyp mit KI ist angeschlossen. Er nutzt nur Einträge, die für den Chat ausgewählt und gegengeprüft sind."
         : "Bewusst zurückgestellt. Der Chat ist ein Frage-Antwort-Bot ohne KI und kostet nichts. Eine KI-Anbindung ist vorbereitet, aber ausgeschaltet." });
@@ -796,8 +803,9 @@
         if (x.e.offen) zeilen.push({ thema: x.titel, text: x.e.offen, link: x.link });
         else if (statusVon(x.e) === "entwurf") zeilen.push({ thema: x.titel, text: "Entwurf, noch nicht mit einer Quelle abgeglichen.", link: x.link });
       });
-      el.innerHTML = zeilen.map(function (z) {
-        return '<li><span class="marke marke--offen">offen</span><div><b>' + esc(z.thema) + "</b><br>" + esc(z.text) +
+      el.innerHTML = zeilen.concat(erledigt).map(function (z) {
+        var m = z.erledigt ? '<span class="marke marke--erledigt">erledigt</span>' : '<span class="marke marke--offen">offen</span>';
+        return "<li>" + m + "<div><b>" + esc(z.thema) + "</b>" + (z.erledigt ? ", erledigt am " + numerisch(datum(z.erledigt)) : "") + "<br>" + esc(z.text) +
           (z.link ? ' <a href="' + z.link + '">Ansehen</a>' : "") + "</div></li>";
       }).join("");
     });

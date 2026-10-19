@@ -188,7 +188,7 @@ window.ERSTI = {
     {
       id: "A", beiname: "Das alte Hauptgebäude", status: "quelle-geprueft", gegenpruefung: null, geprueft: "2026-10-14",
       geltung: "Campus Treskowallee",
-      text: "Hier sitzen Studierendenservice, Career Service, Hochschulsport, der Lesesaal der Bibliothek, das Semesterticketbüro und der Fachschaftsrat 3. Auch die Aula ist in Haus A, die Cafeteria wird noch gebaut.",
+      text: "Hier sitzen Studierendenservice, Career Service, Hochschulsport, der Lesesaal der Bibliothek, das Semesterticketbüro und der Fachschaftsrat 3. Auch die Aula ist in Haus A.",
       quelle: ["campus", "rz_druck_orte"],
       /* Eigene Erfahrung aus dem Projekt, keine offizielle Angabe. Die frühere Aussage "fast alle Lehrveranstaltungen
          des Fachbereichs 3" stammte aus einem Flyer von 2020 und steht nur mit aktuellem Beleg wieder hier. */
@@ -451,8 +451,8 @@ window.ERSTI = {
      Gegenprüfung und Fotowegen ergänzt app.js automatisch aus dem aktuellen Stand. */
   offenePunkte: [
     { thema: "Befragung", text: "Die 52 Fragen und Antworten sind vorläufige Vorschläge. Welche davon den Kern des Chats bilden, entscheiden wir nach unserer Befragung." },
-    { thema: "Verbindungssuche", text: "BVG und VBB nennen keinen offiziellen Link, der einen Startpunkt übergibt. Deshalb gibt es auf der Anreise-Seite kein Startfeld, den Start gibst du direkt dort ein." },
-    { thema: "Ersti-Treffen", text: "Für dieses Semester haben wir keine Ersti-Treffen von Fachschaft oder AStA mit Datum gefunden." },
+    { thema: "Verbindungssuche", erledigt: "2026-10-19", text: "Die Links zu BVG und VBB hat Hannah am 19.10.2026 getestet, sie funktionieren. Bestätigt sind damit die Links, nicht Linien, Fahrzeiten oder Störungen. Live-Verkehrsdaten zeigt diese Seite nicht, den Start gibst du direkt bei BVG oder VBB ein." },
+    { thema: "Ersti-Treffen", text: "Für dieses Semester haben wir keine Ersti-Treffen von Fachschaft oder AStA mit Datum gefunden. Veranstaltende können Termine über das Feedbackformular schicken, Kategorie „Veranstaltung vorschlagen“. Wir tragen sie erst ein, wenn wir sie an einer öffentlichen Quelle geprüft haben." },
     { thema: "Impressum und Datenschutzerklärung", text: "Fehlen noch. Beides hängt davon ab, wo die Seite liegt und welches Formular ihr nutzt." }
   ]
 };

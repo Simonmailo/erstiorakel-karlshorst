@@ -20,6 +20,9 @@
     stichworte  andere Wörter, mit denen Leute nach dem Thema fragen (Synonyme, Abkürzungen, Umgangssprache)
     geprueft    Datum der letzten Prüfung (sonst gilt stand aus daten.js)
     mehr, typ ("wo" | "wann" | "wer" | "wie"), kurz, anleitung, eckdaten, offen
+    faqSichtbar  false = nicht in der Liste "Häufige Fragen" zeigen. Der Eintrag bleibt Teil der Wissensbasis,
+                der Chat findet ihn weiter (Prüfstand, Quellen, Geltung und Prüfdatum bleiben). Fehlt das Feld,
+                ist der Eintrag sichtbar. Die Befragung entscheidet nur über dieses Feld, nicht über das Löschen.
     ki: true    erste Prüfrunde von Ols (HTW-Account, Stundenplan, WLAN, Semesterticket, Raumnummern).
                 Die ausgeschaltete KI-Serverfunktion würde nur solche Einträge nutzen, und nur gegengeprüft.
 
@@ -431,7 +434,7 @@ window.ERSTI.fragen = [
       id: "mensa", kat: "campus", status: "quelle-geprueft", gegenpruefung: null,
       geltung: "Campus Treskowallee",
       frage: "Wo ist die Mensa und wann hat sie offen?",
-      antwort: `In Haus D. Geöffnet Montag bis Freitag von 8 bis 14:30 Uhr, warmes Mittagessen gibt es ab 11 Uhr. Bezahlt wird mit der StudentCard. Den Speiseplan zeigt die Campus App oder die <a href="https://www.stw.berlin/mensen/mensa-htw-treskowallee.html">Seite des studierendenWERKs</a>. Die Cafeteria in Haus A ist noch im Bau.`,
+      antwort: `In Haus D. Geöffnet Montag bis Freitag von 8 bis 14:30 Uhr, warmes Mittagessen gibt es ab 11 Uhr. Bezahlt wird mit der StudentCard. Den Speiseplan zeigt die Campus App oder die <a href="https://www.stw.berlin/mensen/mensa-htw-treskowallee.html">Seite des studierendenWERKs</a>.`,
       stichworte: ["mensa", "essen", "mittag", "mittagessen", "kantine", "hunger", "speiseplan", "cafeteria", "kaffee", "futtern", "oeffnungszeiten", "geoeffnet"],
       quelle: ["mensa", "campus"], mehr: "campus.html#essen", typ: "wo"
     },
@@ -546,6 +549,39 @@ window.ERSTI.fragen = [
       antwort: `Der Fachschaftsrat 3 sitzt in Haus A, Raum K 044. Er vertritt die Studis im Fachbereich 3, also auch BWL. Der AStA, die Vertretung aller HTW-Studis, hat sein Büro am Campus Wilhelminenhof.`,
       stichworte: ["fachschaft", "fachschaftsrat", "fsr", "asta", "studierendenvertretung", "vertretung", "engagieren", "mitmachen"],
       quelle: ["f3_fsr", "asta_beratung"], mehr: "hilfe.html#vertretung", typ: "wo"
+    }
+  ];
+
+  /* Übersichtsantworten für den Chat: allgemeine Fragen wie "Wie bereite ich mich vor?" oder "Was kann ich dich fragen?".
+     Sie fassen nur zusammen und verweisen auf Einträge oben (themen = ids aus fragen) und auf Seiten dieser Website.
+     Eine konkrete Sachfrage ("Wie richte ich WLAN ein?") bekommt weiter die passende Einzelantwort.
+     muster: Wendungen in kleiner Schrift, ä als ae, ö als oe, ü als ue, ß als ss. */
+window.ERSTI.uebersichten = [
+    {
+      id: "start",
+      muster: [
+        "vorbereit", "bereite ich mich", "bereite mich", "bereitet man sich", "erste schritte", "ersten schritte", "ersten schritt", "studienstart", "studienbeginn", "semesterstart", "semesterbeginn",
+        "am anfang", "zum anfang", "zu beginn", "am start", "zum start", "vor der ersten vorlesung", "vor dem ersten vorlesungstag",
+        "vor dem ersten tag", "vor der ersten woche", "vor semesterbeginn", "was muss ich erledigen", "was muss ich alles erledigen",
+        "was sollte ich erledigen", "was muss ich als erstes", "was muss ich zuerst", "neu an der hochschule", "neu an der htw"
+      ],
+      text: `Für den Start sind diese sechs Dinge wichtig: HTW-Account aktivieren, StudentCard holen, Semesterticket bestellen, WLAN einrichten, deinen Stundenplan finden und dich in Moodle umsehen. Wie das jeweils geht, steht Schritt für Schritt bei den ersten Schritten.`,
+      themen: ["account", "studentcard", "semesterticket", "wlan", "stundenplan", "moodle"],
+      ziele: [{ text: "Zu den ersten Schritten", href: "erste-schritte.html" }]
+    },
+    {
+      id: "faq",
+      muster: [
+        "haeufig gestellte fragen", "haeufige fragen", "haeufigsten fragen", "oft gestellte fragen", "faq",
+        "welche fragen stellen", "welche fragen haben", "was fragen erstis", "was fragen erstsemester",
+        "was kann ich dich fragen", "was kann ich fragen", "was kann man dich fragen", "was kannst du", "wobei kannst du",
+        "welche themen", "welche fragen kennst du", "welche fragen kannst du", "was weisst du", "worueber weisst du"
+      ],
+      text: `Ich kenne die Antworten aus den Häufigen Fragen dieser Seite, zum Beispiel zu diesen Themen. Tipp eins an oder stell deine Frage einfach so, wie du sie einer Freundin stellen würdest.`,
+      themen: ["stundenplan", "wlan", "semesterticket", "raumcode", "pruefungsanmeldung", "mensa"],
+      ziele: [{ text: "Häufige Fragen ansehen", href: "fragen.html" }],
+      /* zusätzlich, wenn die Frage nach Erstis oder dem Anfang klingt */
+      zusatz: { wenn: "ersti|erstsemester|anfang|start|neu", ziel: { text: "Erste Schritte ansehen", href: "erste-schritte.html" } }
     }
   ];
 }
