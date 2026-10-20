@@ -48,7 +48,7 @@ window.ERSTI = {
     /* Feedback auf der Seite Mitmachen: Adresse des externen Formulars (muss mit https:// beginnen).
        Leer = der Knopf "Feedback und Ideen senden" ist aus und die Seite sagt "noch nicht eingerichtet".
        Das Formular sollte die Kategorien Fehler, Idee, fehlende Frage und Veranstaltung anbieten. */
-    feedback: { formularUrl: "https://docs.google.com/forms/d/10liSBg9-dJ8MdL-vcaEqF5moDTsRW-vYwrlkOEawSzo/viewform" },
+    feedback: { formularUrl: "https://docs.google.com/forms/d/e/1FAIpQLSficAe02d4oT4Y4cOk8tBGDQUpfWOH7hbe5FJdiCLo_JVeBCw/viewform" },
     /* Für die Datenschutzhinweise: wer die Seite ausliefert, wer das Formular betreibt und ggf. wer die KI betreibt.
        Beispiel: hoster: "GitHub Pages (GitHub, Inc., USA)", formularAnbieter: "Google Formulare".
        Leer lassen, solange nichts entschieden ist. */
@@ -186,7 +186,7 @@ window.ERSTI = {
 
   gebaeude: [
     {
-      id: "A", beiname: "Das alte Hauptgebäude", status: "quelle-geprueft", gegenpruefung: null, geprueft: "2026-10-14",
+      id: "A", beiname: "Das alte Hauptgebäude", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: null, gemeldet: "2026-10-20" }, geprueft: "2026-10-14",
       geltung: "Campus Treskowallee",
       text: "Hier sitzen Studierendenservice, Career Service, Hochschulsport, der Lesesaal der Bibliothek, das Semesterticketbüro und der Fachschaftsrat 3. Auch die Aula ist in Haus A.",
       quelle: ["campus", "rz_druck_orte"],
@@ -210,14 +210,14 @@ window.ERSTI = {
       extra: "Drucker stehen im Lesesaal und im Flur vor Raum 021."
     },
     {
-      id: "B", beiname: "Bibliothek", status: "quelle-geprueft", gegenpruefung: null, geltung: "Campus Treskowallee",
+      id: "B", beiname: "Bibliothek", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: null, gemeldet: "2026-10-20" }, geltung: "Campus Treskowallee",
       text: "Hier ist die Ausleihe der Bibliothek, nur vormittags offen, Montag bis Freitag 9 bis 13 Uhr.",
       quelle: ["campus", "bib_zeiten", "f3_lernraeume"],
       raeume: [["K 03", "Gruppenarbeitsraum, ohne Anmeldung"]],
       extra: ""
     },
     {
-      id: "C", beiname: "Das Hochhaus", status: "quelle-geprueft", gegenpruefung: null, geprueft: "2026-10-14", geltung: "Campus Treskowallee",
+      id: "C", beiname: "Das Hochhaus", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: null, gemeldet: "2026-10-20" }, geprueft: "2026-10-14", geltung: "Campus Treskowallee",
       /* Frühere Angaben zu acht Stockwerken und einer Plastik von René Graetz hatten keine Quelle und sind deshalb raus. */
       text: "Früher das Verwaltungsgebäude. Hier sitzen Dekanat und Verwaltung des Fachbereichs 3 und die Hochschulleitung.",
       quelle: ["campus", "f3_verwaltung"],
@@ -232,20 +232,20 @@ window.ERSTI = {
       extra: ""
     },
     {
-      id: "D", beiname: "Mensa und Audimax", status: "quelle-geprueft", gegenpruefung: null, geltung: "Campus Treskowallee",
+      id: "D", beiname: "Mensa und Audimax", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: null, gemeldet: "2026-10-20" }, geltung: "Campus Treskowallee",
       text: "Die Mensa hat Montag bis Freitag von 8 bis 14:30 Uhr offen, warmes Mittagessen gibt es ab 11 Uhr.",
       quelle: ["campus", "mensa", "studentcard"],
       raeume: [["105", "Audimax, bis zu 570 Plätze"], ["204", "PC-Pool des Rechenzentrums"]],
       extra: "Im Mensa-Foyer steht ein zweiter Automat zum Aktivieren der StudentCard."
     },
     {
-      id: "E", beiname: "Geschlossen", geschlossen: true, status: "quelle-geprueft", gegenpruefung: null, geprueft: "2026-10-14", geltung: "Campus Treskowallee",
+      id: "E", beiname: "Geschlossen", geschlossen: true, status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: null, gemeldet: "2026-10-20" }, geprueft: "2026-10-14", geltung: "Campus Treskowallee",
       text: "Seit Oktober 2025 zu. Ältere Pläne zeigen hier noch Career Service und Hochschulsport, das ist überholt.",
       quelle: ["campus"],
       raeume: [], extra: ""
     },
     {
-      id: "F", beiname: "Sporthalle", status: "quelle-geprueft", gegenpruefung: null, geprueft: "2026-10-14", geltung: "Campus Treskowallee",
+      id: "F", beiname: "Sporthalle", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: null, gemeldet: "2026-10-20" }, geprueft: "2026-10-14", geltung: "Campus Treskowallee",
       text: "Die Sporthalle des Hochschulsports mit Drei-Felder-Ballspielhalle, Fitnessraum und zwei Kursräumen. In den Sommermonaten gibt es auf dem Campus außerdem eine Beachvolleyballanlage mit zwei Feldern.",
       quelle: ["campus", "sport_staetten", "sport"],
       raeume: [], extra: "Die Anlagen vermietet der Hochschulsport gegen Gebühr. Freie Nutzungszeiten nennt er nicht."
@@ -449,6 +449,38 @@ window.ERSTI = {
 
   /* Offene Projektpunkte, die nicht an einem einzelnen Eintrag hängen. Punkte zu Chat, Feedback,
      Gegenprüfung und Fotowegen ergänzt app.js automatisch aus dem aktuellen Stand. */
+  /* Standorte für die Campusseite (Bereiche "Computerräume" und "Snack- und Getränkeautomaten") und für den Chat.
+     Beide lesen dieselben Einträge, es gibt keine zweite Kopie. Angezeigt und im Chat als Standort genannt wird nur,
+     was freigegeben ist: freigegeben: true UND geprueft (Datum) UND quelle oder vorOrt UND gegenpruefung { durch, am }.
+     Alles andere bleibt vorbereitet oder ungeprüft und erscheint nirgends als Standortauskunft.
+
+     Felder Computerraum:  id, campus, haus, etage, raum, nutzung, zugang, oeffnungszeiten,
+                           quelle (Schlüssel aus quellen) oder vorOrt { durch, am }, geprueft, gegenpruefung, freigegeben
+     Felder Automat:       id, campus, haus, etage, ort (genauer Standort mit Orientierungspunkt), art ("snacks" | "getraenke" | "beides"),
+                           zugang, quelle oder vorOrt { durch, am }, geprueft, gegenpruefung, freigegeben
+     Unbekannte Felder bleiben null. Keine Preise, Bezahlarten oder Warenangebote eintragen, solange sie nicht geprüft sind. */
+  standorte: {
+    computerraeume: {
+      titel: "Computerräume",
+      chatKnopf: { text: "Computerräume auf dem Campus ansehen", href: "campus.html#computerraeume" },
+      platzhalter: "Die Standorte und Zugangsinformationen der Computerräume werden noch ergänzt.",
+      eintraege: [
+        /* Aus dem bestehenden Eintrag "pcs" (fragen.js), Quelle geprüft. Etage, Zugang und Öffnungszeiten sind noch nicht
+           bestätigt, deshalb nicht freigegeben. Sobald das Team die Angaben bestätigt hat: Felder füllen, freigegeben: true. */
+        { id: "it-pool-f3", campus: "Treskowallee", haus: "C", etage: null, raum: "707", nutzung: "IT-Pool des Fachbereichs 3", zugang: null, oeffnungszeiten: null,
+          quelle: "f3_lernraeume", vorOrt: null, geprueft: null, gegenpruefung: null, freigegeben: false },
+        { id: "pc-pool-rz", campus: "Treskowallee", haus: "D", etage: null, raum: "204", nutzung: "PC-Pool des Rechenzentrums", zugang: null, oeffnungszeiten: null,
+          quelle: "rz_pools", vorOrt: null, geprueft: null, gegenpruefung: null, freigegeben: false }
+      ]
+    },
+    automaten: {
+      titel: "Snack- und Getränkeautomaten",
+      chatKnopf: { text: "Automatenstandorte auf dem Campus ansehen", href: "campus.html#automaten" },
+      platzhalter: "Die Standorte der Snack- und Getränkeautomaten werden noch ergänzt.",
+      eintraege: []
+    }
+  },
+
   offenePunkte: [
     { thema: "Befragung", text: "Die 52 Fragen und Antworten sind vorläufige Vorschläge. Welche davon den Kern des Chats bilden, entscheiden wir nach unserer Befragung." },
     { thema: "Verbindungssuche", erledigt: "2026-10-19", text: "Die Links zu BVG und VBB hat Hannah am 19.10.2026 getestet, sie funktionieren. Bestätigt sind damit die Links, nicht Linien, Fahrzeiten oder Störungen. Live-Verkehrsdaten zeigt diese Seite nicht, den Start gibst du direkt bei BVG oder VBB ein." },

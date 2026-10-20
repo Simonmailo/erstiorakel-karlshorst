@@ -103,14 +103,17 @@
   function statusVon(e) {
     if (!e) return "entwurf";
     var g = e.gegenpruefung;
-    if (e.status === "gegengeprueft") return g && g.durch && g.am ? "gegengeprueft" : "quelle-geprueft";
+    /* am = Prüfdatum; gemeldet = Datum, an dem das Team die Prüfung gemeldet hat, wenn das Prüfdatum noch fehlt */
+    if (e.status === "gegengeprueft") return g && g.durch && (g.am || g.gemeldet) ? "gegengeprueft" : "quelle-geprueft";
     if (e.status === "entwurf") return "entwurf";
     if (e.status === "quelle-geprueft") return "quelle-geprueft";
     return (e.quelle || e.erfahrung) && !e.status ? "quelle-geprueft" : "entwurf";
   }
   function statusText(e) {
     var s = statusVon(e);
-    if (s === "gegengeprueft") return "Gegengeprüft am " + numerisch(datum(e.gegenpruefung.am));
+    if (s === "gegengeprueft") return e.gegenpruefung.am
+      ? "Gegengeprüft am " + numerisch(datum(e.gegenpruefung.am))
+      : "Gegengeprüft von " + e.gegenpruefung.durch + " laut Team, Prüfdatum folgt";
     return s === "entwurf" ? "Entwurf, noch nicht geprüft" : "Quelle geprüft, noch nicht gegengeprüft";
   }
   function statusMarke(e) {
@@ -770,9 +773,8 @@
         '<li><b>' + n["quelle-geprueft"] + '</b><span class="status status--quelle-geprueft">Quelle geprüft</span></li>' +
         '<li><b>' + n["entwurf"] + '</b><span class="status status--entwurf">Entwurf</span></li></ul>' +
         '<p class="klein leise">Gezählt sind ' + liste.length + " Einträge: " + D.fragen.length + " Fragen und " + D.gebaeude.length + " Häuser.</p>" +
-        "<p>Die Gegenprüfung übernimmt Ols. In der ersten Runde: " + ki.map(function (f) {
-          return '<a href="' + faqLink(f) + '">' + esc(f.frage) + "</a>";
-        }).join(", ") + ". Gegengeprüft davon: " + (frei.length ? frei.length : "noch keiner") + ".</p>";
+        "<p>Laut Rückmeldung unseres Teams vom 20.10.2026 hat Ols die bisherigen Inhalte und Quellenlinks gegengeprüft und die Links als passend bewertet. Das genaue Prüfdatum tragen wir nach. Neue Inhalte, etwa die Standorte von Computerräumen und Automaten, sind davon nicht erfasst und werden vor der Veröffentlichung eigens gegengeprüft.</p>" +
+        "<p>Ebenfalls laut Team: Die bisherigen Tests auf iPhone, iPad und MacBook waren erfolgreich.</p>";
     });
   }
 
@@ -785,9 +787,10 @@
     $$("[data-offene-punkte]").forEach(function (el) {
       var liste = alleEintraege();
       var gegen = liste.filter(function (x) { return statusVon(x.e) === "gegengeprueft"; }).length;
+      var ohneDatum = liste.filter(function (x) { return statusVon(x.e) === "gegengeprueft" && !x.e.gegenpruefung.am; }).length;
       var zeilen = [{ thema: "Gegenprüfung", text: gegen
-        ? gegen + " von " + liste.length + " Einträgen sind von einer zweiten Person gegengeprüft, die übrigen noch nicht."
-        : "Noch kein Eintrag ist von einer zweiten Person gegengeprüft. Ols übernimmt das, zuerst HTW-Account, Stundenplan, WLAN, Semesterticket und Raumnummern. Bisher sind die Angaben nur mit den Quellen abgeglichen." }];
+        ? gegen + " von " + liste.length + " Einträgen sind laut Team von Ols gegengeprüft." + (ohneDatum ? " Bei " + ohneDatum + " davon fehlt noch das genaue Prüfdatum." : "") + " Neue Angaben brauchen eine eigene Gegenprüfung."
+        : "Noch kein Eintrag ist von einer zweiten Person gegengeprüft." }];
       var erledigt = [];
       (D.offenePunkte || []).forEach(function (p) {
         if (p.erledigt) erledigt.push({ thema: p.thema, text: p.text, erledigt: p.erledigt }); else zeilen.push({ thema: p.thema, text: p.text });
@@ -890,6 +893,68 @@
     });
   }
 
+  /* ---------- Standorte: Computerräume und Automaten (daten.js, standorte) ----------
+     Campusseite und Chat nutzen dieselben Einträge. Als Standort erscheint nur, was freigegeben ist. */
+  var ART_AUTOMAT = { snacks: "Snacks", getraenke: "Getränke", beides: "Snacks und Getränke" };
+  function standortFreigegeben(e) {
+    var g = e.gegenpruefung;
+    return e.freigegeben === true && !!e.geprueft && !!(e.quelle || (e.vorOrt && e.vorOrt.am)) && !!(g && g.durch && g.am) && !!e.haus;
+  }
+  function standorte(art) {
+    var b = (D.standorte || {})[art];
+    return b ? b.eintraege.filter(standortFreigegeben) : [];
+  }
+  /* Noch nicht freigegeben, aber mit offizieller Quelle belegt: nur als solcher Hinweis, nie als bestätigter Standort */
+  function standorteAusQuelle(art) {
+    var b = (D.standorte || {})[art];
+    return b ? b.eintraege.filter(function (e) { return !standortFreigegeben(e) && e.quelle && e.haus; }) : [];
+  }
+  function ausQuelleHtml(art) {
+    var l = standorteAusQuelle(art);
+    if (!l.length) return "";
+    return '<p class="standort__quelle">Aus offiziellen Seiten bekannt, aber noch nicht vor Ort bestätigt: ' + l.map(function (e) {
+      return esc((e.nutzung ? e.nutzung + " in " : "") + standortTitel(art, e));
+    }).join(", ") + ". Ob du dort frei arbeiten kannst und wann geöffnet ist, prüfen wir noch.</p>" +
+      '<p class="quelle">Quelle: ' + quelleLinks(l.map(function (e) { return e.quelle; })) + "</p>";
+  }
+  function standortTitel(art, e) {
+    var t = "Haus " + e.haus + (e.raum ? ", Raum " + e.raum : "") + (e.etage ? ", " + e.etage : "");
+    return (e.campus && e.campus !== "Treskowallee" ? "Campus " + e.campus + ", " : "") + t;
+  }
+  function standortZeilen(art, e) {
+    var z = [];
+    if (art === "automaten") {
+      if (e.ort) z.push(["Wo genau", e.ort]);
+      if (e.art) z.push(["Angebot", ART_AUTOMAT[e.art] || e.art]);
+    } else if (e.nutzung) z.push(["Nutzung", e.nutzung]);
+    if (e.zugang) z.push(["Zugang", e.zugang]);
+    if (art === "computerraeume" && e.oeffnungszeiten) z.push(["Öffnungszeiten", e.oeffnungszeiten]);
+    return z;
+  }
+  function standortBeleg(e) {
+    var teile = [];
+    if (e.quelle) teile.push("Quelle: " + quelleLinks(e.quelle));
+    if (e.vorOrt && e.vorOrt.am) teile.push("Vor Ort geprüft" + (e.vorOrt.durch ? " von " + esc(e.vorOrt.durch) : "") + " am " + numerisch(datum(e.vorOrt.am)));
+    teile.push("Stand " + numerisch(datum(e.geprueft)));
+    teile.push('<span class="status status--gegengeprueft">Gegengeprüft am ' + numerisch(datum(e.gegenpruefung.am)) + "</span>");
+    return '<p class="quelle">' + teile.join(" · ") + "</p>";
+  }
+  function standortHtml(art, e, hx) {
+    return "<" + hx + ">" + esc(standortTitel(art, e)) + "</" + hx + ">" +
+      (standortZeilen(art, e).length ? '<dl class="standort__daten">' + standortZeilen(art, e).map(function (x) { return "<dt>" + esc(x[0]) + "</dt><dd>" + esc(x[1]) + "</dd>"; }).join("") + "</dl>" : "") +
+      standortBeleg(e);
+  }
+  function renderStandorte() {
+    $$("[data-standorte]").forEach(function (el) {
+      var art = el.getAttribute("data-standorte"), b = (D.standorte || {})[art];
+      if (!b) return;
+      var liste = standorte(art);
+      el.innerHTML = liste.length
+        ? '<ul class="raster-3 standorte">' + liste.map(function (e) { return '<li class="karte standort" id="ort-' + esc(e.id) + '">' + standortHtml(art, e, "h3") + "</li>"; }).join("") + "</ul>"
+        : '<p class="beleg-offen standort__leer">' + esc(b.platzhalter) + "</p>" + ausQuelleHtml(art);
+    });
+  }
+
   /* ---------- Fotowege ---------- */
   function fotowegHtml(w, hx) {
     hx = hx || "h3";
@@ -976,7 +1041,7 @@
     raumZerlegen: raumZerlegen, raumImText: raumImText, raumHtml: raumHtml,
     quelleLinks: quelleLinks, quelleZeile: quelleZeile, offenHtml: offenHtml, standText: standText,
     statusVon: statusVon, statusText: statusText, belegZeile: belegZeile, erfahrungHtml: erfahrungHtml, frageNach: frageNach,
-    feedbackWeg: feedbackWeg,
+    feedbackWeg: feedbackWeg, standorte: standorte, standortTitel: standortTitel, standortZeilen: standortZeilen, standortBeleg: standortBeleg, standorteAusQuelle: standorteAusQuelle,
     chatDatenschutzText: chatDatenschutzText, chatHinweisKurz: chatHinweisKurz, markiereExtern: markiereExtern, icon: icon,
     veranstaltungWann: function (v) { var d = datum(v.datum); return TAGE_KURZ[d.getDay()] + ", " + lang(d, true) + (v.zeit ? ", " + v.zeit : ""); },
     veranstaltungKurz: function (v) { var d = datum(v.datum); return TAGE_KURZ[d.getDay()] + ", " + kurz(d) + (v.zeit ? ", " + v.zeit : ""); },
@@ -1004,6 +1069,7 @@
     renderAnreise();
     verbindeKopieren();
     renderFotowege();
+    renderStandorte();
     renderPruefstatus();
     renderOffenePunkte();
     renderDatenschutz();

@@ -11,8 +11,9 @@
   "use strict";
 
   var D = window.ERSTI, S = window.ErstiSuche, A = window.ErstiApp;
+  /* Jürgen, die Figur des Projekts. Die Bilddateien heißen aus technischen Gründen weiter kalli*.png. */
   var AVATAR = "assets/img/kalli-avatar.png";   /* Ausschnitt aus kalli.png, nur das Gesicht */
-  var KALLI = "assets/img/kalli.png";
+  var FIGUR = "assets/img/kalli.png";
   /* Kurztext auf dem Knopf, die ganze Frage geht in den Chat */
   var BEISPIELE = [
     { text: "Stundenplan finden", frage: "Wo finde ich meinen Stundenplan?", icon: "kalender" },
@@ -31,7 +32,7 @@
 
   function chatHtml(id, schwebend) {
     return '<div class="chat__kopf">' + avatar("avatar--kopf") +
-      '<div class="chat__titel"><h2 id="' + id + '-titel">Frag das Ersti-Orakel</h2>' +
+      '<div class="chat__titel"><h2 id="' + id + '-titel">Frag Jürgen</h2>' +
       '<span class="marke" data-chat-marke></span></div>' +
       (schwebend ? '<button class="knopf knopf--zweit knopf--klein chat__zu" type="button" data-chat-zu aria-label="Chat schließen" title="Chat schließen">' + sym("zu", 20) + "</button>" : "") +
       "</div>" +
@@ -96,7 +97,7 @@
     }
     this.bot(D.config.chatBackend
       ? "<p>Hallo! Was möchtest du zum Studienstart wissen?</p><p>Ich bin ein Prototyp mit KI und antworte nur aus wenigen Einträgen, die eine zweite Person gegengeprüft hat, immer mit Quelle. Weiß ich etwas nicht, sage ich das. Ist der Server nicht erreichbar, springt der Frage-Antwort-Bot ohne KI ein.</p>"
-      : "<p>Hallo, ich bin Kalli, dein Campushelfer. Was möchtest du zum Studienstart wissen?</p><p>Ich bin ein Frage-Antwort-Bot ohne KI. Ich antworte nur mit den vorgegebenen Antworten dieser Seite, immer mit Quelle. Weiß ich etwas nicht, sage ich das.</p>");
+      : "<p>Hallo, ich bin Jürgen, dein Campushelfer. Was möchtest du zum Studienstart wissen?</p><p>Ich bin ein Frage-Antwort-Bot ohne KI. Ich antworte nur mit den vorgegebenen Antworten dieser Seite, immer mit Quelle. Weiß ich etwas nicht, sage ich das.</p>");
     this.zeigeBeispiele();
   };
 
@@ -310,6 +311,56 @@
       '<p class="quelle">Überblick über die Antworten dieser Seite. Quellen und Prüfstand stehen bei jeder einzelnen Antwort.</p>';
   }
 
+  /* ---------- Standorte: Computerräume und Automaten (daten.js, standorte) ----------
+     Dieselben Einträge wie auf der Campusseite. Genannt wird nur, was freigegeben ist, sonst die ehrliche Vorab-Antwort. */
+  var STANDORT_FRAGEN = {
+    computerraeume: {
+      wort: /\b(computer\w*|pcs?|pc ?raum\w*|pc ?raeume|pc ?pool\w*|it ?pool\w*|rechner\w*|rechnerraum\w*)\b/,
+      ort: /\b(wo|wohin|finde\w*|gibt|gibts|nutzen|benutzen|arbeiten|komme|kommt|hinkommen|zum|zur|raum\w*|raeume|pool\w*|stehen|steht|studierende)\b/,
+      nicht: /\b(wlan|eduroam|internet|passwort|kennwort|kaputt|problem\w*|fehler|druck\w*|install\w*|software|programm\w*|moodle|laptop\w*|virus|update)\b/
+    },
+    automaten: {
+      wort: /\b(snack\w*|automat\w*|getraenk\w*|trinken|suessigkeit\w*|schokoriegel\w*|chips|wasserflasche\w*)\b/,
+      ort: /\b(wo|wohin|finde\w*|gibt|gibts|bekomm\w*|krieg\w*|kaufen|holen|steht|stehen|hole)\b/,
+      nicht: /\b(studentcard|ausweis|karte|ausgabe\w*|validier\w*|guthaben|auflad\w*|druck\w*|fahrkarte\w*|ticket\w*|qr)\b/
+    }
+  };
+  function standortArt(roh) {
+    for (var art in STANDORT_FRAGEN) {
+      var r = STANDORT_FRAGEN[art];
+      if (r.wort.test(roh) && r.ort.test(roh) && !r.nicht.test(roh)) return art;
+    }
+    return "";
+  }
+  function standortAntwort(art, roh) {
+    var b = D.standorte[art], liste = A.standorte(art);
+    var haus = roh.match(/\bh([a-f])haus\b|\bhaus ([a-f])\b/);
+    var hausWahl = haus ? (haus[1] || haus[2]).toUpperCase() : "";
+    var knopf = '<p class="chat-ziele"><a class="knopf" href="' + A.esc(b.chatKnopf.href) + '">' + A.esc(b.chatKnopf.text) + sym("pfeil", 18) + "</a></p>";
+    var mensa = art === "automaten" && findeFrage("mensa")
+      ? "<p>Die Mensa ist etwas anderes, sie ist in Haus D.</p>" + knoepfe([{ frage: findeFrage("mensa") }]) : "";
+    if (!liste.length) {
+      var ausQuelle = A.standorteAusQuelle(art);
+      return "<p>Die genauen Standorte werden gerade geprüft und anschließend unter Campus ergänzt. Raten will ich nicht.</p>" +
+        (ausQuelle.length ? "<p>Aus offiziellen Seiten bekannt, aber noch nicht vor Ort bestätigt: " + ausQuelle.map(function (e) {
+          return A.esc((e.nutzung ? e.nutzung + " in " : "") + A.standortTitel(art, e));
+        }).join(", ") + ". Ob du dort ohne Lehrveranstaltung arbeiten kannst und wann geöffnet ist, ist noch nicht geprüft.</p>" +
+          '<p class="quelle">Quelle: ' + A.quelleLinks(ausQuelle.map(function (e) { return e.quelle; })) + "</p>" : "") +
+        mensa + knopf;
+    }
+    var passend = hausWahl ? liste.filter(function (e) { return e.haus === hausWahl; }) : liste;
+    var vorspann = "";
+    if (hausWahl && !passend.length) { vorspann = "<p>In Haus " + hausWahl + " haben wir keinen geprüften Standort. Geprüft sind diese:</p>"; passend = liste; }
+    function eintrag(e) {
+      return "<p><b>" + A.esc(A.standortTitel(art, e)) + "</b></p>" +
+        (A.standortZeilen(art, e).length ? "<ul>" + A.standortZeilen(art, e).map(function (x) { return "<li>" + A.esc(x[0]) + ": " + A.esc(x[1]) + "</li>"; }).join("") + "</ul>" : "") +
+        A.standortBeleg(e);
+    }
+    var kopf = passend.length > 1 ? "<p>Es gibt " + passend.length + " geprüfte Standorte" + (hausWahl ? " in Haus " + hausWahl : "") + ":</p>" : "";
+    var nachfrage = passend.length > 2 && !hausWahl ? "<p>Sag mir, in welchem Haus du gerade bist, dann nenne ich dir den nächsten.</p>" : "";
+    return vorspann + kopf + passend.map(eintrag).join("") + nachfrage + mensa + knopf;
+  }
+
   /* Gibt { html, sicher } zurück. sicher = aus einer geprüften Antwort, ohne Raten. */
   function beantworte(text) {
     var roh = S.norm(text);
@@ -318,7 +369,7 @@
     }
     if (/\b(danke|dankeschoen|merci|thx)\b/.test(roh)) return { sicher: true, html: "<p>Gern. Viel Erfolg im ersten Semester!</p>" };
     if (/\b(bist du|bist du eine|bist du ein)\b.*\b(ki|bot|mensch|chatgpt|echt)\b|\bwer bist du\b/.test(roh)) {
-      return { sicher: true, html: "<p>Ich bin Kalli, ein Frage-Antwort-Bot ohne KI aus einem studentischen Prototyp. Ich vergleiche deine Frage mit Antworten, die hier von Hand geschrieben und mit den offiziellen Seiten abgeglichen wurden.</p>" };
+      return { sicher: true, html: "<p>Ich bin Jürgen, ein Frage-Antwort-Bot ohne KI aus einem studentischen Prototyp. Ich vergleiche deine Frage mit Antworten, die hier von Hand geschrieben und mit den offiziellen Seiten abgeglichen wurden.</p>" };
     }
     if (/\b(naechste|kommende|anstehende|aktuelle)\w* (frist|fristen|termin|termine)\b|\bwas steht an\b|\bwelche (frist|fristen|termine)\b/.test(roh)) {
       return { sicher: true, html: fristenAntwort() };
@@ -328,6 +379,9 @@
       var raumQuelle = raum.wh ? "wilhelminenhof" : ["campus", "rz_druck_orte", "f3_fsr"];
       return { sicher: true, html: A.raumHtml(raum) + '<p class="quelle">Quelle: ' + A.quelleLinks(raumQuelle) + " · " + A.standText() + ' · <a href="campus.html#raumfinder">Raumfinder</a></p>' };
     }
+
+    var sArt = D.standorte ? standortArt(roh) : "";
+    if (sArt) return { sicher: true, standort: sArt, html: standortAntwort(sArt, roh) };
 
     var ueb = uebersichtFuer(text, roh);
     if (ueb && ueb.konkret) return beantworte(ueb.konkret);
@@ -436,8 +490,8 @@
     knopf.className = "chat-start";
     knopf.setAttribute("aria-controls", "chat-panel");
     knopf.setAttribute("aria-expanded", "false");
-    knopf.innerHTML = '<span class="chat-start__pille">' + sym("chat", 22) + "<span>Frag das Orakel</span></span>" +
-      '<img class="chat-start__figur" src="' + KALLI + '" alt="" width="360" height="450">';
+    knopf.innerHTML = '<span class="chat-start__pille">' + sym("chat", 22) + "<span>Frag Jürgen</span></span>" +
+      '<img class="chat-start__figur" src="' + FIGUR + '" alt="" width="360" height="450">';
     var panel = document.createElement("div");
     panel.className = "chat-panel";
     panel.id = "chat-panel";
@@ -462,6 +516,12 @@
       if (ziel) ziel.focus();
     }
     knopf.addEventListener("click", function () { oeffne(knopf); });
+    /* Link aus einer Chatantwort auf einen Bereich derselben Seite (etwa campus.html#automaten auf der Campusseite):
+       Fenster schließen, damit der Bereich sichtbar wird */
+    panel.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest(".chat__log a[href]");
+      if (a && a.hash && a.pathname === location.pathname && a.host === location.host) schliesse();
+    });
     panel.querySelector("[data-chat-zu]").addEventListener("click", schliesse);
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !panel.hidden) schliesse(); });
     document.addEventListener("click", function (e) {
