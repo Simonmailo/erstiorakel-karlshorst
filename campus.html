@@ -45,6 +45,13 @@
       </div>
     </header>
     <div class="container">
+      <nav class="seitennav" aria-label="Auf dieser Seite">
+        <a href="#raumfinder">Raumfinder</a>
+        <a href="#haeuser">Gebäude</a>
+        <a href="#computerraeume">Computerräume</a>
+        <a href="#automaten">Snack- und Getränkeautomaten</a>
+        <a href="#essen">Mensa</a>
+      </nav>
       <div class="abschnitt raster-2">
         <section class="karte" id="raumfinder" aria-labelledby="raum-titel">
           <div class="kartenkopf"><span class="symbolkreis" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></span><div><h2 id="raum-titel">Raum finden</h2><p>Tipp die Nummer aus deinem Stundenplan ein, mit oder ohne TA davor.</p></div></div>
@@ -120,6 +127,16 @@
       <section class="abschnitt" id="haeuser" aria-labelledby="haeuser-titel">
         <div class="abschnitt__kopf"><div><h2 id="haeuser-titel">Die Häuser</h2><p>Am Campus Treskowallee sitzt der Fachbereich 3 mit BWL, Wirtschaftsrecht und den anderen Wirtschaftsstudiengängen. Bei jedem Haus stehen Quelle und Prüfstatus.</p></div></div>
         <div class="raster-3" data-gebaeude></div>
+      </section>
+
+      <section class="abschnitt" id="computerraeume" aria-labelledby="pc-titel">
+        <div class="abschnitt__kopf"><div><h2 id="pc-titel">Computerräume</h2><p>Wo du am Campus an einen Computer kommst und wer dort arbeiten darf. Wir zeigen nur Räume, die wir geprüft haben.</p></div></div>
+        <div data-standorte="computerraeume"><p class="beleg-offen standort__leer">Die Standorte und Zugangsinformationen der Computerräume werden noch ergänzt.</p></div>
+      </section>
+
+      <section class="abschnitt" id="automaten" aria-labelledby="automaten-titel">
+        <div class="abschnitt__kopf"><div><h2 id="automaten-titel">Snack- und Getränkeautomaten</h2><p>Für zwischendurch, wenn die Mensa zu hat oder es schnell gehen muss. Die Mensa selbst findest du unter <a href="#essen">Mensa</a>.</p></div></div>
+        <div data-standorte="automaten"><p class="beleg-offen standort__leer">Die Standorte der Snack- und Getränkeautomaten werden noch ergänzt.</p></div>
       </section>
 
       <section class="abschnitt" id="fotowege" aria-labelledby="foto-titel">
