@@ -814,3 +814,11 @@ main { padding-bottom: 56px; }
 .standort__leer { margin: 0; }
 .standort__quelle { margin: 12px 0 4px; max-width: 60em; }
 @media (max-width: 420px) { .standort__daten { grid-template-columns: 1fr; } .standort__daten dd { margin-bottom: 6px; } }
+
+/* Campus: Raumbelegung per QR-Code mit Beispielfoto */
+.raumbelegung { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 480px); gap: 24px; align-items: start; }
+.raumbelegung h2 { margin-top: 0; }
+.raumbelegung__bild { margin: 0; }
+.raumbelegung__bild img { display: block; width: 100%; height: auto; border-radius: var(--radius-s); border: 1px solid var(--linie); }
+.raumbelegung__bild figcaption { font-size: 0.9rem; color: var(--petrol-600); margin-top: 8px; }
+@media (max-width: 1000px) { .raumbelegung { grid-template-columns: 1fr; } .raumbelegung__bild { max-width: 560px; } }
