@@ -6,10 +6,10 @@
   <title>Campus Treskowallee | Ersti-Orakel</title>
   <!-- Testversion: Suchmaschinen sollen die Seite noch nicht aufnehmen. Das ist kein Zugangsschutz, jeder mit dem Link kann sie öffnen. Vor dem offiziellen Start entfernen. -->
   <meta name="robots" content="noindex, nofollow">
-  <meta name="description" content="Raumnummern verstehen, was in Haus A bis F ist, wichtige Orte, Öffnungszeiten, Lernorte und Mensa am Campus Treskowallee.">
+  <meta name="description" content="Raumnummern verstehen, Raumbelegung prüfen, was in Haus A bis F ist, Computerräume, Automaten, Öffnungszeiten, Lernorte und Mensa am Campus Treskowallee.">
   <meta name="theme-color" content="#ffffff">
   <link rel="icon" href="assets/img/favicon.svg?v=fb75973898" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/style.css?v=66e97cf56b">
+  <link rel="stylesheet" href="assets/css/style.css?v=9829f53e9d">
 </head>
 <body data-seite="campus">
   <a class="skip" href="#inhalt">Zum Inhalt springen</a>
@@ -17,7 +17,7 @@
     <div class="container kopf__innen">
       <a class="logo" href="index.html">
         <svg class="logo__zeichen" viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 11.5c0 4.1-3.6 7.5-8 7.5-1.3 0-2.6-.3-3.7-.8L4 19.5l1.3-3.7C4.5 14.6 4 13.1 4 11.5 4 7.4 7.6 4 12 4s8 3.4 8 7.5z"/><circle cx="8.6" cy="11.5" r="1.05" fill="currentColor" stroke="none"/><circle cx="12" cy="11.5" r="1.05" fill="currentColor" stroke="none"/><circle cx="15.4" cy="11.5" r="1.05" fill="currentColor" stroke="none"/></svg>
-        <span class="logo__text"><span class="logo__name">Ersti-Orakel</span><span class="marke">Studentischer Prototyp</span></span>
+        <span class="logo__text"><span class="logo__name">Ersti-Orakel</span><span class="marke">Testversion</span></span>
       </a>
       <div class="kopf__aktionen">
         <button class="kopf-knopf kopf-knopf--chat" type="button" data-bot-oeffnen><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 11.5c0 4.1-3.6 7.5-8 7.5-1.3 0-2.6-.3-3.7-.8L4 19.5l1.3-3.7C4.5 14.6 4 13.1 4 11.5 4 7.4 7.6 4 12 4s8 3.4 8 7.5z"/><circle cx="8.6" cy="11.5" r="1.05" fill="currentColor" stroke="none"/><circle cx="12" cy="11.5" r="1.05" fill="currentColor" stroke="none"/><circle cx="15.4" cy="11.5" r="1.05" fill="currentColor" stroke="none"/></svg><span>Chat</span></button>
@@ -34,7 +34,7 @@
     </div>
   </header>
 
-  <aside class="testband" aria-label="Hinweis zur Testversion"><div class="container"><b>Studentische Testversion.</b> Nicht von der HTW. Angaben noch nicht vollständig gegengeprüft, maßgeblich sind die verlinkten offiziellen Seiten. <a href="mitmachen.html#feedback">Fehler melden</a></div></aside>
+  <aside class="testband" aria-label="Hinweis zur Testversion"><div class="container"><b>Studentische Testversion – kein offizielles Angebot der HTW Berlin.</b> Maßgeblich sind die verlinkten offiziellen Seiten. <a href="mitmachen.html#feedback">Fehler melden</a></div></aside>
 
   <main id="inhalt">
 
@@ -47,9 +47,10 @@
     <div class="container">
       <nav class="seitennav" aria-label="Auf dieser Seite">
         <a href="#raumfinder">Raumfinder</a>
+        <a href="#raumbelegung">Raumbelegung</a>
         <a href="#haeuser">Gebäude</a>
         <a href="#computerraeume">Computerräume</a>
-        <a href="#automaten">Snack- und Getränkeautomaten</a>
+        <a href="#automaten">Automaten</a>
         <a href="#essen">Mensa</a>
       </nav>
       <div class="abschnitt raster-2">
@@ -74,11 +75,10 @@
             <div class="raumcode__teile" aria-hidden="true">
               <div class="raumcode__teil"><b>TA</b><strong>Campus</strong><small>Treskowallee</small></div>
               <div class="raumcode__teil"><b>C</b><strong>Haus</strong><small>A bis F</small></div>
-              <div class="raumcode__teil"><b>3</b><strong>Etage</strong><small>0 heißt Erdgeschoss</small></div>
-              <div class="raumcode__teil"><b>25</b><strong>Raum</strong><small>Nummer auf der Etage</small></div>
+              <div class="raumcode__teil"><b>325</b><strong>Raum</strong><small>erste Ziffer: 3. Etage</small></div>
             </div>
-            <p class="sr-only">Beispiel TA C 325: Campus Treskowallee, Haus C, 3. Etage, Raum 25.</p>
-            <p>TA steht für Treskowallee, die Etage 0 ist das Erdgeschoss. Steht WH davor, ist der Raum am Campus Wilhelminenhof in Oberschöneweide, also am anderen Standort der HTW. Ein K statt der Etage heißt Keller, so wie beim Lesesaal A K 31 oder beim Fachschaftsrat A K 044.</p>
+            <p class="sr-only">Beispiel TA C 325: Campus Treskowallee, Haus C, Raum 325 in der 3. Etage.</p>
+            <p>TA steht für Treskowallee. Die Raumnummer ist die ganze Zahl, so steht sie auch am Schild. Ihre erste Ziffer zeigt die Etage, 0 ist das Erdgeschoss. Steht WH davor, ist der Raum am Campus Wilhelminenhof in Oberschöneweide, also am anderen Standort der HTW. Ein K vor der Nummer heißt Keller, so wie beim Lesesaal A K 31 oder beim Fachschaftsrat A K 044.</p>
             <p class="quelle">Quelle: <a href="https://www.htw-berlin.de/campus/campus-treskowallee">HTW: Campus Treskowallee</a>, <a href="https://rz.htw-berlin.de/anleitungen/kopieren-und-drucken/standorte">Rechenzentrum: Druckerstandorte</a>, <a href="https://www.f3.htw-berlin.de/kontakt/fachschaftsrat">Fachbereich 3: Fachschaftsrat</a> · Stand <span data-stand>10.10.2026</span></p>
           </div>
         </section>
@@ -94,9 +94,27 @@
             </div>
           </div>
           <a class="knopf knopf--zweit" href="https://www.htw-berlin.de/files/Presse/Lageplaene/Lageplan_TA_DE.pdf">Offiziellen Lageplan öffnen (PDF) <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 4.5h5.5V10M19.5 4.5l-8 8"/><path d="M18 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/></svg></a>
-          <p class="klein leise" style="margin-top:14px">Eine eigene Karte bauen wir vorerst nicht. Der offizielle Lageplan der HTW ist aktuell und reicht zum Orientieren.</p>
         </section>
       </div>
+
+      <section class="abschnitt karte raumbelegung" id="raumbelegung" aria-labelledby="belegung-titel">
+        <div class="raumbelegung__text">
+          <h2 id="belegung-titel">Raumbelegung per QR-Code prüfen</h2>
+          <p>Am Raumschild neben der Tür findest du einen QR-Code, zum Beispiel an Seminarräumen. Damit siehst du, was im Raum eingetragen ist.</p>
+          <ol class="liste-knapp">
+            <li>Scanne den QR-Code mit der Kamera deines Smartphones.</li>
+            <li>Öffne den angezeigten Link. Er führt zur Belegung des Raums im LSF.</li>
+            <li>Achte dort auf das ausgewählte Datum und die Uhrzeit.</li>
+            <li>Dann siehst du, welche Veranstaltungen oder Buchungen für den Raum eingetragen sind.</li>
+          </ol>
+          <p class="beleg-offen"><b>Wichtig:</b> <span>Eine fehlende Buchung bedeutet nicht automatisch, dass du den Raum frei nutzen darfst. Beachte die Zugangs- und Nutzungsregeln. Ob ein Raum gerade wirklich leer ist, zeigt auch das LSF nicht sicher.</span></p>
+          <p class="quelle">Eigene Beobachtung am Campus Treskowallee · Stand 23.10.2026</p>
+        </div>
+        <figure class="raumbelegung__bild">
+          <img src="assets/img/raumschild-220.jpg?v=f14f7e403b" srcset="assets/img/raumschild-220-klein.jpg 560w, assets/img/raumschild-220.jpg 960w" sizes="(max-width: 1000px) 560px, 480px" width="960" height="569" loading="lazy" alt="Raumschild an einer orangefarbenen Wand: Raum 220, Fachbereich 3 Wirtschafts- und Rechtswissenschaften, Seminarraum, oben rechts ein QR-Code.">
+          <figcaption>Beispiel: Raumschild 220 mit QR-Code zur Raumbelegung. Der Code gilt nur für diesen Raum.</figcaption>
+        </figure>
+      </section>
 
       <section class="abschnitt" aria-labelledby="orte-titel">
         <div class="abschnitt__kopf"><div><h2 id="orte-titel">Wichtige Orte</h2><p>Die Anlaufstellen, die du in den ersten Wochen am häufigsten suchst.</p></div></div>
@@ -113,7 +131,7 @@
           </article>
           <article class="karte ortkarte">
             <span class="symbolkreis symbolkreis--klein" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4.5" y="5" width="15" height="10.5" rx="1.5"/><path d="M2.5 19h19"/></svg></span>
-            <div><h3>Lernplätze</h3><p>Lesesaal, Gruppenraum B K 03, PC-Pools in C 707 und D 204.</p></div>
+            <div><h3>Lernplätze</h3><p>Lesesaal, Gruppenraum B K 03, IT-Pool C 707, Internetcafé D 204.</p></div>
             <a class="knopf knopf--hell knopf--voll" href="campus.html#lernen">Lernen und Drucken<span class="sr-only"> zu Lernplätze</span> <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           </article>
           <article class="karte ortkarte">
@@ -125,23 +143,18 @@
       </section>
 
       <section class="abschnitt" id="haeuser" aria-labelledby="haeuser-titel">
-        <div class="abschnitt__kopf"><div><h2 id="haeuser-titel">Die Häuser</h2><p>Am Campus Treskowallee sitzt der Fachbereich 3 mit BWL, Wirtschaftsrecht und den anderen Wirtschaftsstudiengängen. Bei jedem Haus stehen Quelle und Prüfstatus.</p></div></div>
+        <div class="abschnitt__kopf"><div><h2 id="haeuser-titel">Die Häuser</h2><p>Am Campus Treskowallee sitzt der Fachbereich 3 mit BWL, Wirtschaftsrecht und den anderen Wirtschaftsstudiengängen. Bei jedem Haus stehen Quelle und Stand.</p></div></div>
         <div class="raster-3" data-gebaeude></div>
       </section>
 
       <section class="abschnitt" id="computerraeume" aria-labelledby="pc-titel">
-        <div class="abschnitt__kopf"><div><h2 id="pc-titel">Computerräume</h2><p>Wo du am Campus an einen Computer kommst und wer dort arbeiten darf. Wir zeigen nur Räume, die wir geprüft haben.</p></div></div>
-        <div data-standorte="computerraeume"><p class="beleg-offen standort__leer">Die Standorte und Zugangsinformationen der Computerräume werden noch ergänzt.</p></div>
+        <div class="abschnitt__kopf"><div><h2 id="pc-titel">Computerräume</h2><p>Wo du am Campus an einen Computer kommst und wer dort arbeiten darf.</p></div></div>
+        <div data-standorte="computerraeume"><p class="standort__leer">IT-Pool des Fachbereichs 3 in Haus C, Raum 707, und Internetcafé in Haus D, Raum 204.</p></div>
       </section>
 
       <section class="abschnitt" id="automaten" aria-labelledby="automaten-titel">
-        <div class="abschnitt__kopf"><div><h2 id="automaten-titel">Snack- und Getränkeautomaten</h2><p>Für zwischendurch, wenn die Mensa zu hat oder es schnell gehen muss. Die Mensa selbst findest du unter <a href="#essen">Mensa</a>.</p></div></div>
-        <div data-standorte="automaten"><p class="beleg-offen standort__leer">Die Standorte der Snack- und Getränkeautomaten werden noch ergänzt.</p></div>
-      </section>
-
-      <section class="abschnitt" id="fotowege" aria-labelledby="foto-titel">
-        <div class="abschnitt__kopf"><div><h2 id="foto-titel">Fotowege</h2><p>Zwei kurze Wege mit echten Fotos und einer Beschreibung, die wir selbst abgelaufen sind. Bis dahin steht hier „In Vorbereitung“.</p></div><a class="textlink" href="mitmachen.html?art=idee#feedback">Weg vorschlagen <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
-        <div class="raster-2" data-fotowege></div>
+        <div class="abschnitt__kopf"><div><h2 id="automaten-titel">Snack-, Getränke- und Kaffeeautomaten</h2><p>Für zwischendurch, wenn die Mensa zu hat oder es schnell gehen muss. Die Mensa selbst findest du unter <a href="#essen">Mensa</a>.</p></div></div>
+        <div data-standorte="automaten"><p class="beleg-offen standort__leer">Die Automatenstandorte werden gerade bestätigt und erscheinen hier, sobald sie freigegeben sind.</p></div>
       </section>
 
       <section class="klappgruppe" aria-labelledby="mehr-titel">
@@ -169,10 +182,10 @@
           <div class="klapp__inhalt">
 
             <div class="fliesstext">
-              <p>Der Lesesaal der Bibliothek in Haus A, Raum K 31, hat 42 Plätze, dazu Kopierer, Drucker und einen Buchscanner. Für Gruppenarbeit gibt es in Haus B den Raum K 03, nutzbar ohne Anmeldung. Rechner findest du im IT-Pool des Fachbereichs 3 in Haus C, Raum 707, und im PC-Pool des Rechenzentrums in Haus D, Raum 204. Außerhalb der Essenszeiten kannst du auch in der Mensa lernen.</p>
+              <p>Der Lesesaal der Bibliothek in Haus A, Raum K 31, hat 42 Plätze, dazu Kopierer, Drucker und einen Buchscanner. Für Gruppenarbeit gibt es in Haus B den Raum K 03, nutzbar ohne Anmeldung. Rechner findest du im IT-Pool des Fachbereichs 3 in Haus C, Raum 707, und im Internetcafé in Haus D, Raum 204, mehr dazu unter <a href="#computerraeume">Computerräume</a>. Außerhalb der Essenszeiten kannst du auch in der Mensa lernen.</p>
               <p>Ruhige Plätze sind knapp, das schreiben Studis seit Jahren in Erfahrungsberichten auf StudyCheck. Das ist keine offizielle Quelle, sondern eine Stimmung. Vor den Prüfungen lieber früh da sein.</p>
               <p>Gedruckt wird mit dem Guthaben auf der StudentCard, A4 schwarz-weiß kostet 5 Cent pro Seite. Drucker stehen in Haus A im Lesesaal und im Flur vor Raum 021 sowie in Haus C in Raum 017L im Erdgeschoss.</p>
-              <p class="quelle">Quelle: <a href="https://bibliothek.htw-berlin.de/ueber-uns/zentralbibliothek-campus-treskowallee/lesesaal">Bibliothek: Lesesaal</a>, <a href="https://www.f3.htw-berlin.de/studieren/lernraeume/">Fachbereich 3: Lernräume</a>, <a href="https://rz.htw-berlin.de/en/kontakt/pc-pools-des-hrz">Rechenzentrum: PC-Pools</a>, <a href="https://rz.htw-berlin.de/anleitungen/kopieren-und-drucken/preisliste">Rechenzentrum: Preisliste</a>, <a href="https://www.studycheck.de/studium/betriebswirtschaftslehre-bwl/htw-berlin-15604">StudyCheck: Bewertungen</a> · Stand <span data-stand>10.10.2026</span></p>
+              <p class="quelle">Quelle: <a href="https://bibliothek.htw-berlin.de/ueber-uns/zentralbibliothek-campus-treskowallee/lesesaal">Bibliothek: Lesesaal</a>, <a href="https://www.f3.htw-berlin.de/studieren/lernraeume/">Fachbereich 3: Lernräume</a>, <a href="https://rz.htw-berlin.de/anleitungen/kopieren-und-drucken/preisliste">Rechenzentrum: Preisliste</a>, <a href="https://www.studycheck.de/studium/betriebswirtschaftslehre-bwl/htw-berlin-15604">StudyCheck: Bewertungen</a> · Stand <span data-stand>10.10.2026</span></p>
             </div>
           </div>
         </details>
@@ -182,7 +195,7 @@
 
             <div class="fliesstext">
               <p>Die Mensa des studierendenWERKs ist in Haus D, geöffnet Montag bis Freitag von 8 bis 14:30 Uhr, warmes Essen gibt es ab 11 Uhr. Den Speiseplan zeigen die Campus App und die <a href="https://www.stw.berlin/mensen/mensa-htw-treskowallee.html">Seite des studierendenWERKs</a>.</p>
-              <p>Was es rund um den Campus sonst gibt, sammeln wir gerade bei Studis, die schon länger hier sind. <a href="mitmachen.html?art=idee#feedback">Tipps gern an uns.</a></p>
+              <p>Für zwischendurch gibt es Automaten, siehe <a href="#automaten">Automaten</a>. Tipps rund um den Campus nehmen wir gern über das <a href="mitmachen.html?art=idee#feedback">Formular</a> an.</p>
               <p class="quelle">Quelle: <a href="https://www.stw.berlin/mensen/mensa-htw-treskowallee.html">studierendenWERK: Mensa</a>, <a href="https://www.htw-berlin.de/campus/campus-treskowallee">HTW: Campus Treskowallee</a> · Stand <span data-stand>10.10.2026</span></p>
             </div>
           </div>
@@ -216,26 +229,25 @@
 
   <footer class="fuss">
     <div class="container fuss__innen">
-      <p class="fuss__name"><b>Ersti-Orakel</b> · Studentischer Prototyp · Für Studierende der HTW Berlin am Campus Treskowallee</p>
+      <p class="fuss__name"><b>Ersti-Orakel</b> · Studentische Testversion · Für Studierende der HTW Berlin am Campus Treskowallee</p>
       <nav aria-label="Weitere Seiten">
         <ul class="fuss__links">
           <li><a href="semester.html">Fristen und Termine</a></li>
           <li><a href="fragen.html">Häufige Fragen</a></li>
           <li><a href="mitmachen.html">Mitmachen</a></li>
-          <li><a href="ueber.html#pruefstand">Prüfstand</a></li>
           <li><a href="ueber.html#kontakt">Kontakt</a></li>
           <li><a href="ueber.html#datenschutz">Datenschutz</a></li>
         </ul>
       </nav>
-      <p class="fuss__hinweis">Keine offizielle Seite der HTW Berlin, verbindlich ist immer, was die HTW selbst schreibt. Zuletzt geprüft: <span data-letzte-pruefung>14.10.2026</span>, Stand jeder Angabe im <a href="ueber.html#pruefstand">Prüfstand</a>.</p>
+      <p class="fuss__hinweis">Keine offizielle Seite der HTW Berlin, verbindlich ist immer, was die HTW selbst schreibt. Stand der Angaben: <span data-letzte-pruefung>14.10.2026</span>, das Datum steht auch bei jeder Antwort.</p>
     </div>
   </footer>
 
-  <script src="assets/js/daten.js?v=3e3531b40c"></script>
-  <script src="assets/js/fragen.js?v=a93052e185"></script>
+  <script src="assets/js/daten.js?v=6ae04d57a0"></script>
+  <script src="assets/js/fragen.js?v=029cacd90e"></script>
   <script src="assets/js/icons.js?v=e1792373f3"></script>
   <script src="assets/js/suche.js?v=9e5365c62f"></script>
-  <script src="assets/js/app.js?v=b0986dacc8"></script>
-  <script src="assets/js/chat.js?v=4c8b9dcf6a"></script>
+  <script src="assets/js/app.js?v=0d538a243c"></script>
+  <script src="assets/js/chat.js?v=1f6a659be4"></script>
 </body>
 </html>
