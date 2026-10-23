@@ -50,9 +50,9 @@ window.ERSTI = {
        Das Formular sollte die Kategorien Fehler, Idee, fehlende Frage und Veranstaltung anbieten. */
     feedback: { formularUrl: "https://docs.google.com/forms/d/e/1FAIpQLSficAe02d4oT4Y4cOk8tBGDQUpfWOH7hbe5FJdiCLo_JVeBCw/viewform" },
     /* Für die Datenschutzhinweise: wer die Seite ausliefert, wer das Formular betreibt und ggf. wer die KI betreibt.
-       Beispiel: hoster: "GitHub Pages (GitHub, Inc., USA)", formularAnbieter: "Google Formulare".
+       Beispiel: hoster: "Hostinger", formularAnbieter: "Google Formulare".
        Leer lassen, solange nichts entschieden ist. */
-    datenschutz: { hoster: "GitHub Pages (GitHub, Inc., USA)", formularAnbieter: "Google Formulare", kiAnbieter: "" }
+    datenschutz: { hoster: "Hostinger", formularAnbieter: "Google Formulare", kiAnbieter: "" }
   },
 
   quellen: {
@@ -75,7 +75,10 @@ window.ERSTI = {
     rz_lsf: { t: "Rechenzentrum: LSF für Studierende", u: "https://rz.htw-berlin.de/anleitungen/campus-management-lsf/studierende/" },
     rz_druck: { t: "Rechenzentrum: Preisliste Drucken", u: "https://rz.htw-berlin.de/anleitungen/kopieren-und-drucken/preisliste" },
     rz_druck_orte: { t: "Rechenzentrum: Druckerstandorte", u: "https://rz.htw-berlin.de/anleitungen/kopieren-und-drucken/standorte" },
-    rz_pools: { t: "Rechenzentrum: PC-Pools", u: "https://rz.htw-berlin.de/en/kontakt/pc-pools-des-hrz" },
+    /* Die frühere englische Adresse führte am 23.10.2026 zu einer Fehlerseite. Die deutsche Seite nennt nur PC-Plätze
+       im TGS (Haus 9) und am Campus Wilhelminenhof, nicht am Campus Treskowallee. Deshalb kein Beleg mehr für D 204. */
+    rz_pools: { t: "Rechenzentrum: PC-Pools", u: "https://rz.htw-berlin.de/kontakt/pc-pools-des-hrz" },
+    rz_vpn: { t: "Rechenzentrum: VPN-Einwahl (OpenVPN)", u: "https://rz.htw-berlin.de/anleitungen/vpn" },
     rz_help: { t: "Rechenzentrum: IT-Helpcenter", u: "https://rz.htw-berlin.de/kontakt/it-helpcenter/" },
     rz_storno: { t: "Rechenzentrum: Prüfungsabmeldung im LSF", u: "https://rz.htw-berlin.de/anleitungen/campus-management-lsf/studierende/pruefungen/pruefungsabmeldung" },
     semesterticket: { t: "AStA: Semesterticket", u: "https://www.students-htw.de/campusleben/semesterticket/" },
@@ -186,7 +189,7 @@ window.ERSTI = {
 
   gebaeude: [
     {
-      id: "A", beiname: "Das alte Hauptgebäude", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: null, gemeldet: "2026-10-20" }, geprueft: "2026-10-14",
+      id: "A", beiname: "Das alte Hauptgebäude", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: "2026-10-20" }, geprueft: "2026-10-14",
       geltung: "Campus Treskowallee",
       text: "Hier sitzen Studierendenservice, Career Service, Hochschulsport, der Lesesaal der Bibliothek, das Semesterticketbüro und der Fachschaftsrat 3. Auch die Aula ist in Haus A.",
       quelle: ["campus", "rz_druck_orte"],
@@ -210,14 +213,14 @@ window.ERSTI = {
       extra: "Drucker stehen im Lesesaal und im Flur vor Raum 021."
     },
     {
-      id: "B", beiname: "Bibliothek", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: null, gemeldet: "2026-10-20" }, geltung: "Campus Treskowallee",
+      id: "B", beiname: "Bibliothek", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: "2026-10-20" }, geltung: "Campus Treskowallee",
       text: "Hier ist die Ausleihe der Bibliothek, nur vormittags offen, Montag bis Freitag 9 bis 13 Uhr.",
       quelle: ["campus", "bib_zeiten", "f3_lernraeume"],
       raeume: [["K 03", "Gruppenarbeitsraum, ohne Anmeldung"]],
       extra: ""
     },
     {
-      id: "C", beiname: "Das Hochhaus", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: null, gemeldet: "2026-10-20" }, geprueft: "2026-10-14", geltung: "Campus Treskowallee",
+      id: "C", beiname: "Das Hochhaus", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: "2026-10-20" }, geprueft: "2026-10-14", geltung: "Campus Treskowallee",
       /* Frühere Angaben zu acht Stockwerken und einer Plastik von René Graetz hatten keine Quelle und sind deshalb raus. */
       text: "Früher das Verwaltungsgebäude. Hier sitzen Dekanat und Verwaltung des Fachbereichs 3 und die Hochschulleitung.",
       quelle: ["campus", "f3_verwaltung"],
@@ -232,20 +235,20 @@ window.ERSTI = {
       extra: ""
     },
     {
-      id: "D", beiname: "Mensa und Audimax", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: null, gemeldet: "2026-10-20" }, geltung: "Campus Treskowallee",
+      id: "D", beiname: "Mensa und Audimax", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: "2026-10-20" }, geltung: "Campus Treskowallee",
       text: "Die Mensa hat Montag bis Freitag von 8 bis 14:30 Uhr offen, warmes Mittagessen gibt es ab 11 Uhr.",
       quelle: ["campus", "mensa", "studentcard"],
       raeume: [["105", "Audimax, bis zu 570 Plätze"], ["204", "PC-Pool des Rechenzentrums"]],
       extra: "Im Mensa-Foyer steht ein zweiter Automat zum Aktivieren der StudentCard."
     },
     {
-      id: "E", beiname: "Geschlossen", geschlossen: true, status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: null, gemeldet: "2026-10-20" }, geprueft: "2026-10-14", geltung: "Campus Treskowallee",
+      id: "E", beiname: "Geschlossen", geschlossen: true, status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: "2026-10-20" }, geprueft: "2026-10-14", geltung: "Campus Treskowallee",
       text: "Seit Oktober 2025 zu. Ältere Pläne zeigen hier noch Career Service und Hochschulsport, das ist überholt.",
       quelle: ["campus"],
       raeume: [], extra: ""
     },
     {
-      id: "F", beiname: "Sporthalle", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: null, gemeldet: "2026-10-20" }, geprueft: "2026-10-14", geltung: "Campus Treskowallee",
+      id: "F", beiname: "Sporthalle", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: "2026-10-20" }, geprueft: "2026-10-14", geltung: "Campus Treskowallee",
       text: "Die Sporthalle des Hochschulsports mit Drei-Felder-Ballspielhalle, Fitnessraum und zwei Kursräumen. In den Sommermonaten gibt es auf dem Campus außerdem eine Beachvolleyballanlage mit zwei Feldern.",
       quelle: ["campus", "sport_staetten", "sport"],
       raeume: [], extra: "Die Anlagen vermietet der Hochschulsport gegen Gebühr. Freie Nutzungszeiten nennt er nicht."
@@ -451,13 +454,14 @@ window.ERSTI = {
      Gegenprüfung und Fotowegen ergänzt app.js automatisch aus dem aktuellen Stand. */
   /* Standorte für die Campusseite (Bereiche "Computerräume" und "Snack- und Getränkeautomaten") und für den Chat.
      Beide lesen dieselben Einträge, es gibt keine zweite Kopie. Angezeigt und im Chat als Standort genannt wird nur,
-     was freigegeben ist: freigegeben: true UND geprueft (Datum) UND quelle oder vorOrt UND gegenpruefung { durch, am }.
+     was freigegeben ist: freigegeben: true UND geprueft (Datum) UND quelle oder vorOrt (mit mitgeteilt) UND gegenpruefung { durch, am }.
+     Auf der Seite erscheinen keine Prüfernamen, nur Quelle und Stand.
      Alles andere bleibt vorbereitet oder ungeprüft und erscheint nirgends als Standortauskunft.
 
      Felder Computerraum:  id, campus, haus, etage, raum, nutzung, zugang, oeffnungszeiten,
-                           quelle (Schlüssel aus quellen) oder vorOrt { durch, am }, geprueft, gegenpruefung, freigegeben
-     Felder Automat:       id, campus, haus, etage, ort (genauer Standort mit Orientierungspunkt), art ("snacks" | "getraenke" | "beides"),
-                           zugang, quelle oder vorOrt { durch, am }, geprueft, gegenpruefung, freigegeben
+                           quelle (Schlüssel aus quellen) oder vorOrt { durch, mitgeteilt, beobachtet }, geprueft, gegenpruefung, freigegeben
+     Felder Automat:       id, campus, haus, etage, ort (genauer Standort mit Orientierungspunkt), art ("snacks" | "getraenke" | "beides" | "kaffee"),
+                           zugang, quelle oder vorOrt { durch, mitgeteilt, beobachtet }, geprueft, gegenpruefung, freigegeben
      Unbekannte Felder bleiben null. Keine Preise, Bezahlarten oder Warenangebote eintragen, solange sie nicht geprüft sind. */
   standorte: {
     computerraeume: {
@@ -465,19 +469,30 @@ window.ERSTI = {
       chatKnopf: { text: "Computerräume auf dem Campus ansehen", href: "campus.html#computerraeume" },
       platzhalter: "Die Standorte und Zugangsinformationen der Computerräume werden noch ergänzt.",
       eintraege: [
-        /* Aus dem bestehenden Eintrag "pcs" (fragen.js), Quelle geprüft. Etage, Zugang und Öffnungszeiten sind noch nicht
-           bestätigt, deshalb nicht freigegeben. Sobald das Team die Angaben bestätigt hat: Felder füllen, freigegeben: true. */
-        { id: "it-pool-f3", campus: "Treskowallee", haus: "C", etage: null, raum: "707", nutzung: "IT-Pool des Fachbereichs 3", zugang: null, oeffnungszeiten: null,
-          quelle: "f3_lernraeume", vorOrt: null, geprueft: null, gegenpruefung: null, freigegeben: false },
-        { id: "pc-pool-rz", campus: "Treskowallee", haus: "D", etage: null, raum: "204", nutzung: "PC-Pool des Rechenzentrums", zugang: null, oeffnungszeiten: null,
-          quelle: "rz_pools", vorOrt: null, geprueft: null, gegenpruefung: null, freigegeben: false }
+        /* Lage C 707 und D 204: Eintrag "pcs", von Ols am 20.10.2026 gegengeprüft. Nutzung und Zugang am 23.10.2026 an der Seite
+           des Fachbereichs 3 nachgelesen (zitiert, noch nicht eigens gegengeprüft). D 204 ist laut Fachbereich das Internetcafé,
+           nicht ein PC-Pool des Rechenzentrums. Etage und genaue Öffnungszeiten nennt die Quelle nicht. */
+        { id: "it-pool-f3", campus: "Treskowallee", haus: "C", etage: null, raum: "707", nutzung: "IT-Pool des Fachbereichs 3, unter anderem mit Juris, SPSS, Grafik- und Webprogrammen",
+          zugang: "Zum Selbststudium außerhalb der Unterrichtszeiten. Wann dort Unterricht ist, zeigt das LSF.", oeffnungszeiten: null,
+          quelle: "f3_lernraeume", vorOrt: null, geprueft: "2026-10-23", gegenpruefung: { durch: "Ols", am: "2026-10-20", umfang: "Lage" }, freigegeben: true },
+        { id: "internetcafe-d204", campus: "Treskowallee", haus: "D", etage: null, raum: "204", nutzung: "Internetcafé im Mensagebäude",
+          zugang: "Nur für Studierende.", oeffnungszeiten: "Während der Öffnungszeiten der Hochschule",
+          quelle: "f3_lernraeume", vorOrt: null, geprueft: "2026-10-23", gegenpruefung: { durch: "Ols", am: "2026-10-20", umfang: "Lage" }, freigegeben: true }
       ]
     },
     automaten: {
-      titel: "Snack- und Getränkeautomaten",
+      titel: "Snack-, Getränke- und Kaffeeautomaten",
       chatKnopf: { text: "Automatenstandorte auf dem Campus ansehen", href: "campus.html#automaten" },
-      platzhalter: "Die Standorte der Snack- und Getränkeautomaten werden noch ergänzt.",
-      eintraege: []
+      platzhalter: "Die Automatenstandorte werden gerade bestätigt und erscheinen hier, sobald sie freigegeben sind.",
+      /* Vor-Ort-Angaben der Projektverantwortlichen, mitgeteilt am 23.10.2026. Beobachtungsdatum nicht genannt.
+         Noch nicht gegengeprüft, deshalb nicht freigegeben. Bei Standort A ist offen, ob es ein Gerät oder zwei sind,
+         deshalb keine Geräteanzahl. Bei Standort B ist die Etage nicht bestätigt und wird nicht aus der Raumnummer abgeleitet. */
+      eintraege: [
+        { id: "a-021", campus: "Treskowallee", haus: "A", etage: "Erdgeschoss", ort: "schräg gegenüber von Raum 021", art: "beides", zugang: null,
+          quelle: null, vorOrt: { durch: "Projektverantwortliche", mitgeteilt: "2026-10-23", beobachtet: null }, geprueft: "2026-10-23", gegenpruefung: null, freigegeben: false },
+        { id: "a-122-kaffee", campus: "Treskowallee", haus: "A", etage: null, ort: "gegenüber von Raum 122", art: "kaffee", zugang: null,
+          quelle: null, vorOrt: { durch: "Projektverantwortliche", mitgeteilt: "2026-10-23", beobachtet: null }, geprueft: "2026-10-23", gegenpruefung: null, freigegeben: false }
+      ]
     }
   },
 

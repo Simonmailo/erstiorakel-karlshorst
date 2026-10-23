@@ -133,7 +133,8 @@
     if (e.geltung && !ohneGeltung) teile.push("Gilt für: " + esc(e.geltung));
     if (e.quelle) teile.push("Quelle: " + quelleLinks(e.quelle));
     teile.push(standText(e.geprueft));
-    return '<p class="quelle">' + teile.join(" · ") + " · " + statusMarke(e) + (anhang || "") + "</p>";
+    /* Prüfstatus und Prüfernamen bleiben in den Daten, die Besucheransicht zeigt nur Geltung, Quelle und Stand */
+    return '<p class="quelle">' + teile.join(" · ") + (anhang || "") + "</p>";
   }
   function frageNach(id) {
     for (var i = 0; i < D.fragen.length; i++) { if (D.fragen[i].id === id) return D.fragen[i]; }
@@ -373,8 +374,7 @@
     var teile = '<div class="code-zeile" aria-hidden="true">' +
       '<span class="code-teil"><b>TA</b><small>Treskowallee</small></span>' +
       '<span class="code-teil"><b>' + r.haus + "</b><small>Haus " + r.haus + "</small></span>" +
-      '<span class="code-teil"><b>' + r.etageKurz + "</b><small>" + r.etage + "</small></span>" +
-      '<span class="code-teil"><b>' + esc(r.keller ? r.raum : r.raum + (r.zusatz || "")) + "</b><small>Raum</small></span></div>";
+      '<span class="code-teil"><b>' + esc(nummer) + "</b><small>Raum, " + r.etage + "</small></span></div>";
     var satz = '<p class="raum-satz"><b>Haus ' + r.haus + ", " + r.etage + ", Raum " + esc(nummer) + ".</b>" + (r.bekannt ? " " + esc(r.bekannt) + "." : "") + "</p>";
     var hinweise = [];
     if (r.zu) hinweise.push("Haus E ist seit Oktober 2025 geschlossen. Steht der Raum trotzdem in deinem Plan, frag beim Fachbereich nach.");
@@ -895,10 +895,10 @@
 
   /* ---------- Standorte: Computerräume und Automaten (daten.js, standorte) ----------
      Campusseite und Chat nutzen dieselben Einträge. Als Standort erscheint nur, was freigegeben ist. */
-  var ART_AUTOMAT = { snacks: "Snacks", getraenke: "Getränke", beides: "Snacks und Getränke" };
+  var ART_AUTOMAT = { snacks: "Snacks", getraenke: "Getränke", beides: "Snacks und Getränke", kaffee: "Kaffee" };
   function standortFreigegeben(e) {
     var g = e.gegenpruefung;
-    return e.freigegeben === true && !!e.geprueft && !!(e.quelle || (e.vorOrt && e.vorOrt.am)) && !!(g && g.durch && g.am) && !!e.haus;
+    return e.freigegeben === true && !!e.geprueft && !!(e.quelle || (e.vorOrt && (e.vorOrt.mitgeteilt || e.vorOrt.am))) && !!(g && g.durch && g.am) && !!e.haus;
   }
   function standorte(art) {
     var b = (D.standorte || {})[art];
@@ -914,29 +914,32 @@
     if (!l.length) return "";
     return '<p class="standort__quelle">Aus offiziellen Seiten bekannt, aber noch nicht vor Ort bestätigt: ' + l.map(function (e) {
       return esc((e.nutzung ? e.nutzung + " in " : "") + standortTitel(art, e));
-    }).join(", ") + ". Ob du dort frei arbeiten kannst und wann geöffnet ist, prüfen wir noch.</p>" +
+    }).join(", ") + ". Zugang und Öffnungszeiten sind noch nicht bestätigt.</p>" +
       '<p class="quelle">Quelle: ' + quelleLinks(l.map(function (e) { return e.quelle; })) + "</p>";
   }
-  function standortTitel(art, e) {
-    var t = "Haus " + e.haus + (e.raum ? ", Raum " + e.raum : "") + (e.etage ? ", " + e.etage : "");
+  /* "Haus A, Erdgeschoss, schräg gegenüber von Raum 021" bzw. "Haus C, Raum 707". Eine Etage steht nur da, wenn sie bestätigt ist. */
+  function standortOrt(art, e) {
+    var t = "Haus " + e.haus + (e.raum ? ", Raum " + e.raum : "") + (e.etage ? ", " + e.etage : "") + (art === "automaten" && e.ort ? ", " + e.ort : "");
     return (e.campus && e.campus !== "Treskowallee" ? "Campus " + e.campus + ", " : "") + t;
   }
+  function standortTitel(art, e) {
+    return art === "automaten" ? (ART_AUTOMAT[e.art] || "Automat") : (e.nutzung ? e.nutzung.split(",")[0] : standortOrt(art, e));
+  }
   function standortZeilen(art, e) {
-    var z = [];
-    if (art === "automaten") {
-      if (e.ort) z.push(["Wo genau", e.ort]);
-      if (e.art) z.push(["Angebot", ART_AUTOMAT[e.art] || e.art]);
-    } else if (e.nutzung) z.push(["Nutzung", e.nutzung]);
-    if (e.zugang) z.push(["Zugang", e.zugang]);
-    if (art === "computerraeume" && e.oeffnungszeiten) z.push(["Öffnungszeiten", e.oeffnungszeiten]);
+    var z = [["Wo", standortOrt(art, e)]];
+    if (art === "computerraeume") {
+      if (e.nutzung && e.nutzung.indexOf(",") > 0) z.push(["Ausstattung", e.nutzung.slice(e.nutzung.indexOf(",") + 1).trim()]);
+      z.push(["Zugang", e.zugang || "noch nicht bestätigt"]);
+      z.push(["Öffnungszeiten", e.oeffnungszeiten || "nennt die Quelle nicht"]);
+    } else if (e.zugang) z.push(["Zugang", e.zugang]);
     return z;
   }
+  /* Keine Prüfernamen in der Besucheransicht */
   function standortBeleg(e) {
     var teile = [];
     if (e.quelle) teile.push("Quelle: " + quelleLinks(e.quelle));
-    if (e.vorOrt && e.vorOrt.am) teile.push("Vor Ort geprüft" + (e.vorOrt.durch ? " von " + esc(e.vorOrt.durch) : "") + " am " + numerisch(datum(e.vorOrt.am)));
+    if (e.vorOrt) teile.push("Eigene Beobachtung vor Ort");
     teile.push("Stand " + numerisch(datum(e.geprueft)));
-    teile.push('<span class="status status--gegengeprueft">Gegengeprüft am ' + numerisch(datum(e.gegenpruefung.am)) + "</span>");
     return '<p class="quelle">' + teile.join(" · ") + "</p>";
   }
   function standortHtml(art, e, hx) {
@@ -1041,7 +1044,7 @@
     raumZerlegen: raumZerlegen, raumImText: raumImText, raumHtml: raumHtml,
     quelleLinks: quelleLinks, quelleZeile: quelleZeile, offenHtml: offenHtml, standText: standText,
     statusVon: statusVon, statusText: statusText, belegZeile: belegZeile, erfahrungHtml: erfahrungHtml, frageNach: frageNach,
-    feedbackWeg: feedbackWeg, standorte: standorte, standortTitel: standortTitel, standortZeilen: standortZeilen, standortBeleg: standortBeleg, standorteAusQuelle: standorteAusQuelle,
+    feedbackWeg: feedbackWeg, standorte: standorte, standortTitel: standortTitel, standortOrt: standortOrt, standortZeilen: standortZeilen, standortBeleg: standortBeleg, standorteAusQuelle: standorteAusQuelle,
     chatDatenschutzText: chatDatenschutzText, chatHinweisKurz: chatHinweisKurz, markiereExtern: markiereExtern, icon: icon,
     veranstaltungWann: function (v) { var d = datum(v.datum); return TAGE_KURZ[d.getDay()] + ", " + lang(d, true) + (v.zeit ? ", " + v.zeit : ""); },
     veranstaltungKurz: function (v) { var d = datum(v.datum); return TAGE_KURZ[d.getDay()] + ", " + kurz(d) + (v.zeit ? ", " + v.zeit : ""); },

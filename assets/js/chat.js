@@ -211,7 +211,7 @@
   function veranstaltungListe(einleitung) {
     var liste = kommendeVeranstaltungen().slice(0, 3);
     if (!liste.length) {
-      return "<p>Gerade sind keine kommenden Termine eingetragen. Neue sammeln wir unter <a href=\"veranstaltungen.html\">Veranstaltungen</a>.</p>";
+      return "<p>Gerade sind keine kommenden Termine eingetragen. Alle Termine findest du unter <a href=\"veranstaltungen.html\">Veranstaltungen</a>.</p>";
     }
     return "<p>" + einleitung + "</p><ul>" + liste.map(function (v) {
       return '<li><a href="veranstaltungen.html#v-' + v.id + '">' + A.esc(v.titel) + "</a>, " + A.esc(A.veranstaltungKurz(v)) + ", " + A.esc(v.ort) + "</li>";
@@ -239,7 +239,16 @@
   function antwortAus(f) {
     if (istEntwurf(f)) return entwurfHinweis(f);
     var mehr = f.mehr ? ' · <a href="' + f.mehr + '">Mehr dazu</a>' : "";
-    return "<p>" + A.ersetze(f.antwort) + "</p>" + A.offenHtml(f.offen) + A.belegZeile(f, mehr);
+    return "<p>" + A.ersetze(f.antwort) + "</p>" + A.offenHtml(f.offen) + A.erfahrungHtml(f.erfahrung) + zieleHtml(f.ziele) + A.belegZeile(f, mehr);
+  }
+
+  /* Schaltflächen unter einer Antwort: intern (seite.html#bereich) oder https-Link, der in einem neuen Tab öffnet */
+  function zieleHtml(ziele) {
+    if (!ziele || !ziele.length) return "";
+    return '<p class="chat-ziele">' + ziele.map(function (z, i) {
+      var extern = /^https:\/\//.test(z.href);
+      return '<a class="knopf' + (i ? " knopf--zweit" : "") + '" href="' + A.esc(z.href) + '">' + A.esc(z.text) + sym(extern ? "extern" : "pfeil", 18) + "</a>";
+    }).join("") + "</p>";
   }
 
   function knoepfe(liste) {
@@ -308,7 +317,7 @@
       '<p class="chat-ziele">' + ziele.map(function (z, i) {
         return '<a class="knopf' + (i ? " knopf--zweit" : "") + '" href="' + A.esc(z.href) + '">' + A.esc(z.text) + sym("pfeil", 18) + "</a>";
       }).join("") + "</p>" +
-      '<p class="quelle">Überblick über die Antworten dieser Seite. Quellen und Prüfstand stehen bei jeder einzelnen Antwort.</p>';
+      '<p class="quelle">Überblick über die Antworten dieser Seite. Die Quellen stehen bei jeder einzelnen Antwort.</p>';
   }
 
   /* ---------- Standorte: Computerräume und Automaten (daten.js, standorte) ----------
@@ -320,7 +329,7 @@
       nicht: /\b(wlan|eduroam|internet|passwort|kennwort|kaputt|problem\w*|fehler|druck\w*|install\w*|software|programm\w*|moodle|laptop\w*|virus|update)\b/
     },
     automaten: {
-      wort: /\b(snack\w*|automat\w*|getraenk\w*|trinken|suessigkeit\w*|schokoriegel\w*|chips|wasserflasche\w*)\b/,
+      wort: /\b(snack\w*|automat\w*|getraenk\w*|trinken|suessigkeit\w*|schokoriegel\w*|chips|wasserflasche\w*|kaffee\w*)\b/,
       ort: /\b(wo|wohin|finde\w*|gibt|gibts|bekomm\w*|krieg\w*|kaufen|holen|steht|stehen|hole)\b/,
       nicht: /\b(studentcard|ausweis|karte|ausgabe\w*|validier\w*|guthaben|auflad\w*|druck\w*|fahrkarte\w*|ticket\w*|qr)\b/
     }
@@ -348,17 +357,42 @@
           '<p class="quelle">Quelle: ' + A.quelleLinks(ausQuelle.map(function (e) { return e.quelle; })) + "</p>" : "") +
         mensa + knopf;
     }
+    /* Bei Kaffeefragen zuerst den Kaffeeautomaten */
+    if (art === "automaten" && /\bkaffee/.test(roh)) liste = liste.slice().sort(function (a, b) { return (b.art === "kaffee") - (a.art === "kaffee"); });
     var passend = hausWahl ? liste.filter(function (e) { return e.haus === hausWahl; }) : liste;
     var vorspann = "";
-    if (hausWahl && !passend.length) { vorspann = "<p>In Haus " + hausWahl + " haben wir keinen geprüften Standort. Geprüft sind diese:</p>"; passend = liste; }
+    if (hausWahl && !passend.length) { vorspann = "<p>In Haus " + hausWahl + " kennen wir keinen Standort. Diese kennen wir:</p>"; passend = liste; }
     function eintrag(e) {
-      return "<p><b>" + A.esc(A.standortTitel(art, e)) + "</b></p>" +
-        (A.standortZeilen(art, e).length ? "<ul>" + A.standortZeilen(art, e).map(function (x) { return "<li>" + A.esc(x[0]) + ": " + A.esc(x[1]) + "</li>"; }).join("") + "</ul>" : "") +
+      var weitere = A.standortZeilen(art, e).filter(function (x) { return x[0] !== "Wo"; });
+      return "<p><b>" + A.esc(A.standortTitel(art, e)) + ":</b> " + A.esc(A.standortOrt(art, e)) + ".</p>" +
+        (weitere.length ? "<ul>" + weitere.map(function (x) { return "<li>" + A.esc(x[0]) + ": " + A.esc(x[1]) + "</li>"; }).join("") + "</ul>" : "") +
         A.standortBeleg(e);
     }
-    var kopf = passend.length > 1 ? "<p>Es gibt " + passend.length + " geprüfte Standorte" + (hausWahl ? " in Haus " + hausWahl : "") + ":</p>" : "";
+    var kopf = passend.length > 1 ? "<p>Diese Standorte kennen wir" + (hausWahl ? " in Haus " + hausWahl : "") + ":</p>" : "";
     var nachfrage = passend.length > 2 && !hausWahl ? "<p>Sag mir, in welchem Haus du gerade bist, dann nenne ich dir den nächsten.</p>" : "";
     return vorspann + kopf + passend.map(eintrag).join("") + nachfrage + mensa + knopf;
+  }
+
+  /* ---------- VPN und Raumbelegung ----------
+     VPN ist nicht WLAN: Wer "VPN", "OpenVPN" oder "von zu Hause ins Hochschulnetz" fragt, bekommt die VPN-Antwort,
+     auch wenn eduroam in der Frage steht. Raumbelegung: Jürgen kennt keinen aktuellen Belegungszustand. */
+  var VPN_FRAGE = /\b(vpn|openvpn|hochschulnetz\w*|htw ?netz\w*|internes? netz\w*|interne\w* dienste|fernzugriff)\b|\bvon (zu ?hause|daheim|unterwegs|aussen)\b.*\b(netz\w*|htw|hochschul\w*|dienst\w*)\b/;
+  var GERAET = /\b(windows|mac|macos|macbook|iphone|ipad|ios|android|linux|handy|smartphone|laptop|tablet)\b/;
+  var BELEGUNG_FRAGE = /\b(belegung\w*|belegungsplan\w*|belegt|besetzt|qr ?code\w*|qr|raumschild\w*)\b|\b(raum|seminarraum|hoersaal|zimmer)\w*\b.*\b(frei|leer|nutzen|benutzen|lernen|vorlesung statt|veranstaltung statt)\b|\b(frei|leer)\w*\b.*\b(raum|seminarraum|hoersaal)\w*\b|\bvorlesung\w*\b.*\b(gerade|jetzt)\b.*\braum\b|\b(gerade|jetzt)\b.*\b(vorlesung|veranstaltung)\w* statt\b/;
+  function vpnAntwort(roh) {
+    var f = findeFrage("vpn");
+    if (!f) return "";
+    var geraet = roh.match(GERAET);
+    return (geraet ? "<p>Für " + A.esc(geraet[1] === "handy" || geraet[1] === "smartphone" ? "Smartphones" : geraet[1].replace(/^ios$/, "iPhone und iPad").replace(/^macos$|^mac$|^macbook$/, "macOS").replace(/^iphone$|^ipad$/, "iPhone und iPad").replace(/^windows$/, "Windows").replace(/^android$/, "Android").replace(/^linux$/, "Linux").replace(/^laptop$|^tablet$/, "dein Gerät")) + " gibt es auf der offiziellen Seite eine eigene Schritt-für-Schritt-Anleitung.</p>" : "") + antwortAus(f);
+  }
+  function belegungAntwort(text, roh) {
+    var f = findeFrage("raumbelegung");
+    if (!f) return "";
+    var raum = A.raumImText(text) || (roh.match(/\braum (\d{3})\b/) ? { nr: roh.match(/\braum (\d{3})\b/)[1] } : null);
+    var jetzt = /\b(jetzt|gerade|heute|momentan|aktuell|im moment)\b/.test(roh);
+    var vorspann = raum || jetzt
+      ? "<p>Ob " + (raum ? "Raum " + A.esc(raum.haus ? raum.haus + " " + raum.nr : raum.nr) : "ein Raum") + " gerade frei ist, kann ich nicht sehen. So prüfst du es selbst:</p>" : "";
+    return vorspann + antwortAus(f);
   }
 
   /* Gibt { html, sicher } zurück. sicher = aus einer geprüften Antwort, ohne Raten. */
@@ -369,11 +403,14 @@
     }
     if (/\b(danke|dankeschoen|merci|thx)\b/.test(roh)) return { sicher: true, html: "<p>Gern. Viel Erfolg im ersten Semester!</p>" };
     if (/\b(bist du|bist du eine|bist du ein)\b.*\b(ki|bot|mensch|chatgpt|echt)\b|\bwer bist du\b/.test(roh)) {
-      return { sicher: true, html: "<p>Ich bin Jürgen, ein Frage-Antwort-Bot ohne KI aus einem studentischen Prototyp. Ich vergleiche deine Frage mit Antworten, die hier von Hand geschrieben und mit den offiziellen Seiten abgeglichen wurden.</p>" };
+      return { sicher: true, html: "<p>Ich bin Jürgen, ein Frage-Antwort-Bot ohne KI aus einer studentischen Testversion. Ich vergleiche deine Frage mit Antworten, die hier von Hand geschrieben und mit den offiziellen Seiten abgeglichen wurden.</p>" };
     }
     if (/\b(naechste|kommende|anstehende|aktuelle)\w* (frist|fristen|termin|termine)\b|\bwas steht an\b|\bwelche (frist|fristen|termine)\b/.test(roh)) {
       return { sicher: true, html: fristenAntwort() };
     }
+    if (VPN_FRAGE.test(roh) && findeFrage("vpn")) return { sicher: true, thema: "vpn", html: vpnAntwort(roh) };
+    if (BELEGUNG_FRAGE.test(roh) && !/\b(studentcard|ausweis|karte|ticket\w*|semesterticket|ausgabe\w*|validier\w*)\b/.test(roh) && findeFrage("raumbelegung")) return { sicher: true, thema: "raumbelegung", html: belegungAntwort(text, roh) };
+
     var raum = A.raumImText(text);
     if (raum) {
       var raumQuelle = raum.wh ? "wilhelminenhof" : ["campus", "rz_druck_orte", "f3_fsr"];
