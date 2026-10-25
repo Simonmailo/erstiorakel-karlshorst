@@ -895,10 +895,23 @@
 
   /* ---------- Standorte: Computerräume und Automaten (daten.js, standorte) ----------
      Campusseite und Chat nutzen dieselben Einträge. Als Standort erscheint nur, was freigegeben ist. */
-  var ART_AUTOMAT = { snacks: "Snacks", getraenke: "Getränke", beides: "Snacks und Getränke", kaffee: "Kaffee" };
+  /* Geräte an einem Automatenstandort: Nominativ für die Anzeige, Akkusativ für Jürgens Sätze */
+  var GERAETE = {
+    getraenke: { n: "ein Getränkeautomat", a: "einen Getränkeautomaten", kurz: "Getränkeautomat" },
+    snacks: { n: "ein Snackautomat", a: "einen Snackautomaten", kurz: "Snackautomat" },
+    kaffee: { n: "ein Kaffeeautomat", a: "einen Kaffeeautomaten", kurz: "Kaffeeautomat" },
+    wasser: { n: "eine Wasser-Nachfüllstation für deine Trinkflasche", a: "eine Wasser-Nachfüllstation", kurz: "Wasser-Nachfüllstation" }
+  };
+  function liste_und(l) { return l.length > 1 ? l.slice(0, -1).join(", ") + " und " + l[l.length - 1] : (l[0] || ""); }
+  function angebotText(e) {
+    var auto = (e.angebot || []).filter(function (x) { return x !== "wasser"; }).map(function (x) { return GERAETE[x] ? GERAETE[x].n : x; });
+    var t = liste_und(auto);
+    if ((e.angebot || []).indexOf("wasser") >= 0) t += (t ? ", daneben " : "") + GERAETE.wasser.n;
+    return t.charAt(0).toUpperCase() + t.slice(1);
+  }
   function standortFreigegeben(e) {
     var g = e.gegenpruefung;
-    return e.freigegeben === true && !!e.geprueft && !!(e.quelle || (e.vorOrt && (e.vorOrt.mitgeteilt || e.vorOrt.am))) && !!(g && g.durch && g.am) && !!e.haus;
+    return e.freigegeben === true && !!e.geprueft && !!(e.quelle || (e.vorOrt && (e.vorOrt.mitgeteilt || e.vorOrt.am))) && !!(g && g.durch && (g.am || g.bestaetigt)) && !!e.haus;
   }
   function standorte(art) {
     var b = (D.standorte || {})[art];
@@ -923,9 +936,10 @@
     return (e.campus && e.campus !== "Treskowallee" ? "Campus " + e.campus + ", " : "") + t;
   }
   function standortTitel(art, e) {
-    return art === "automaten" ? (ART_AUTOMAT[e.art] || "Automat") : (e.nutzung ? e.nutzung.split(",")[0] : standortOrt(art, e));
+    return art === "automaten" ? standortOrt(art, e) : (e.nutzung ? e.nutzung.split(",")[0] : standortOrt(art, e));
   }
   function standortZeilen(art, e) {
+    if (art === "automaten") return [["Was", angebotText(e)]].concat(e.zugang ? [["Zugang", e.zugang]] : []);
     var z = [["Wo", standortOrt(art, e)]];
     if (art === "computerraeume") {
       if (e.nutzung && e.nutzung.indexOf(",") > 0) z.push(["Ausstattung", e.nutzung.slice(e.nutzung.indexOf(",") + 1).trim()]);
@@ -1044,7 +1058,7 @@
     raumZerlegen: raumZerlegen, raumImText: raumImText, raumHtml: raumHtml,
     quelleLinks: quelleLinks, quelleZeile: quelleZeile, offenHtml: offenHtml, standText: standText,
     statusVon: statusVon, statusText: statusText, belegZeile: belegZeile, erfahrungHtml: erfahrungHtml, frageNach: frageNach,
-    feedbackWeg: feedbackWeg, standorte: standorte, standortTitel: standortTitel, standortOrt: standortOrt, standortZeilen: standortZeilen, standortBeleg: standortBeleg, standorteAusQuelle: standorteAusQuelle,
+    feedbackWeg: feedbackWeg, standorte: standorte, standortTitel: standortTitel, standortOrt: standortOrt, geraete: GERAETE, angebotText: angebotText, standortZeilen: standortZeilen, standortBeleg: standortBeleg, standorteAusQuelle: standorteAusQuelle,
     chatDatenschutzText: chatDatenschutzText, chatHinweisKurz: chatHinweisKurz, markiereExtern: markiereExtern, icon: icon,
     veranstaltungWann: function (v) { var d = datum(v.datum); return TAGE_KURZ[d.getDay()] + ", " + lang(d, true) + (v.zeit ? ", " + v.zeit : ""); },
     veranstaltungKurz: function (v) { var d = datum(v.datum); return TAGE_KURZ[d.getDay()] + ", " + kurz(d) + (v.zeit ? ", " + v.zeit : ""); },

@@ -329,8 +329,8 @@
       nicht: /\b(wlan|eduroam|internet|passwort|kennwort|kaputt|problem\w*|fehler|druck\w*|install\w*|software|programm\w*|moodle|laptop\w*|virus|update)\b/
     },
     automaten: {
-      wort: /\b(snack\w*|automat\w*|getraenk\w*|trinken|suessigkeit\w*|schokoriegel\w*|chips|wasserflasche\w*|kaffee\w*)\b/,
-      ort: /\b(wo|wohin|finde\w*|gibt|gibts|bekomm\w*|krieg\w*|kaufen|holen|steht|stehen|hole)\b/,
+      wort: /\b(snack\w*|automat\w*|getraenk\w*|trinken|suessigkeit\w*|schokoriegel\w*|chips|wasserflasche\w*|kaffee\w*|trinkflasche\w*|flasche\w*|wasserspender\w*|nachfuell\w*|leitungswasser|wasser)\b/,
+      ort: /\b(wo|wohin|welche\w*|finde\w*|gibt|gibts|bekomm\w*|krieg\w*|kaufen|holen|steht|stehen|hole|auffuell\w*|fuellen|nachfuell\w*)\b/,
       nicht: /\b(studentcard|ausweis|karte|ausgabe\w*|validier\w*|guthaben|auflad\w*|druck\w*|fahrkarte\w*|ticket\w*|qr)\b/
     }
   };
@@ -347,7 +347,7 @@
     var hausWahl = haus ? (haus[1] || haus[2]).toUpperCase() : "";
     var knopf = '<p class="chat-ziele"><a class="knopf" href="' + A.esc(b.chatKnopf.href) + '">' + A.esc(b.chatKnopf.text) + sym("pfeil", 18) + "</a></p>";
     var mensa = art === "automaten" && findeFrage("mensa")
-      ? "<p>Die Mensa ist etwas anderes, sie ist in Haus D.</p>" + knoepfe([{ frage: findeFrage("mensa") }]) : "";
+      ? "<p>Warmes Essen gibt es in der Mensa in Haus D.</p>" + knoepfe([{ frage: findeFrage("mensa") }]) : "";
     if (!liste.length) {
       var ausQuelle = A.standorteAusQuelle(art);
       return "<p>Die genauen Standorte werden gerade geprüft und anschließend unter Campus ergänzt. Raten will ich nicht.</p>" +
@@ -357,8 +357,34 @@
           '<p class="quelle">Quelle: ' + A.quelleLinks(ausQuelle.map(function (e) { return e.quelle; })) + "</p>" : "") +
         mensa + knopf;
     }
-    /* Bei Kaffeefragen zuerst den Kaffeeautomaten */
-    if (art === "automaten" && /\bkaffee/.test(roh)) liste = liste.slice().sort(function (a, b) { return (b.art === "kaffee") - (a.art === "kaffee"); });
+    /* Automaten: je nach Frage die passenden Geräte in ganzen Sätzen, aus denselben Daten wie die Campusseite */
+    if (art === "automaten") {
+      var will = /\b(trinkflasche\w*|flasche\w*|nachfuell\w*|auffuell\w*|wasserspender\w*|leitungswasser|wasser)\b/.test(roh) ? "wasser"
+        : /\bkaffee/.test(roh) ? "kaffee"
+        : /\b(snack\w*|suessigkeit\w*|schokoriegel\w*|chips)\b/.test(roh) ? "snacks"
+        : /\b(getraenk\w*|trinken)\b/.test(roh) ? "getraenke" : "";
+      var pool = hausWahl ? liste.filter(function (e) { return e.haus === hausWahl; }) : liste;
+      function wo(e) { return "in Haus " + e.haus + (e.etage ? " im " + e.etage + "," : "") + " " + e.ort; }
+      var saetze = "";
+      if (will) {
+        var treffer = pool.filter(function (e) { return (e.angebot || []).indexOf(will) >= 0; });
+        if (!treffer.length) return "<p>Dazu kennen wir " + (hausWahl ? "in Haus " + hausWahl + " " : "") + "keinen Standort. Raten will ich nicht.</p>" + knopf;
+        var g = A.geraete[will];
+        saetze = treffer.map(function (e, i) {
+          if (will === "wasser") return "<p>Deine Trinkflasche kannst du an der Wasser-Nachfüllstation " + wo(e) + " auffüllen, sie steht neben den Automaten.</p>";
+          return i === 0 ? "<p>" + g.a.charAt(0).toUpperCase() + g.a.slice(1) + " findest du " + wo(e) + ".</p>"
+            : "<p>Ein weiterer steht " + wo(e) + ".</p>";
+        }).join("");
+        if (will === "getraenke" && treffer.some(function (e) { return e.angebot.indexOf("wasser") >= 0; })) saetze += "<p>Daneben kannst du an einer Wasser-Nachfüllstation deine Trinkflasche auffüllen.</p>";
+        return saetze + treffer.map(A.standortBeleg).filter(function (x, i, l) { return l.indexOf(x) === i; }).join("") + (will === "snacks" ? mensa : "") + knopf;
+      }
+      if (pool.length) {
+        var zahl = ["", "einen", "zwei", "drei", "vier", "fünf"][pool.length] || String(pool.length);
+        saetze = (pool.length > 1 ? "<p>" + (hausWahl ? "In Haus " + hausWahl + " kennen wir " : "Wir kennen ") + zahl + " Standorte:</p>" : "") +
+          "<ul>" + pool.map(function (e) { return "<li><b>" + A.esc(A.standortOrt(art, e)) + ":</b> " + A.esc(A.angebotText(e)) + ".</li>"; }).join("") + "</ul>";
+        return saetze + pool.map(A.standortBeleg).filter(function (x, i, l) { return l.indexOf(x) === i; }).join("") + mensa + knopf;
+      }
+    }
     var passend = hausWahl ? liste.filter(function (e) { return e.haus === hausWahl; }) : liste;
     var vorspann = "";
     if (hausWahl && !passend.length) { vorspann = "<p>In Haus " + hausWahl + " kennen wir keinen Standort. Diese kennen wir:</p>"; passend = liste; }

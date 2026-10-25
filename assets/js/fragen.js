@@ -251,8 +251,8 @@ window.ERSTI.fragen = [
       ziele: [{ text: "Computerräume auf dem Campus ansehen", href: "campus.html#computerraeume" }]
     },
     {
-      /* Neu am 23.10.2026, an der Quelle geprüft, noch nicht gegengeprüft */
-      id: "vpn", kat: "technik", status: "quelle-geprueft", gegenpruefung: null, geprueft: "2026-10-23",
+      /* Neu am 23.10.2026, an der Quelle geprüft. Laut Projektverantwortlicher am 23.10.2026 überprüft. */
+      id: "vpn", kat: "technik", status: "gegengeprueft", gegenpruefung: { durch: "Projektverantwortliche", am: "2026-10-23" }, geprueft: "2026-10-23",
       geltung: "Studierende und Beschäftigte der HTW Berlin mit HTW-Account",
       frage: "Was ist VPN und wie richte ich es ein?",
       antwort: `Mit dem VPN der HTW erreichst du von zu Hause oder unterwegs Dienste, die es nur im internen Netz der Hochschule gibt. Eingerichtet wird es mit dem Programm OpenVPN. Du brauchst deinen HTW-Account, die Zwei-Faktor-Anmeldung der Hochschule und Administratorrechte auf deinem Gerät. An der HTW selbst, auch im eduroam, kommt keine OpenVPN-Verbindung zustande, dort brauchst du sie aber auch nicht. Auf der Anleitungsseite gibt es eigene Schritte für Windows, macOS, iPhone und iPad, Android und Linux. Angemeldet wird nur dort, bei der HTW. Gib hier im Chat nie ein Passwort oder einen Bestätigungscode ein.`,
@@ -437,14 +437,16 @@ window.ERSTI.fragen = [
       quelle: ["campus", "rz_druck_orte", "f3_fsr"], mehr: "campus.html#raumfinder", typ: "wo", ki: true
     },
     {
-      /* Neu am 23.10.2026: eigene Beobachtung der Projektverantwortlichen (Foto Raumschild 220 mit QR-Code), noch nicht gegengeprüft.
-         Das Ziel des QR-Codes im Foto war nicht lesbar und ist nicht geprüft. Keine Aussage, dass alle Schilder einen Code haben. */
-      id: "raumbelegung", kat: "campus", status: "quelle-geprueft", gegenpruefung: null, geprueft: "2026-10-23",
-      geltung: "Raumschilder mit QR-Code am Campus Treskowallee",
+      /* Eigene Beobachtung der Projektverantwortlichen (Foto Raumschild 220). Am 23.10.2026 bestätigt: An jedem Raum im
+         beschriebenen Campusbereich (Campus Treskowallee) hängt ein Schild mit Raumnummer und QR-Code zur Raumbelegung im LSF.
+         Laut Projektverantwortlicher am 23.10.2026 überprüft. Nicht auf den Campus Wilhelminenhof übertragen.
+         Das Ziel des QR-Codes im Foto wurde nicht mitgeteilt und ist nicht entschlüsselt. */
+      id: "raumbelegung", kat: "campus", status: "gegengeprueft", gegenpruefung: { durch: "Projektverantwortliche", am: "2026-10-23" }, geprueft: "2026-10-23",
+      geltung: "Räume am Campus Treskowallee",
       frage: "Wie sehe ich, ob ein Raum belegt ist?",
-      antwort: `Am Raumschild neben der Tür findest du einen QR-Code, zum Beispiel an Seminarräumen. Scanne ihn mit der Kamera deines Smartphones und öffne den Link, dann siehst du die Belegung des Raums im LSF. Achte dort auf das ausgewählte Datum und die Uhrzeit. Ob ein Raum gerade wirklich leer ist, kann ich nicht sehen. Und eine fehlende Buchung heißt nicht automatisch, dass du den Raum frei nutzen darfst. Beachte die Zugangs- und Nutzungsregeln.`,
+      antwort: `Am Campus Treskowallee hängt an jedem Raum ein Schild mit der Raumnummer und einem QR-Code. Scanne ihn mit der Kamera deines Smartphones und öffne den Link, dann siehst du die Belegung des Raums im LSF. Achte dort auf das ausgewählte Datum und die Uhrzeit. Ob ein Raum gerade wirklich leer ist, kann ich nicht sehen. Und eine fehlende Buchung heißt nicht automatisch, dass du den Raum frei nutzen darfst. Beachte die Zugangs- und Nutzungsregeln. Für den Campus Wilhelminenhof haben wir die Schilder nicht geprüft.`,
       stichworte: ["belegung", "raumbelegung", "belegungsplan", "belegt", "qr", "qr-code", "raumschild", "schild", "besetzt"],
-      erfahrung: { text: "An Raumschildern, zum Beispiel am Seminarraum 220, ist ein QR-Code angebracht, der zur Raumbelegung im LSF führt.", studiengang: "BWL", semester: "1. Semester, Wintersemester 2026/27", bestaetigt: "2026-10-23" },
+      erfahrung: { text: "An jedem Raum am Campus Treskowallee hängt ein Schild mit Raumnummer und QR-Code, der zur Raumbelegung im LSF führt, zum Beispiel am Seminarraum 220.", studiengang: "BWL", semester: "1. Semester, Wintersemester 2026/27", bestaetigt: "2026-10-23" },
       mehr: "campus.html#raumbelegung", typ: "wie",
       ziele: [{ text: "Raumbelegung per QR-Code ansehen", href: "campus.html#raumbelegung" }]
     },

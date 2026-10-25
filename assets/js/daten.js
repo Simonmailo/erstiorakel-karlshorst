@@ -454,13 +454,13 @@ window.ERSTI = {
      Gegenprüfung und Fotowegen ergänzt app.js automatisch aus dem aktuellen Stand. */
   /* Standorte für die Campusseite (Bereiche "Computerräume" und "Snack- und Getränkeautomaten") und für den Chat.
      Beide lesen dieselben Einträge, es gibt keine zweite Kopie. Angezeigt und im Chat als Standort genannt wird nur,
-     was freigegeben ist: freigegeben: true UND geprueft (Datum) UND quelle oder vorOrt (mit mitgeteilt) UND gegenpruefung { durch, am }.
+     was freigegeben ist: freigegeben: true UND geprueft (Datum) UND quelle oder vorOrt (mit mitgeteilt) UND gegenpruefung { durch, am } (oder bestaetigt, wenn kein eigenes Prüfdatum genannt wurde).
      Auf der Seite erscheinen keine Prüfernamen, nur Quelle und Stand.
      Alles andere bleibt vorbereitet oder ungeprüft und erscheint nirgends als Standortauskunft.
 
      Felder Computerraum:  id, campus, haus, etage, raum, nutzung, zugang, oeffnungszeiten,
                            quelle (Schlüssel aus quellen) oder vorOrt { durch, mitgeteilt, beobachtet }, geprueft, gegenpruefung, freigegeben
-     Felder Automat:       id, campus, haus, etage, ort (genauer Standort mit Orientierungspunkt), art ("snacks" | "getraenke" | "beides" | "kaffee"),
+     Felder Automat:       id, campus, haus, etage, ort (genauer Standort mit Orientierungspunkt), angebot (Liste: "getraenke", "snacks", "kaffee", "wasser"),
                            zugang, quelle oder vorOrt { durch, mitgeteilt, beobachtet }, geprueft, gegenpruefung, freigegeben
      Unbekannte Felder bleiben null. Keine Preise, Bezahlarten oder Warenangebote eintragen, solange sie nicht geprüft sind. */
   standorte: {
@@ -481,17 +481,24 @@ window.ERSTI = {
       ]
     },
     automaten: {
-      titel: "Snack-, Getränke- und Kaffeeautomaten",
+      titel: "Automaten und Wasser-Nachfüllstation",
       chatKnopf: { text: "Automatenstandorte auf dem Campus ansehen", href: "campus.html#automaten" },
-      platzhalter: "Die Automatenstandorte werden gerade bestätigt und erscheinen hier, sobald sie freigegeben sind.",
-      /* Vor-Ort-Angaben der Projektverantwortlichen, mitgeteilt am 23.10.2026. Beobachtungsdatum nicht genannt.
-         Noch nicht gegengeprüft, deshalb nicht freigegeben. Bei Standort A ist offen, ob es ein Gerät oder zwei sind,
-         deshalb keine Geräteanzahl. Bei Standort B ist die Etage nicht bestätigt und wird nicht aus der Raumnummer abgeleitet. */
+      platzhalter: "Zu Automaten haben wir gerade keine Angaben.",
+      /* Vor-Ort-Angaben der Projektverantwortlichen. Gegenprüfung laut Projektverantwortlicher, die prüfende Person ist
+         nicht genannt und wird hier nicht erfunden. Öffentlich erscheinen nur Ort, Geräte und Stand, keine Prüferangaben.
+         Keine Preise, Kostenfreiheit, Bezahlarten, Öffnungszeiten oder Warenangebote eintragen.
+         angebot: Liste aus "getraenke", "snacks", "kaffee", "wasser" (Wasser-Nachfüllstation). */
       eintraege: [
-        { id: "a-021", campus: "Treskowallee", haus: "A", etage: "Erdgeschoss", ort: "schräg gegenüber von Raum 021", art: "beides", zugang: null,
-          quelle: null, vorOrt: { durch: "Projektverantwortliche", mitgeteilt: "2026-10-23", beobachtet: null }, geprueft: "2026-10-23", gegenpruefung: null, freigegeben: false },
-        { id: "a-122-kaffee", campus: "Treskowallee", haus: "A", etage: null, ort: "gegenüber von Raum 122", art: "kaffee", zugang: null,
-          quelle: null, vorOrt: { durch: "Projektverantwortliche", mitgeteilt: "2026-10-23", beobachtet: null }, geprueft: "2026-10-23", gegenpruefung: null, freigegeben: false }
+        { id: "a-021", campus: "Treskowallee", haus: "A", etage: "Erdgeschoss", ort: "schräg gegenüber von Raum 021",
+          angebot: ["getraenke", "snacks", "kaffee", "wasser"], zugang: null,
+          quelle: null, vorOrt: { durch: "Projektverantwortliche", mitgeteilt: "2026-10-23", beobachtet: null },
+          geprueft: "2026-10-23", gegenpruefung: { durch: "laut Projektverantwortlicher, Person nicht genannt", am: "2026-10-23" }, freigegeben: true },
+        /* Bestätigung am 25.10.2026 nachgereicht, ein eigenes Prüfdatum wurde nicht genannt. Etage nicht angegeben,
+           wird nicht aus der Raumnummer abgeleitet. */
+        { id: "a-122-kaffee", campus: "Treskowallee", haus: "A", etage: null, ort: "gegenüber von Raum 122",
+          angebot: ["kaffee"], zugang: null,
+          quelle: null, vorOrt: { durch: "Projektverantwortliche", mitgeteilt: "2026-10-23", beobachtet: null },
+          geprueft: "2026-10-25", gegenpruefung: { durch: "laut Projektverantwortlicher, Person nicht genannt", am: null, bestaetigt: "2026-10-25" }, freigegeben: true }
       ]
     }
   },
