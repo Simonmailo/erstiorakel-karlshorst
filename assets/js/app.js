@@ -124,8 +124,8 @@
   }
   function erfahrungHtml(x) {
     if (!x) return "";
-    return '<div class="erfahrung"><p class="erfahrung__titel">Erfahrung, keine offizielle Angabe</p><p>' + esc(x.text) + "</p>" +
-      '<p class="erfahrung__grundlage">Grundlage: ' + erfahrungKurz(x) + "</p></div>";
+    /* Herkunft und Datum der Erfahrung bleiben in den Daten, sichtbar ist nur der Hinweis, dass es keine offizielle Angabe ist */
+    return '<div class="erfahrung"><p class="erfahrung__titel">Erfahrung, keine offizielle Angabe</p><p>' + esc(x.text) + "</p></div>";
   }
   /* Eine Zeile unter jeder Antwort: Geltungsbereich, Quelle, Stand und Prüfstatus */
   function belegZeile(e, anhang, ohneGeltung) {
@@ -948,13 +948,10 @@
     } else if (e.zugang) z.push(["Zugang", e.zugang]);
     return z;
   }
-  /* Keine Prüfernamen in der Besucheransicht */
+  /* Besucheransicht: offizielle Quelle mit Stand. Eigene Vor-Ort-Angaben, Prüfer und Prüfdaten bleiben nur in den Daten. */
   function standortBeleg(e) {
-    var teile = [];
-    if (e.quelle) teile.push("Quelle: " + quelleLinks(e.quelle));
-    if (e.vorOrt) teile.push("Eigene Beobachtung vor Ort");
-    teile.push("Stand " + numerisch(datum(e.geprueft)));
-    return '<p class="quelle">' + teile.join(" · ") + "</p>";
+    if (!e.quelle) return "";
+    return '<p class="quelle">Quelle: ' + quelleLinks(e.quelle) + " · Stand " + numerisch(datum(e.geprueft)) + "</p>";
   }
   function standortHtml(art, e, hx) {
     return "<" + hx + ">" + esc(standortTitel(art, e)) + "</" + hx + ">" +

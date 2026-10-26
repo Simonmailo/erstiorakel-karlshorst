@@ -239,7 +239,7 @@
   function antwortAus(f) {
     if (istEntwurf(f)) return entwurfHinweis(f);
     var mehr = f.mehr ? ' · <a href="' + f.mehr + '">Mehr dazu</a>' : "";
-    return "<p>" + A.ersetze(f.antwort) + "</p>" + A.offenHtml(f.offen) + A.erfahrungHtml(f.erfahrung) + zieleHtml(f.ziele) + A.belegZeile(f, mehr);
+    return "<p>" + A.ersetze(f.antwort) + "</p>" + A.offenHtml(f.offen) + zieleHtml(f.ziele) + A.belegZeile(f, mehr);
   }
 
   /* Schaltflächen unter einer Antwort: intern (seite.html#bereich) oder https-Link, der in einem neuen Tab öffnet */
