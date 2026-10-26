@@ -357,6 +357,34 @@
           '<p class="quelle">Quelle: ' + A.quelleLinks(ausQuelle.map(function (e) { return e.quelle; })) + "</p>" : "") +
         mensa + knopf;
     }
+    /* Computerräume: dieselben Daten wie die Campusseite. Nur Haus, Etage, Raum; Nutzungshinweise nur, wo eine Quelle sie nennt. */
+    if (art === "computerraeume") {
+      var ORD = { 0: "im Erdgeschoss", 1: "in der ersten Etage", 2: "in der zweiten Etage", 3: "in der dritten Etage" };
+      var etWunsch = /\b(erdgeschoss|eg)\b/.test(roh) ? 0 : /\b(erste\w*|1)\b.*\b(etage|stock\w*|og|obergeschoss)\b/.test(roh) ? 1
+        : /\b(zweite\w*|2)\b.*\b(etage|stock\w*|og|obergeschoss)\b/.test(roh) ? 2 : /\b(dritte\w*|3)\b.*\b(etage|stock\w*)\b/.test(roh) ? 3 : null;
+      var pool2 = hausWahl ? liste.filter(function (e) { return e.haus === hausWahl; }) : liste;
+      if (etWunsch !== null) pool2 = pool2.filter(function (e) { return e.etageNr === etWunsch; });
+      function namen(l) { var n = l.map(function (e) { return e.haus + " " + e.raum; }); return n.length > 1 ? n.slice(0, -1).join(", ") + " und " + n[n.length - 1] : n[0]; }
+      var einfache = pool2.filter(A.nurRaum), details = pool2.filter(function (e) { return !A.nurRaum(e); });
+      var teile = [];
+      if (etWunsch !== null && !pool2.length) {
+        return "<p>" + (hausWahl ? "In Haus " + hausWahl + " kennen" : "Wir kennen") + " " + ORD[etWunsch] + " keinen Computerraum.</p>" + knopf;
+      }
+      A.raumGruppen(einfache).forEach(function (g) {
+        g.etagen.forEach(function (x, i) {
+          var l = einfache.filter(function (e) { return e.haus === g.haus && e.etage === x.etage; });
+          var ord = ORD[l[0].etageNr] || (x.etage ? "in der " + x.etage : "");
+          if (i === 0) teile.push("In Haus " + g.haus + " findest du " + (l.length > 1 ? "die Computerräume " : "den Computerraum ") + namen(l) + " " + ord + ".");
+          else teile.push(namen(l) + (l.length > 1 ? " liegen " : " liegt ") + ord + ".");
+        });
+      });
+      var html = teile.length ? "<p>" + teile.join(" ") + "</p>" : "";
+      if (details.length) html += (html ? "<p>Außerdem:</p>" : "") + "<ul>" + details.map(function (e) {
+        return "<li><b>" + A.esc(A.standortTitel(art, e)) + ":</b> " + A.esc(A.standortOrt(art, e)) + (e.zugang ? ". " + A.esc(e.zugang) : "") + "</li>";
+      }).join("") + "</ul>" + details.map(A.standortBeleg).filter(function (x, i, l) { return x && l.indexOf(x) === i; }).join("");
+      return html + "<p>Ob du einen Raum außerhalb von Lehrveranstaltungen nutzen kannst, ist damit nicht gesagt. Die Belegung siehst du über den QR-Code am Raumschild im LSF.</p>" + knopf;
+    }
+
     /* Automaten: je nach Frage die passenden Geräte in ganzen Sätzen, aus denselben Daten wie die Campusseite */
     if (art === "automaten") {
       var will = /\b(trinkflasche\w*|flasche\w*|nachfuell\w*|auffuell\w*|wasserspender\w*|leitungswasser|wasser)\b/.test(roh) ? "wasser"
@@ -404,20 +432,38 @@
      auch wenn eduroam in der Frage steht. Raumbelegung: Jürgen kennt keinen aktuellen Belegungszustand. */
   var VPN_FRAGE = /\b(vpn|openvpn|hochschulnetz\w*|htw ?netz\w*|internes? netz\w*|interne\w* dienste|fernzugriff)\b|\bvon (zu ?hause|daheim|unterwegs|aussen)\b.*\b(netz\w*|htw|hochschul\w*|dienst\w*)\b/;
   var GERAET = /\b(windows|mac|macos|macbook|iphone|ipad|ios|android|linux|handy|smartphone|laptop|tablet)\b/;
-  var BELEGUNG_FRAGE = /\b(belegung\w*|belegungsplan\w*|belegt|besetzt|qr ?code\w*|qr|raumschild\w*)\b|\b(raum|seminarraum|hoersaal|zimmer)\w*\b.*\b(frei|leer|nutzen|benutzen|lernen|vorlesung statt|veranstaltung statt)\b|\b(frei|leer)\w*\b.*\b(raum|seminarraum|hoersaal)\w*\b|\bvorlesung\w*\b.*\b(gerade|jetzt)\b.*\braum\b|\b(gerade|jetzt)\b.*\b(vorlesung|veranstaltung)\w* statt\b/;
+  var BELEGUNG_FRAGE = /\b(belegung\w*|belegungsplan\w*|belegt|besetzt|qr ?code\w*|qr|raumschild\w*)\b|\b(raum|seminarraum|hoersaal|zimmer|computerraum|pc ?raum)\w*\b.*\b(frei|leer|nutzen|benutzen|lernen|vorlesung statt|veranstaltung statt)\b|\b(frei|leer)\w*\b.*\b(raum|seminarraum|hoersaal|computerraum)\w*\b|\b[a-f] ?\d{3}\b.*\b(frei|belegt|nutzen|benutzen)\b|\bvorlesung\w*\b.*\b(gerade|jetzt)\b.*\braum\b|\b(gerade|jetzt)\b.*\b(vorlesung|veranstaltung)\w* statt\b/;
   function vpnAntwort(roh) {
     var f = findeFrage("vpn");
     if (!f) return "";
     var geraet = roh.match(GERAET);
     return (geraet ? "<p>Für " + A.esc(geraet[1] === "handy" || geraet[1] === "smartphone" ? "Smartphones" : geraet[1].replace(/^ios$/, "iPhone und iPad").replace(/^macos$|^mac$|^macbook$/, "macOS").replace(/^iphone$|^ipad$/, "iPhone und iPad").replace(/^windows$/, "Windows").replace(/^android$/, "Android").replace(/^linux$/, "Linux").replace(/^laptop$|^tablet$/, "dein Gerät")) + " gibt es auf der offiziellen Seite eine eigene Schritt-für-Schritt-Anleitung.</p>" : "") + antwortAus(f);
   }
+  /* Ein Raum aus dem Raumfinder, der als Computerraum freigegeben ist */
+  function computerraumZu(raum) {
+    if (!raum || !raum.haus || !D.standorte) return null;
+    return A.standorte("computerraeume").filter(function (e) { return e.haus === raum.haus && e.raum === raum.nr; })[0] || null;
+  }
+  function computerraumSatz(e) {
+    var ORD = { 0: "im Erdgeschoss", 1: "in der ersten Etage", 2: "in der zweiten Etage", 3: "in der dritten Etage" };
+    var b = D.standorte.computerraeume;
+    var wo = e.etageNr != null ? " " + ORD[e.etageNr] : "";
+    var satz = e.nutzung
+      ? A.esc(e.haus + " " + e.raum) + " liegt in Haus " + A.esc(e.haus) + wo + ". Dort ist: " + A.esc(A.standortTitel("computerraeume", e)) + "."
+      : A.esc(e.haus + " " + e.raum) + " liegt in Haus " + A.esc(e.haus) + wo + " und ist ein Computerraum.";
+    return "<p>" + satz + "</p>" +
+      (e.zugang ? "<p>" + A.esc(e.zugang) + "</p>" : "") + A.standortBeleg(e) +
+      '<p class="chat-ziele"><a class="knopf" href="' + A.esc(b.chatKnopf.href) + '">' + A.esc(b.chatKnopf.text) + sym("pfeil", 18) + "</a></p>";
+  }
   function belegungAntwort(text, roh) {
     var f = findeFrage("raumbelegung");
     if (!f) return "";
     var raum = A.raumImText(text) || (roh.match(/\braum (\d{3})\b/) ? { nr: roh.match(/\braum (\d{3})\b/)[1] } : null);
     var jetzt = /\b(jetzt|gerade|heute|momentan|aktuell|im moment)\b/.test(roh);
-    var vorspann = raum || jetzt
-      ? "<p>Ob " + (raum ? "Raum " + A.esc(raum.haus ? raum.haus + " " + raum.nr : raum.nr) : "ein Raum") + " gerade frei ist, kann ich nicht sehen. So prüfst du es selbst:</p>" : "";
+    var pc = raum && raum.haus ? computerraumZu(raum) : null;
+    var vorspann = (pc ? "<p>" + A.esc(pc.haus + " " + pc.raum) + " ist ein Computerraum" + (pc.etageNr != null ? " in Haus " + A.esc(pc.haus) + ", " + A.esc(pc.etage) : "") + ". Ob du ihn außerhalb von Lehrveranstaltungen nutzen darfst, ist damit nicht gesagt.</p>" : "") +
+      (raum || jetzt || /\bcomputer\w*/.test(roh)
+      ? "<p>Ob " + (raum ? "Raum " + A.esc(raum.haus ? raum.haus + " " + raum.nr : raum.nr) : "ein Raum") + " gerade frei ist, kann ich nicht sehen. So prüfst du es selbst:</p>" : "");
     return vorspann + antwortAus(f);
   }
 
@@ -438,6 +484,8 @@
     if (BELEGUNG_FRAGE.test(roh) && !/\b(studentcard|ausweis|karte|ticket\w*|semesterticket|ausgabe\w*|validier\w*)\b/.test(roh) && findeFrage("raumbelegung")) return { sicher: true, thema: "raumbelegung", html: belegungAntwort(text, roh) };
 
     var raum = A.raumImText(text);
+    var pcRaum = raum && computerraumZu(raum);
+    if (pcRaum) return { sicher: true, standort: "computerraeume", html: computerraumSatz(pcRaum) };
     if (raum) {
       var raumQuelle = raum.wh ? "wilhelminenhof" : ["campus", "rz_druck_orte", "f3_fsr"];
       return { sicher: true, html: A.raumHtml(raum) + '<p class="quelle">Quelle: ' + A.quelleLinks(raumQuelle) + " · " + A.standText() + ' · <a href="campus.html#raumfinder">Raumfinder</a></p>' };

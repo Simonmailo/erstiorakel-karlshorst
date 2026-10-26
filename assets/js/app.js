@@ -911,7 +911,9 @@
   }
   function standortFreigegeben(e) {
     var g = e.gegenpruefung;
-    return e.freigegeben === true && !!e.geprueft && !!(e.quelle || (e.vorOrt && (e.vorOrt.mitgeteilt || e.vorOrt.am))) && !!(g && g.durch && (g.am || g.bestaetigt)) && !!e.haus;
+    var f = e.freigabe;
+    return e.freigegeben === true && !!e.geprueft && !!(e.quelle || (e.vorOrt && (e.vorOrt.mitgeteilt || e.vorOrt.am))) &&
+      (!!(g && g.durch && (g.am || g.bestaetigt)) || !!(f && f.durch && f.am)) && !!e.haus;
   }
   function standorte(art) {
     var b = (D.standorte || {})[art];
@@ -958,13 +960,37 @@
       (standortZeilen(art, e).length ? '<dl class="standort__daten">' + standortZeilen(art, e).map(function (x) { return "<dt>" + esc(x[0]) + "</dt><dd>" + esc(x[1]) + "</dd>"; }).join("") + "</dl>" : "") +
       standortBeleg(e);
   }
+  /* Computerräume ohne weitere Angaben (nur Haus, Etage, Raum) erscheinen gesammelt je Haus, nach Etage sortiert */
+  function nurRaum(e) { return !e.nutzung && !e.zugang && !e.oeffnungszeiten; }
+  function raumGruppen(liste) {
+    var haeuser = {};
+    liste.filter(nurRaum).forEach(function (e) {
+      var h = haeuser[e.haus] = haeuser[e.haus] || {};
+      var k = e.etageNr == null ? 99 : e.etageNr;
+      (h[k] = h[k] || { etage: e.etage, raeume: [] }).raeume.push(e.haus + " " + e.raum);
+    });
+    return Object.keys(haeuser).sort().map(function (haus) {
+      return { haus: haus, etagen: Object.keys(haeuser[haus]).sort(function (a, b) { return a - b; }).map(function (k) {
+        var x = haeuser[haus][k]; x.raeume.sort(); return x;
+      }) };
+    });
+  }
   function renderStandorte() {
     $$("[data-standorte]").forEach(function (el) {
       var art = el.getAttribute("data-standorte"), b = (D.standorte || {})[art];
       if (!b) return;
       var liste = standorte(art);
-      el.innerHTML = liste.length
-        ? '<ul class="raster-3 standorte">' + liste.map(function (e) { return '<li class="karte standort" id="ort-' + esc(e.id) + '">' + standortHtml(art, e, "h3") + "</li>"; }).join("") + "</ul>"
+      var gruppen = art === "computerraeume" ? raumGruppen(liste) : [];
+      var einzeln = art === "computerraeume" ? liste.filter(function (e) { return !nurRaum(e); }) : liste;
+      var karten = gruppen.map(function (g) {
+        return { haus: g.haus, html: '<li class="karte standort" id="ort-haus-' + esc(g.haus.toLowerCase()) + '"><h3>Haus ' + esc(g.haus) + '</h3><dl class="standort__daten">' +
+          g.etagen.map(function (x) { return "<dt>" + esc(x.etage || "Etage nicht angegeben") + "</dt><dd>" + esc(x.raeume.join(", ")) + "</dd>"; }).join("") + "</dl></li>" };
+      }).concat(einzeln.map(function (e) {
+        return { haus: e.haus, html: '<li class="karte standort" id="ort-' + esc(e.id) + '">' + standortHtml(art, e, "h3") + "</li>" };
+      }));
+      if (art === "computerraeume") karten.sort(function (a, b) { return a.haus < b.haus ? -1 : a.haus > b.haus ? 1 : 0; });
+      el.innerHTML = karten.length
+        ? '<ul class="raster-3 standorte">' + karten.map(function (k) { return k.html; }).join("") + "</ul>"
         : '<p class="beleg-offen standort__leer">' + esc(b.platzhalter) + "</p>" + ausQuelleHtml(art);
     });
   }
@@ -1055,7 +1081,7 @@
     raumZerlegen: raumZerlegen, raumImText: raumImText, raumHtml: raumHtml,
     quelleLinks: quelleLinks, quelleZeile: quelleZeile, offenHtml: offenHtml, standText: standText,
     statusVon: statusVon, statusText: statusText, belegZeile: belegZeile, erfahrungHtml: erfahrungHtml, frageNach: frageNach,
-    feedbackWeg: feedbackWeg, standorte: standorte, standortTitel: standortTitel, standortOrt: standortOrt, geraete: GERAETE, angebotText: angebotText, standortZeilen: standortZeilen, standortBeleg: standortBeleg, standorteAusQuelle: standorteAusQuelle,
+    feedbackWeg: feedbackWeg, standorte: standorte, standortTitel: standortTitel, standortOrt: standortOrt, raumGruppen: raumGruppen, nurRaum: nurRaum, geraete: GERAETE, angebotText: angebotText, standortZeilen: standortZeilen, standortBeleg: standortBeleg, standorteAusQuelle: standorteAusQuelle,
     chatDatenschutzText: chatDatenschutzText, chatHinweisKurz: chatHinweisKurz, markiereExtern: markiereExtern, icon: icon,
     veranstaltungWann: function (v) { var d = datum(v.datum); return TAGE_KURZ[d.getDay()] + ", " + lang(d, true) + (v.zeit ? ", " + v.zeit : ""); },
     veranstaltungKurz: function (v) { var d = datum(v.datum); return TAGE_KURZ[d.getDay()] + ", " + kurz(d) + (v.zeit ? ", " + v.zeit : ""); },

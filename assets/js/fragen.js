@@ -245,7 +245,7 @@ window.ERSTI.fragen = [
       id: "pcs", kat: "technik", status: "quelle-geprueft", gegenpruefung: null,
       geltung: "Campus Treskowallee",
       frage: "Wo gibt es Computer auf dem Campus?",
-      antwort: `Im IT-Pool des Fachbereichs 3 in Haus C, Raum 707, zum Selbststudium außerhalb der Unterrichtszeiten, und im Internetcafé in Haus D, Raum 204, nur für Studierende, während der Öffnungszeiten der Hochschule. Wann im IT-Pool Unterricht ist, zeigt das LSF.`,
+      antwort: `Im IT-Pool des Fachbereichs 3 in Haus C, Raum 707, zum Selbststudium außerhalb der Unterrichtszeiten, und im Internetcafé in Haus D, Raum 204, nur für Studierende, während der Öffnungszeiten der Hochschule. Wann im IT-Pool Unterricht ist, zeigt das LSF. Die Computerräume in Haus A stehen unter <a href="campus.html#computerraeume">Computerräume</a>.`,
       stichworte: ["computer", "pc", "pcs", "rechner", "pc-pool", "it-pool", "arbeitsplatz", "laptop"],
       quelle: "f3_lernraeume", geprueft: "2026-10-23", mehr: "campus.html#computerraeume", typ: "wo",
       ziele: [{ text: "Computerräume auf dem Campus ansehen", href: "campus.html#computerraeume" }]

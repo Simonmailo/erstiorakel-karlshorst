@@ -454,7 +454,8 @@ window.ERSTI = {
      Gegenprüfung und Fotowegen ergänzt app.js automatisch aus dem aktuellen Stand. */
   /* Standorte für die Campusseite (Bereiche "Computerräume" und "Snack- und Getränkeautomaten") und für den Chat.
      Beide lesen dieselben Einträge, es gibt keine zweite Kopie. Angezeigt und im Chat als Standort genannt wird nur,
-     was freigegeben ist: freigegeben: true UND geprueft (Datum) UND quelle oder vorOrt (mit mitgeteilt) UND gegenpruefung { durch, am } (oder bestaetigt, wenn kein eigenes Prüfdatum genannt wurde).
+     was freigegeben ist: freigegeben: true UND geprueft (Datum) UND quelle oder vorOrt (mit mitgeteilt) UND gegenpruefung { durch, am } (oder bestaetigt, wenn kein eigenes Prüfdatum genannt wurde)
+     ODER freigabe { durch, am }, wenn die Projektverantwortliche die Angabe ohne Gegenprüfung ausdrücklich freigegeben hat.
      Auf der Seite erscheinen keine Prüfernamen, nur Quelle und Stand.
      Alles andere bleibt vorbereitet oder ungeprüft und erscheint nirgends als Standortauskunft.
 
@@ -469,6 +470,28 @@ window.ERSTI = {
       chatKnopf: { text: "Computerräume auf dem Campus ansehen", href: "campus.html#computerraeume" },
       platzhalter: "Die Standorte und Zugangsinformationen der Computerräume werden noch ergänzt.",
       eintraege: [
+        /* Haus A: von der Projektverantwortlichen am 26.10.2026 mitgeteilt und zur Veröffentlichung freigegeben.
+           Eine Gegenprüfung durch eine zweite Person ist nicht genannt und wird nicht erfunden (gegenpruefung: null,
+           stattdessen freigabe). Öffentlich nur Haus, Etage und Raumnummer. Die führende Ziffer ist die Etage,
+           die Raumnummer bleibt vollständig (A 125 ist Raum 125). Keine Angaben zu Ausstattung, Zugang oder Öffnungszeiten. */
+        { id: "a-116", campus: "Treskowallee", haus: "A", etage: "1. Etage", etageNr: 1, raum: "116", nutzung: null, zugang: null, oeffnungszeiten: null,
+          quelle: null, vorOrt: { durch: "Projektverantwortliche", mitgeteilt: "2026-10-26", beobachtet: null }, geprueft: "2026-10-26",
+          gegenpruefung: null, freigabe: { durch: "Projektverantwortliche", am: "2026-10-26" }, freigegeben: true },
+        { id: "a-124", campus: "Treskowallee", haus: "A", etage: "1. Etage", etageNr: 1, raum: "124", nutzung: null, zugang: null, oeffnungszeiten: null,
+          quelle: null, vorOrt: { durch: "Projektverantwortliche", mitgeteilt: "2026-10-26", beobachtet: null }, geprueft: "2026-10-26",
+          gegenpruefung: null, freigabe: { durch: "Projektverantwortliche", am: "2026-10-26" }, freigegeben: true },
+        { id: "a-125", campus: "Treskowallee", haus: "A", etage: "1. Etage", etageNr: 1, raum: "125", nutzung: null, zugang: null, oeffnungszeiten: null,
+          quelle: null, vorOrt: { durch: "Projektverantwortliche", mitgeteilt: "2026-10-26", beobachtet: null }, geprueft: "2026-10-26",
+          gegenpruefung: null, freigabe: { durch: "Projektverantwortliche", am: "2026-10-26" }, freigegeben: true },
+        { id: "a-142", campus: "Treskowallee", haus: "A", etage: "1. Etage", etageNr: 1, raum: "142", nutzung: null, zugang: null, oeffnungszeiten: null,
+          quelle: null, vorOrt: { durch: "Projektverantwortliche", mitgeteilt: "2026-10-26", beobachtet: null }, geprueft: "2026-10-26",
+          gegenpruefung: null, freigabe: { durch: "Projektverantwortliche", am: "2026-10-26" }, freigegeben: true },
+        { id: "a-143", campus: "Treskowallee", haus: "A", etage: "1. Etage", etageNr: 1, raum: "143", nutzung: null, zugang: null, oeffnungszeiten: null,
+          quelle: null, vorOrt: { durch: "Projektverantwortliche", mitgeteilt: "2026-10-26", beobachtet: null }, geprueft: "2026-10-26",
+          gegenpruefung: null, freigabe: { durch: "Projektverantwortliche", am: "2026-10-26" }, freigegeben: true },
+        { id: "a-236", campus: "Treskowallee", haus: "A", etage: "2. Etage", etageNr: 2, raum: "236", nutzung: null, zugang: null, oeffnungszeiten: null,
+          quelle: null, vorOrt: { durch: "Projektverantwortliche", mitgeteilt: "2026-10-26", beobachtet: null }, geprueft: "2026-10-26",
+          gegenpruefung: null, freigabe: { durch: "Projektverantwortliche", am: "2026-10-26" }, freigegeben: true },
         /* Lage C 707 und D 204: Eintrag "pcs", von Ols am 20.10.2026 gegengeprüft. Nutzung und Zugang am 23.10.2026 an der Seite
            des Fachbereichs 3 nachgelesen (zitiert, noch nicht eigens gegengeprüft). D 204 ist laut Fachbereich das Internetcafé,
            nicht ein PC-Pool des Rechenzentrums. Etage und genaue Öffnungszeiten nennt die Quelle nicht. */
