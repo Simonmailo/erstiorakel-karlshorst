@@ -909,11 +909,20 @@
     if ((e.angebot || []).indexOf("wasser") >= 0) t += (t ? ", daneben " : "") + GERAETE.wasser.n;
     return t.charAt(0).toUpperCase() + t.slice(1);
   }
+  /* Öffentlich nur mit Gegenprüfung. Eine ausdrückliche Freigabe ohne Gegenprüfung gilt nur für Einträge, die im Bereich unter
+     ausdruecklichFreigegeben stehen und deren freigabe.eintrag ihre eigene id nennt. */
+  function ausdruecklich(e) {
+    var f = e.freigabe, ok = false;
+    Object.keys(D.standorte || {}).forEach(function (art) {
+      var b = D.standorte[art];
+      if (b.eintraege.indexOf(e) >= 0 && (b.ausdruecklichFreigegeben || []).indexOf(e.id) >= 0) ok = true;
+    });
+    return ok && !!(f && f.durch && f.am && f.eintrag === e.id);
+  }
   function standortFreigegeben(e) {
     var g = e.gegenpruefung;
-    var f = e.freigabe;
     return e.freigegeben === true && !!e.geprueft && !!(e.quelle || (e.vorOrt && (e.vorOrt.mitgeteilt || e.vorOrt.am))) &&
-      (!!(g && g.durch && (g.am || g.bestaetigt)) || !!(f && f.durch && f.am)) && !!e.haus;
+      (!!(g && g.durch && (g.am || g.bestaetigt)) || ausdruecklich(e)) && !!e.haus;
   }
   function standorte(art) {
     var b = (D.standorte || {})[art];
