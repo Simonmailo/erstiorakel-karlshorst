@@ -155,7 +155,7 @@
 
     if (!D.config.chatBackend) {
       setTimeout(function () {
-        try { fertig(beantworte(text).html); }
+        try { fertig(antworteMitKontext(text).html); }
         catch (e) { fertig("<p>Da ist beim Suchen etwas schiefgelaufen. Versuch es noch einmal oder schau direkt unter <a href=\"hilfe.html\">Hilfe</a>.</p>", "fehler"); }
       }, LADEZEIT);
       return;
@@ -433,12 +433,54 @@
   var VPN_FRAGE = /\b(vpn|openvpn|hochschulnetz\w*|htw ?netz\w*|internes? netz\w*|interne\w* dienste|fernzugriff)\b|\bvon (zu ?hause|daheim|unterwegs|aussen)\b.*\b(netz\w*|htw|hochschul\w*|dienst\w*)\b/;
   var GERAET = /\b(windows|mac|macos|macbook|iphone|ipad|ios|android|linux|handy|smartphone|laptop|tablet)\b/;
   var BELEGUNG_FRAGE = /\b(belegung\w*|belegungsplan\w*|belegt|besetzt|qr ?code\w*|qr|raumschild\w*)\b|\b(raum|seminarraum|hoersaal|zimmer|computerraum|pc ?raum)\w*\b.*\b(frei|leer|nutzen|benutzen|lernen|vorlesung statt|veranstaltung statt)\b|\b(frei|leer)\w*\b.*\b(raum|seminarraum|hoersaal|computerraum)\w*\b|\b[a-f] ?\d{3}\b.*\b(frei|belegt|nutzen|benutzen)\b|\bvorlesung\w*\b.*\b(gerade|jetzt)\b.*\braum\b|\b(gerade|jetzt)\b.*\b(vorlesung|veranstaltung)\w* statt\b/;
+  /* Gerät aus der Frage: Name für den Satz und die passenden offiziellen Unterseiten (Handy: iOS und Android) */
+  var GERAET_INFO = {
+    windows: { name: "Windows", q: ["rz_vpn_windows"] },
+    mac: { name: "macOS", q: ["rz_vpn_macos"] }, macos: { name: "macOS", q: ["rz_vpn_macos"] }, macbook: { name: "macOS", q: ["rz_vpn_macos"] },
+    iphone: { name: "iPhone und iPad", q: ["rz_vpn_ios"] }, ipad: { name: "iPhone und iPad", q: ["rz_vpn_ios"] }, ios: { name: "iPhone und iPad", q: ["rz_vpn_ios"] },
+    android: { name: "Android", q: ["rz_vpn_android"] }, linux: { name: "Linux", q: ["rz_vpn_linux"] },
+    handy: { name: "Smartphones", q: ["rz_vpn_ios", "rz_vpn_android"] }, smartphone: { name: "Smartphones", q: ["rz_vpn_ios", "rz_vpn_android"] },
+    laptop: { name: "dein Gerät", q: [] }, tablet: { name: "dein Gerät", q: [] }
+  };
   function vpnAntwort(roh) {
     var f = findeFrage("vpn");
     if (!f) return "";
-    var geraet = roh.match(GERAET);
-    return (geraet ? "<p>Für " + A.esc(geraet[1] === "handy" || geraet[1] === "smartphone" ? "Smartphones" : geraet[1].replace(/^ios$/, "iPhone und iPad").replace(/^macos$|^mac$|^macbook$/, "macOS").replace(/^iphone$|^ipad$/, "iPhone und iPad").replace(/^windows$/, "Windows").replace(/^android$/, "Android").replace(/^linux$/, "Linux").replace(/^laptop$|^tablet$/, "dein Gerät")) + " gibt es auf der offiziellen Seite eine eigene Schritt-für-Schritt-Anleitung.</p>" : "") + antwortAus(f);
+    var m = roh.match(GERAET), g = m && GERAET_INFO[m[1]];
+    if (!g) return antwortAus(f);
+    var knoepfe = g.q.filter(function (id) { return D.quellen[id]; }).map(function (id) {
+      var q = D.quellen[id];
+      return { text: "VPN unter " + q.t.replace(/^Rechenzentrum: VPN unter /, "") + ": offizielle HTW-Anleitung", href: q.u };
+    });
+    if (!knoepfe.length) return "<p>Für " + A.esc(g.name) + " gibt es auf der offiziellen Seite eine eigene Schritt-für-Schritt-Anleitung.</p>" + antwortAus(f);
+    return "<p>Für " + A.esc(g.name) + " hat das Rechenzentrum der HTW " + (knoepfe.length > 1 ? "eigene Schritt-für-Schritt-Anleitungen" : "eine eigene Schritt-für-Schritt-Anleitung") +
+      ". Du brauchst dafür deinen HTW-Account, die Zwei-Faktor-Anmeldung und Administratorrechte auf deinem Gerät. Angemeldet wird nur dort, bei der HTW. Gib hier im Chat nie ein Passwort oder einen Bestätigungscode ein.</p>" +
+      zieleHtml(knoepfe) + A.belegZeile({ quelle: g.q, geprueft: "2026-10-28", status: f.status, gegenpruefung: f.gegenpruefung }, f.mehr ? ' · <a href="' + f.mehr + '">Mehr dazu</a>' : "");
   }
+
+  /* ---------- Folgefragen ----------
+     Ohne KI: Jürgen merkt sich nur das zuletzt sicher erkannte Thema. Eine kurze Folgefrage wie "Und auf dem Mac?" bezieht er
+     nur dann darauf, wenn das Thema eine passende Regel hat (bisher: VPN und Gerät). Sonst fragt er nach. */
+  var FOLGE = /^(und|und was ist mit|was ist mit|wie ist es|wie sieht es|und wie|und bei|und auf|und fuer|und mit|und unter)\b|^(auf|am|mit|fuer|unter|bei) (dem|meinem|meinen|einem|einen|der|meiner|ein|nem)? ?\w+$/;
+  function istFolgefrage(roh) { return FOLGE.test(roh) && roh.split(" ").length <= 7; }
+  function folgeAntwort(roh, kontext) {
+    if (!istFolgefrage(roh) && !(GERAET.test(roh) && roh.split(" ").length <= 2)) return null;
+    if (kontext && kontext.thema === "vpn" && GERAET.test(roh)) return { sicher: true, thema: "vpn", html: vpnAntwort(roh) };
+    return null;
+  }
+  var NACHFRAGE = "<p>Worauf bezieht sich deine Frage? Das kann ich hier nicht sicher zuordnen. Schreib sie bitte noch einmal ganz, zum Beispiel „Wie richte ich VPN auf dem Mac ein?“</p>";
+  var kontext = null;
+  function antworteMitKontext(text) {
+    var roh = S.norm(text);
+    var r = folgeAntwort(roh, kontext);
+    if (!r) {
+      r = beantworte(text);
+      if (!r.sicher && istFolgefrage(roh)) r = { sicher: false, nachfrage: true, html: NACHFRAGE };
+    }
+    if (r.sicher) kontext = r.thema ? { thema: r.thema } : null;
+    else if (!r.nachfrage) kontext = null;
+    return r;
+  }
+
   /* Ein Raum aus dem Raumfinder, der als Computerraum freigegeben ist */
   function computerraumZu(raum) {
     if (!raum || !raum.haus || !D.standorte) return null;
@@ -459,6 +501,7 @@
     var f = findeFrage("raumbelegung");
     if (!f) return "";
     var raum = A.raumImText(text) || (roh.match(/\braum (\d{3})\b/) ? { nr: roh.match(/\braum (\d{3})\b/)[1] } : null);
+    if (raum && raum.passtNicht) return A.raumHtml(raum);
     var jetzt = /\b(jetzt|gerade|heute|momentan|aktuell|im moment)\b/.test(roh);
     var pc = raum && raum.haus ? computerraumZu(raum) : null;
     var vorspann = (pc ? "<p>" + A.esc(pc.haus + " " + pc.raum) + " ist ein Computerraum" + (pc.etageNr != null ? " in Haus " + A.esc(pc.haus) + ", " + A.esc(pc.etage) : "") + ". Ob du ihn außerhalb von Lehrveranstaltungen nutzen darfst, ist damit nicht gesagt.</p>" : "") +
@@ -486,6 +529,7 @@
     var raum = A.raumImText(text);
     var pcRaum = raum && computerraumZu(raum);
     if (pcRaum) return { sicher: true, standort: "computerraeume", html: computerraumSatz(pcRaum) };
+    if (raum && raum.passtNicht) return { sicher: true, html: A.raumHtml(raum) + '<p class="quelle"><a href="campus.html#raumfinder">Raumfinder</a></p>' };
     if (raum) {
       var raumQuelle = raum.wh ? "wilhelminenhof" : ["campus", "rz_druck_orte", "f3_fsr"];
       return { sicher: true, html: A.raumHtml(raum) + '<p class="quelle">Quelle: ' + A.quelleLinks(raumQuelle) + " · " + A.standText() + ' · <a href="campus.html#raumfinder">Raumfinder</a></p>' };
@@ -644,6 +688,6 @@
     });
   }
 
-  window.ErstiChat = { beantworte: function (t) { return beantworte(t); } };
+  window.ErstiChat = { beantworte: function (t) { return beantworte(t); }, antworte: function (t) { return antworteMitKontext(t); }, neu: function () { kontext = null; } };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
 })();

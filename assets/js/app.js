@@ -64,14 +64,23 @@
     return String(text).replace(/\{\{(t|tk|bis|bk|von|kurz|kbis):([a-z0-9_]+)\}\}/g, function (m, art, id) {
       var t = termin(id);
       if (!t) return m;
-      if (art === "t") return spanneLang(t);
-      if (art === "tk") return spanneLang(t, true);
-      if (art === "bk") return lang(ende(t), false);
-      if (art === "kurz") return spanneKurz(t);
-      if (art === "bis") return lang(ende(t), true);
-      if (art === "von") return lang(datum(t.von), true);
-      return kurz(ende(t));
+      return ersetzeDatum(art, t) + abgelaufen(t);
     });
+  }
+  /* Abgelaufene Fristen bleiben mit Semester und dem Vermerk "Frist abgelaufen" stehen, damit sie nicht offen wirken */
+  var SEM_NAME = { wise: "Wintersemester 2026/27", sose: "Sommersemester 2027" };
+  function abgelaufen(t) {
+    if (t.art !== "frist" || ende(t) >= heute()) return "";
+    return " (" + (SEM_NAME[t.sem] ? SEM_NAME[t.sem] + ", " : "") + "Frist abgelaufen)";
+  }
+  function ersetzeDatum(art, t) {
+    if (art === "t") return spanneLang(t);
+    if (art === "tk") return spanneLang(t, true);
+    if (art === "bk") return lang(ende(t), false);
+    if (art === "kurz") return spanneKurz(t);
+    if (art === "bis") return lang(ende(t), true);
+    if (art === "von") return lang(datum(t.von), true);
+    return kurz(ende(t));
   }
   function status(t, h) {
     var v = datum(t.von), b = ende(t);
@@ -124,8 +133,8 @@
   }
   function erfahrungHtml(x) {
     if (!x) return "";
-    /* Herkunft und Datum der Erfahrung bleiben in den Daten, sichtbar ist nur der Hinweis, dass es keine offizielle Angabe ist */
-    return '<div class="erfahrung"><p class="erfahrung__titel">Erfahrung, keine offizielle Angabe</p><p>' + esc(x.text) + "</p></div>";
+    /* Herkunft und Datum der Erfahrung bleiben in den Daten. Sichtbar ist nur der Satz selbst, ohne Herkunftsvermerk. */
+    return "<p>" + esc(x.text) + "</p>";
   }
   /* Eine Zeile unter jeder Antwort: Geltungsbereich, Quelle, Stand und Prüfstatus */
   function belegZeile(e, anhang, ohneGeltung) {
@@ -225,6 +234,7 @@
       el.innerHTML = liste.map(function (t) {
         var s = status(t, h), klasse = s, marke = "";
         if (s === "jetzt") marke = '<span class="marke marke--laeuft">läuft gerade</span>';
+        else if (s === "vorbei" && t.art === "frist") marke = '<span class="marke marke--zu">Frist abgelaufen</span>';
         else if (t.id === naechster) { klasse = "naechster"; marke = '<span class="marke">nächster Termin</span>'; }
         var v = datum(t.von), b = ende(t);
         var dat = +v === +b ? kurz(v) : kurz(v) + "<br>bis " + kurz(b);
@@ -355,6 +365,8 @@
       r.schluessel = haus + "K" + r.raum;
     } else {
       var e = parseInt(nr.charAt(0), 10);
+      var geb = (D.gebaeude || []).filter(function (g) { return g.id === haus; })[0];
+      if (geb && geb.etagen && e > geb.etagen.hoechste) { r.passtNicht = true; r.etagenSatz = geb.etagen.satz; r.schluessel = haus + nr; return r; }
       r.etageNr = e;
       r.etage = e === 0 ? "Erdgeschoss" : e + ". Etage";
       r.etageKurz = String(e);
@@ -362,6 +374,10 @@
       r.schluessel = haus + nr;
     }
     r.bekannt = D.raeume[r.schluessel] || null;
+    if (!r.bekannt && !r.keller && D.standorte) {
+      var pc = standorte("computerraeume").filter(function (x) { return x.haus === haus && x.raum === nr; })[0];
+      if (pc) r.bekannt = "Computerraum";
+    }
     r.zu = haus === "E";
     return r;
   }
@@ -370,13 +386,17 @@
     if (!r) return '<p class="raum-satz">Das sieht nicht nach einer Raumnummer aus. Gemeint ist so etwas wie <span class="code">TA A 040</span>, <span class="code">C 702</span> oder <span class="code">A K 31</span>.</p>';
     if (r.wh) return '<p class="raum-satz"><b>WH heißt Campus Wilhelminenhof</b>, der andere Standort der HTW in Oberschöneweide, Wilhelminenhofstraße 75A. Nicht in Karlshorst, plan die Fahrt ein.</p>';
     if (r.unbekannt) return '<p class="raum-satz">Ein Haus ' + esc(r.haus) + " gibt es am Campus Treskowallee nicht, dort heißen die Häuser A bis F. Prüf die Angabe noch mal im LSF.</p>";
+    if (r.passtNicht) return '<p class="raum-satz"><b>Diese Raumnummer passt nicht zu Haus ' + esc(r.haus) + ".</b> " + esc(r.etagenSatz) + " Bitte prüfe die Angabe in deinem Stundenplan.</p>";
     var nummer = r.keller ? "K " + r.raum : r.nr + (r.zusatz || "");
     var teile = '<div class="code-zeile" aria-hidden="true">' +
       '<span class="code-teil"><b>TA</b><small>Treskowallee</small></span>' +
       '<span class="code-teil"><b>' + r.haus + "</b><small>Haus " + r.haus + "</small></span>" +
       '<span class="code-teil"><b>' + esc(nummer) + "</b><small>Raum, " + r.etage + "</small></span></div>";
-    var satz = '<p class="raum-satz"><b>Haus ' + r.haus + ", " + r.etage + ", Raum " + esc(nummer) + ".</b>" + (r.bekannt ? " " + esc(r.bekannt) + "." : "") + "</p>";
+    var satz = r.bekannt
+      ? '<p class="raum-satz"><b>Haus ' + r.haus + ", " + r.etage + ", Raum " + esc(nummer) + ".</b> " + esc(r.bekannt) + ".</p>"
+      : '<p class="raum-satz">So liest sich die Nummer: <b>Haus ' + r.haus + ", " + r.etage + ", Raum " + esc(nummer) + ".</b></p>";
     var hinweise = [];
+    if (!r.bekannt && !r.zu) hinweise.push("Diesen Raum haben wir nicht gespeichert. Die Nummer zeigt nur Haus und Etage, ob es den Raum gibt, steht in deinem Stundenplan.");
     if (r.zu) hinweise.push("Haus E ist seit Oktober 2025 geschlossen. Steht der Raum trotzdem in deinem Plan, frag beim Fachbereich nach.");
     if (r.haus === "C" && r.etageNr > 8) hinweise.push("Haus C hat acht Stockwerke. Prüf die Nummer lieber noch mal.");
     if (!r.zu) hinweise.push('<a href="campus.html#haus-' + r.haus + '">Was sonst in Haus ' + r.haus + " ist</a>");
@@ -579,7 +599,7 @@
     var block = '<span class="datum" aria-hidden="true"><b>' + d.getDate() + "</b><small>" + MONATE_KURZ[d.getMonth()] + "</small></span>";
     var beispiel = v.beispiel ? ' <span class="marke marke--offen">Beispiel</span>' : "";
     return '<li class="terminliste__eintrag">' + block + '<div class="termin"><' + hx + ">" + esc(v.titel) + beispiel + "</" + hx + ">" +
-      '<p class="sr-only">' + esc(veranstaltungWann(v)) + "</p>" +
+      '<p class="sr-only">' + esc(TAGE_KURZ[d.getDay()] + ", " + lang(d, true)) + "</p>" +
       '<div class="termin__meta"><span>' + esc(v.zeit || "") + "</span><span>" + esc(v.ort) + "</span></div></div></li>";
   }
 
@@ -610,7 +630,8 @@
       if (art === "vorschau") {
         var n = parseInt(el.getAttribute("data-anzahl"), 10) || 2;
         var hx = "h" + (el.getAttribute("data-ebene") || "4");
-        var vs = kommend.filter(function (v) { return v.vorschau; }).slice(0, n);
+        /* Dieselbe Liste wie auf der Veranstaltungsseite: die nächsten kommenden Termine, vergangene fallen automatisch raus */
+        var vs = kommend.slice(0, n);
         el.innerHTML = vs.length ? '<ul class="terminliste">' + vs.map(function (v) { return vorschauHtml(v, hx); }).join("") + "</ul>"
           : '<p class="leer">Gerade keine kommenden Termine eingetragen.</p>';
         return;
@@ -637,7 +658,7 @@
       }).join("");
     });
     $$("[data-naechste-veranstaltung]").forEach(function (el) {
-      var v = kommend.filter(function (x) { return x.vorschau; })[0];
+      var v = kommend[0];
       if (!v) return;
       var d = datum(v.datum);
       el.innerHTML = "<b>Als Nächstes:</b> " + TAGE_KURZ[d.getDay()] + ", " + kurz(d) + " " + esc(v.titel) + ". Dazu Führungen und Infoabende.";
@@ -1097,6 +1118,14 @@
     istKommend: function (v) { return datum(v.datum) >= heute(); }
   };
 
+  /* FAQ-Antworten, die aus den Standortdaten kommen: ein Datensatz für Campusseite, FAQ, Suche und Chat */
+  D.fragen.forEach(function (f) {
+    if (f.antwortAus !== "automaten") return;
+    var l = standorte("automaten");
+    if (!l.length) return;
+    f.antwort = l.map(function (e) { return esc(standortOrt("automaten", e)) + ": " + esc(angebotText(e)) + "."; }).join(" ") +
+      ' Alles auf einen Blick unter <a href="campus.html#automaten">Automaten und Wasser-Nachfüllstation</a>.';
+  });
   if (window.ErstiSuche) window.ErstiSuche.baueIndex(D.fragen, ersetze);
 
   function los() {

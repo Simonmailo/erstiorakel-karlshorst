@@ -47,7 +47,7 @@ window.ERSTI = {
     chatBackend: "",
     /* Feedback auf der Seite Mitmachen: Adresse des externen Formulars (muss mit https:// beginnen).
        Leer = der Knopf "Feedback und Ideen senden" ist aus und die Seite sagt "noch nicht eingerichtet".
-       Das Formular sollte die Kategorien Fehler, Idee, fehlende Frage und Veranstaltung anbieten. */
+       Das Formular bietet fünf Kategorien: Fehler melden, Idee vorschlagen, Eine Frage fehlt, Veranstaltung vorschlagen, Sonstiges Feedback. */
     feedback: { formularUrl: "https://docs.google.com/forms/d/e/1FAIpQLSficAe02d4oT4Y4cOk8tBGDQUpfWOH7hbe5FJdiCLo_JVeBCw/viewform" },
     /* Für die Datenschutzhinweise: wer die Seite ausliefert, wer das Formular betreibt und ggf. wer die KI betreibt.
        Beispiel: hoster: "Hostinger", formularAnbieter: "Google Formulare".
@@ -79,6 +79,12 @@ window.ERSTI = {
        im TGS (Haus 9) und am Campus Wilhelminenhof, nicht am Campus Treskowallee. Deshalb kein Beleg mehr für D 204. */
     rz_pools: { t: "Rechenzentrum: PC-Pools", u: "https://rz.htw-berlin.de/kontakt/pc-pools-des-hrz" },
     rz_vpn: { t: "Rechenzentrum: VPN-Einwahl (OpenVPN)", u: "https://rz.htw-berlin.de/anleitungen/vpn" },
+    /* Unterseiten der VPN-Anleitung, am 28.10.2026 auf der Seite rz_vpn verlinkt gefunden und aufgerufen (alle erreichbar) */
+    rz_vpn_windows: { t: "Rechenzentrum: VPN unter Windows", u: "https://rz.htw-berlin.de/anleitungen/vpn/windows" },
+    rz_vpn_macos: { t: "Rechenzentrum: VPN unter macOS", u: "https://rz.htw-berlin.de/anleitungen/vpn/macos" },
+    rz_vpn_ios: { t: "Rechenzentrum: VPN unter iOS", u: "https://rz.htw-berlin.de/anleitungen/vpn/ios" },
+    rz_vpn_android: { t: "Rechenzentrum: VPN unter Android", u: "https://rz.htw-berlin.de/anleitungen/vpn/android" },
+    rz_vpn_linux: { t: "Rechenzentrum: VPN unter Linux", u: "https://rz.htw-berlin.de/anleitungen/vpn/linux" },
     rz_help: { t: "Rechenzentrum: IT-Helpcenter", u: "https://rz.htw-berlin.de/kontakt/it-helpcenter/" },
     rz_storno: { t: "Rechenzentrum: Prüfungsabmeldung im LSF", u: "https://rz.htw-berlin.de/anleitungen/campus-management-lsf/studierende/pruefungen/pruefungsabmeldung" },
     semesterticket: { t: "AStA: Semesterticket", u: "https://www.students-htw.de/campusleben/semesterticket/" },
@@ -189,14 +195,17 @@ window.ERSTI = {
 
   gebaeude: [
     {
-      id: "A", beiname: "Das alte Hauptgebäude", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: "2026-10-20" }, geprueft: "2026-10-14",
+      id: "A", beiname: "Das alte Hauptgebäude",
+      /* Etagen in Haus A: Keller, Erdgeschoss, 1. und 2. Obergeschoss. Höhere Ziffern im Raumfinder sind keine gültige Nummer. */
+      etagen: { hoechste: 2, keller: true, satz: "Haus A hat ein Erdgeschoss sowie ein 1. und 2. Obergeschoss." }, status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: "2026-10-20" }, geprueft: "2026-10-14",
       geltung: "Campus Treskowallee",
       text: "Hier sitzen Studierendenservice, Career Service, Hochschulsport, der Lesesaal der Bibliothek, das Semesterticketbüro und der Fachschaftsrat 3. Auch die Aula ist in Haus A.",
       quelle: ["campus", "rz_druck_orte"],
       /* Eigene Erfahrung aus dem Projekt, keine offizielle Angabe. Die frühere Aussage "fast alle Lehrveranstaltungen
          des Fachbereichs 3" stammte aus einem Flyer von 2020 und steht nur mit aktuellem Beleg wieder hier. */
       erfahrung: {
-        text: "Nach bisheriger Erfahrung im ersten Semester BWL finden viele Lehrveranstaltungen in Haus A statt. Maßgeblich ist die Raumangabe in deinem persönlichen Stundenplan.",
+        /* Wortlaut seit 28.10.2026 vorgegeben, ohne sichtbaren Vermerk "Erfahrung, keine offizielle Angabe" */
+        text: "Im ersten Semester BWL finden derzeit viele Lehrveranstaltungen in Haus A statt. Den jeweiligen Raum findest du in deinem persönlichen Stundenplan.",
         studiengang: "BWL", semester: "1. Semester, Wintersemester 2026/27", bestaetigt: "2026-10-14"
       },
       raeume: [
@@ -531,7 +540,7 @@ window.ERSTI = {
   },
 
   offenePunkte: [
-    { thema: "Befragung", text: "Die 52 Fragen und Antworten sind vorläufige Vorschläge. Welche davon den Kern des Chats bilden, entscheiden wir nach unserer Befragung." },
+    { thema: "Befragung", text: "Die Fragen und Antworten sind vorläufige Vorschläge. Welche davon den Kern des Chats bilden, entscheiden wir nach unserer Befragung." },
     { thema: "Verbindungssuche", erledigt: "2026-10-19", text: "Die Links zu BVG und VBB hat Hannah am 19.10.2026 getestet, sie funktionieren. Bestätigt sind damit die Links, nicht Linien, Fahrzeiten oder Störungen. Live-Verkehrsdaten zeigt diese Seite nicht, den Start gibst du direkt bei BVG oder VBB ein." },
     { thema: "Ersti-Treffen", text: "Für dieses Semester haben wir keine Ersti-Treffen von Fachschaft oder AStA mit Datum gefunden. Veranstaltende können Termine über das Feedbackformular schicken, Kategorie „Veranstaltung vorschlagen“. Wir tragen sie erst ein, wenn wir sie an einer öffentlichen Quelle geprüft haben." },
     { thema: "Impressum und Datenschutzerklärung", text: "Fehlen noch. Beides hängt davon ab, wo die Seite liegt und welches Formular ihr nutzt." }

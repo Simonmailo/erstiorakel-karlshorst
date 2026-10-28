@@ -1,6 +1,6 @@
 /*
   Ersti-Orakel: Fragen und Antworten für Häufige Fragen, Erste Schritte und den Chat.
-  Diese Datei ist austauschbar. Die 52 Einträge hier sind vorläufig. Wenn eure Befragung die endgültigen
+  Diese Datei ist austauschbar. Die Einträge hier sind vorläufig. Wenn eure Befragung die endgültigen
   Fragen ergibt, ersetzt ihr diese Datei (oder einzelne Einträge) und lasst danach node werkzeuge/bauen.mjs laufen.
   Das Skript meldet fehlende Pflichtfelder, unbekannte Quellen und Schritte in daten.js (checkliste), deren
   Antwort fehlt.
@@ -107,18 +107,18 @@ window.ERSTI.fragen = [
       id: "kurse_anmelden", kat: "start", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: "2026-10-20" },
       geltung: "Erstes Semester an der HTW Berlin, Wintersemester 2026/27",
       frage: "Muss ich mich für meine Kurse selbst anmelden?",
-      antwort: `Für die Pflichtkurse im ersten Semester nicht. Wenn du in Vollzeit studierst, belegt die HTW sie automatisch nach Musterplan, die erste Fremdsprache meist mit Englisch. AWE-Fächer, also allgemeinwissenschaftliche Ergänzungsfächer, und Wahlpflichtmodule meldest du selbst im LSF an. Restplätze werden bis {{bis:kursabmeldung}} vergeben, ein automatisches Nachrücken gibt es nicht. Bis dahin kannst du dich auch von Kursen abmelden. Ab dem zweiten Semester belegst du alles selbst.`,
+      antwort: `Für die Pflichtkurse im ersten Semester nicht. Wenn du in Vollzeit studierst, belegt die HTW sie automatisch nach Musterplan, die erste Fremdsprache meist mit Englisch. AWE-Fächer, also allgemeinwissenschaftliche Ergänzungsfächer, und Wahlpflichtmodule meldest du selbst im LSF an. Frist für Restplätze und für das Abmelden von Kursen: {{bis:kursabmeldung}}. Ein automatisches Nachrücken gibt es nicht. Ab dem zweiten Semester belegst du alles selbst.`,
       stichworte: ["kurse", "kurs", "belegen", "belegung", "kursbelegung", "anmelden", "pflichtkurse", "awe", "wahlpflicht", "musterplan", "restplaetze", "sprachkurs", "englisch", "abmelden"],
       quelle: ["kursbelegung", "campusapp"], mehr: "erste-schritte.html#kurse",
-      kurz: "Pflichtkurse sind belegt. AWE und Wahlpflicht meldest du selbst an, abmelden geht bis {{bk:kursabmeldung}}.",
+      kurz: "Pflichtkurse sind belegt. AWE und Wahlpflicht meldest du selbst an. Frist für Restplätze und Abmelden: {{bk:kursabmeldung}}.",
       anleitung: [
         "Im ersten Semester musst du für Pflichtkurse nichts tun. Wenn du in Vollzeit studierst, belegt die HTW sie automatisch nach Musterplan, die erste Fremdsprache meist mit Englisch.",
-        "Selbst anmelden musst du AWE-Fächer, also allgemeinwissenschaftliche Ergänzungsfächer, und Wahlpflichtmodule. Das läuft im LSF. Restplätze gibt es bis {{bis:kursabmeldung}}, ein automatisches Nachrücken nicht. Bis dahin kannst du dich auch noch von Kursen abmelden. Ab dem zweiten Semester belegst du alles selbst, in drei Phasen: Wünsche anmelden, Verlosung, Restplätze.",
+        "Selbst anmelden musst du AWE-Fächer, also allgemeinwissenschaftliche Ergänzungsfächer, und Wahlpflichtmodule. Das läuft im LSF. Frist für Restplätze und für das Abmelden von Kursen: {{bis:kursabmeldung}}. Ein automatisches Nachrücken gibt es nicht. Ab dem zweiten Semester belegst du alles selbst, in drei Phasen: Wünsche anmelden, Verlosung, Restplätze.",
         "Deinen Stundenplan siehst du im LSF oder bequemer in der HTW Campus App, zusammen mit Noten, Mensaplan, Moodle und Mail."
       ],
       eckdaten: [
         ["Wo", `<a href="https://lsf.htw-berlin.de">lsf.htw-berlin.de</a> oder die Campus App`],
-        ["Frist", "Restplätze und Abmelden bis {{bis:kursabmeldung}}"],
+        ["Frist", "Restplätze und Abmelden: {{bis:kursabmeldung}}"],
         ["Fragen zu Modulen", "Studienfachberatung BWL, Haus C, Raum 702"]
       ]
     },
@@ -190,7 +190,7 @@ window.ERSTI.fragen = [
       id: "beurlaubung", kat: "start", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: "2026-10-20" },
       geltung: "Studierende der HTW Berlin, Wintersemester 2026/27",
       frage: "Kann ich ein Urlaubssemester nehmen?",
-      antwort: `Ja, auf Antrag beim Studierenden-Management in Haus A, Raum 040. Für das laufende Wintersemester endet die Frist am {{bis:beurlaubung}}.`,
+      antwort: `Ja, auf Antrag beim Studierenden-Management in Haus A, Raum 040. Antragsfrist für das Wintersemester 2026/27: {{bis:beurlaubung}}.`,
       stichworte: ["urlaubssemester", "beurlaubung", "beurlauben", "pause", "auszeit", "aussetzen"],
       quelle: ["kalender", "management"]
     },
@@ -465,6 +465,18 @@ window.ERSTI.fragen = [
       antwort: `In Haus D. Geöffnet Montag bis Freitag von 8 bis 14:30 Uhr, warmes Mittagessen gibt es ab 11 Uhr. Bezahlt wird mit der StudentCard. Den Speiseplan zeigt die Campus App oder die <a href="https://www.stw.berlin/mensen/mensa-htw-treskowallee.html">Seite des studierendenWERKs</a>.`,
       stichworte: ["mensa", "essen", "mittag", "mittagessen", "kantine", "hunger", "speiseplan", "cafeteria", "kaffee", "futtern", "oeffnungszeiten", "geoeffnet"],
       quelle: ["mensa", "campus"], mehr: "campus.html#essen", typ: "wo"
+    },
+    {
+      /* Neu am 28.10.2026. Die Antwort wird beim Laden aus daten.js, standorte.automaten gebaut (antwortAus), damit
+         Campusseite, Suche und Chat dieselben Standorte nennen. Keine Preise, Bezahlarten oder Öffnungszeiten. */
+      id: "automaten", kat: "campus", status: "gegengeprueft", gegenpruefung: { durch: "laut Projektverantwortlicher, Person nicht genannt", am: "2026-10-23" }, geprueft: "2026-10-25",
+      geltung: "Campus Treskowallee",
+      frage: "Wo gibt es Kaffee, Snacks, Getränke und Wasser für die Trinkflasche?",
+      antwortAus: "automaten",
+      antwort: `Die Automatenstandorte stehen auf der Campusseite unter <a href="campus.html#automaten">Automaten und Wasser-Nachfüllstation</a>.`,
+      stichworte: ["kaffee", "kaffeeautomat", "kaffeeautomaten", "snack", "snacks", "snackautomat", "getraenk", "getraenke", "getraenkeautomat", "automat", "automaten", "wasser", "wasserstation", "nachfuellstation", "wasserspender", "trinkflasche", "flasche", "auffuellen", "nachfuellen", "trinken", "durst"],
+      mehr: "campus.html#automaten", typ: "wo",
+      ziele: [{ text: "Automatenstandorte auf dem Campus ansehen", href: "campus.html#automaten" }]
     },
     {
       id: "campuszeiten", kat: "campus", status: "gegengeprueft", gegenpruefung: { durch: "Ols", am: "2026-10-20" },
