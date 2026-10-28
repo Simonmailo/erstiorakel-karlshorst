@@ -789,7 +789,8 @@ main { padding-bottom: 56px; }
 
 /* Chat: Schaltflächen zu Seiten in Übersichtsantworten */
 .blase .chat-ziele { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
-.blase .chat-ziele .knopf { text-decoration: none; }
+.blase .chat-ziele .knopf { text-decoration: none; white-space: normal; max-width: 100%; text-align: left; }
+.blase .chat-ziele .knopf svg { flex-shrink: 0; }
 /* Offene Punkte: erledigt */
 .marke--erledigt { background: var(--weiss); color: var(--gruen-700); border-color: var(--gruen-700); }
 /* Knappe Aufzählung in Hinweiskarten */
